@@ -81,7 +81,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapEditor.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +112,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_MapEditor.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="Viewer.h" />
   </ItemGroup>
   <ItemGroup>
