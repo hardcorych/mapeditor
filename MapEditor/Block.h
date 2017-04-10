@@ -3,6 +3,27 @@
 #include <osg/Group>
 #include <Tile.h>
 
+enum class BlockType			//разновидности блоков
+{
+	BORDER,
+
+	BRICK_FULL,
+	BRICK_RIGHT,
+	BRICK_BOTTOM,
+	BRICK_LEFT,
+	BRICK_TOP,
+
+	ARMOR_FULL,
+	ARMOR_RIGHT,
+	ARMOR_BOTTOM,
+	ARMOR_LEFT,
+	ARMOR_TOP,
+
+	WATER,
+	BUSHES,
+	ICE
+};
+
 class Block : public osg::Group		//блока из 4 тайлов, общим размером 16х16
 {
 public:
