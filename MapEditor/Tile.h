@@ -10,7 +10,8 @@ enum TileType
 	ARMOR,		//брон€
 	WATER,		//вода
 	BUSHES,		//зелень
-	ICE			//лед
+	ICE,		//лед
+	EMPTY		//свободный тайл
 };
 
 //тайл полигон, на который нат€гиваетс€ текстура
@@ -22,12 +23,19 @@ public:
 	Tile(unsigned int x, unsigned int z, TileType type);
 	~Tile();
 
+	void SetXZ(unsigned int x, unsigned int z) { _x = x; _z = z; }
+	//перегрузить оператор= дл€ установки типа тайла?
+	void SetType(TileType type) { _type = type; }
+
 private:
-	unsigned int _x;		//координаты тайла
-	unsigned int _z;
-	const unsigned int _size = 8;		//размер тайла 8х8
+	int _x;		//координаты тайла
+	int _z;
+	const int _size = 8;		//размер тайла 8х8
 	TileType _type;
 
 	osg::ref_ptr<osg::Vec3Array> _vertices = new osg::Vec3Array;
+	osg::ref_ptr<osg::Vec3Array> _normals = new osg::Vec3Array;
+
+	void calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3);
 };
 

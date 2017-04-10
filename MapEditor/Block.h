@@ -3,17 +3,18 @@
 #include <osg/Group>
 #include <Tile.h>
 
-class Block		//блока из 4 тайлов, общим размером 16х16
+class Block : public osg::Group		//блока из 4 тайлов, общим размером 16х16
 {
 public:
 	Block();
-	Block(Tile leftBottom, Tile leftTop, Tile rightTop, Tile rightBottom);
+	Block(osg::ref_ptr<Tile> leftBottom, osg::ref_ptr<Tile> leftTop,
+		osg::ref_ptr<Tile> rightTop, osg::ref_ptr<Tile> rightBottom);
 	~Block();
 
 private:
-	Tile _leftBottom;
-	Tile _leftTop;
-	Tile _rightTop;
-	Tile _rightBottom;
+	osg::ref_ptr<Tile> _leftBottom;
+	osg::ref_ptr<Tile> _leftTop;
+	osg::ref_ptr<Tile> _rightTop;
+	osg::ref_ptr<Tile> _rightBottom;
 };
 
