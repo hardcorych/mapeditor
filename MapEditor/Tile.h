@@ -27,10 +27,12 @@ public:
 	//перегрузить оператор= для установки типа тайла?
 	void SetType(TileType type);
 
+	static const int Size() { return _size; }
+
 private:
 	int _x;		//координаты тайла
 	int _z;
-	const int _size = 8;		//размер тайла 8х8
+	static const int _size = 8;		//размер тайла 8х8
 	TileType _type;
 
 	osg::ref_ptr<osg::Vec3Array> _vertices = new osg::Vec3Array;

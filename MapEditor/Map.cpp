@@ -15,6 +15,7 @@ _sizeZ(sizeZ),
 _step(8)
 {
 	//указанный размер карты
+	//размер задается в количестве блоков игровой области
 	//формирование границ
 	setBorder();
 }
@@ -25,6 +26,12 @@ Map::~Map()
 
 void Map::setBorder()
 {
+	//вывести поблочно?
+	//блоки 16х161
+	//у блоков step = 16
+
+	//_step = 16;
+	//потайловое формирование границы
 	_sizeX = (_sizeX + 2)*_step;	//+2 выделение места под рамку
 	_sizeZ = (_sizeZ + 2)*_step;
 	//формирование границ
@@ -64,6 +71,12 @@ void Map::setBorder()
 
 		addChild(tileMap[std::make_pair(startBorder, z)]);
 	}
+
+	blockMap[std::make_pair(24, 24)] = new Block(24, 24, BlockType::ARMOR_LEFT);
+	addChild(blockMap[std::make_pair(24, 24)]);
+
+	blockMap[std::make_pair(8, 8)] = new Block(8, 8, BlockType::BRICK_FULL);
+	addChild(blockMap[std::make_pair(8, 8)]);
 
 	unsigned int g = getChildIndex(tileMap[std::make_pair(40, 16)]);
 	unsigned int g2 = g;

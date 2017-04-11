@@ -22,14 +22,10 @@ private:
 	int _sizeX;
 	int _sizeZ;
 	unsigned int _size;		//размер карты. задается любыми цифрами, затем умножается на 16(перевод в блоки) или 8 (перевод в тайлы)	
-	const int _step;		//шаг равный размеру одного тайла
+	int _step;		//шаг равный размеру одного тайла
 	
-	std::vector<osg::ref_ptr<Tile>> tiles;	//тайлы
-	//Tile tile;
-	osg::ref_ptr<Tile> tile = new Tile;
-	std::map<std::pair<int, int>, osg::ref_ptr<Tile>> tileMap;
-	//std::map<std::pair<unsigned int, unsigned int>, TileType> tileMap;
-	//std::map<std::pair<unsigned int, unsigned int>, BlockType> blockMap;
+	std::map<std::pair<int, int>, osg::ref_ptr<Tile>> tileMap;	//тайлы, ключ - координаты XZ
+	std::map<std::pair<int, int>, osg::ref_ptr<Block>> blockMap;	//блоки, ключ - координаты XZ
 
 	void setBorder();
 };
