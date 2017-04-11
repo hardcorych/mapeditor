@@ -15,6 +15,7 @@ public:
 private:
     Ui::MapEditorClass ui;
 	std::thread _renderThread;
+	QMenu* menu;
 
 	void renderScene();
 

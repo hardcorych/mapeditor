@@ -8,6 +8,14 @@ MapEditor::MapEditor(QWidget *parent)
 {
 	ui.setupUi(this);
 
+	menu = new QMenu(this);
+	menu->setTitle("&File");
+	menu->addAction("&New");
+	menu->addAction("&Load");
+	menu->addAction("&Save");
+
+	ui.menuBar->addMenu(menu);
+
 	_renderThread = std::thread(&MapEditor::renderScene, this);
 }
 
@@ -37,9 +45,6 @@ void MapEditor::renderScene()
 	//установка объектов на сцену
 	osg::ref_ptr<Map> map = new Map;
 
-	osg::ref_ptr<Tile> tile = new Tile;
-
-	//viewer.setSceneData(tile);
 	viewer.setSceneData(map);
 
 	/////////////////////////////

@@ -26,6 +26,7 @@ public:
 	void SetXZ(unsigned int x, unsigned int z) { _x = x; _z = z; }
 	//перегрузить оператор= для установки типа тайла?
 	void SetType(TileType type);
+	std::pair<int, int> GetXZ() { return std::make_pair(_x, _z); }	//для записи в файл
 
 	static const int Size() { return _size; }
 
