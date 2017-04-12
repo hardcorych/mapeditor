@@ -79,7 +79,7 @@ void Tile::setTexture()
 
 	osg::ref_ptr<osg::Image> image;
 	
-	std::string texFilename = "Resources/blocks/";
+	std::string texFilename = "Resources/tiles/";
 
 	//_type = TileType::ICE;
 	switch (_type)
