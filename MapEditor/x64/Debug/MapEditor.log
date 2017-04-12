@@ -1,8 +1,12 @@
-﻿Build started 12.04.2017 11:32:32.
+﻿Build started 12.04.2017 13:23:48.
      1>Project "C:\Users\zlato\documents\visual studio 2013\Projects\MapEditor\MapEditor\MapEditor.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\Qt5.8.0\5.8\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.8.0\5.8\msvc2013_64\include\QtCore /IC:\Qt\Qt5.8.0\5.8\msvc2013_64\include\QtGui /IC:\Qt\Qt5.8.0\5.8\msvc2013_64\include\QtWidgets /IC:\OpenSceneGraph\build64\include /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Block.cpp
-         Block.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\Qt5.8.0\5.8\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.8.0\5.8\msvc2013_64\include\QtCore /IC:\Qt\Qt5.8.0\5.8\msvc2013_64\include\QtGui /IC:\Qt\Qt5.8.0\5.8\msvc2013_64\include\QtWidgets /IC:\OpenSceneGraph\build64\include /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt MapEditor.cpp MouseHandler.cpp
+         MapEditor.cpp
+     1>C:\Users\zlato\documents\visual studio 2013\Projects\MapEditor\MapEditor\MouseHandler.h(32): warning C4552: '+' : operator has no effect; expected operator with side-effect
+         MouseHandler.cpp
+     1>c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\MouseHandler.h(32): warning C4552: '+' : operator has no effect; expected operator with side-effect
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\zlato\documents\visual studio 2013\Projects\MapEditor\x64\Debug\\MapEditor.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.8.0\5.8\msvc2013_64\lib /LIBPATH:C:\OpenSceneGraph\build64\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Widgetsd.lib C:\OpenSceneGraph\build64\lib\osgd.lib C:\OpenSceneGraph\build64\lib\osgViewerd.lib C:\OpenSceneGraph\build64\lib\osgDBd.lib C:\OpenSceneGraph\build64\lib\osgFXd.lib C:\OpenSceneGraph\build64\lib\osgGAd.lib C:\OpenSceneGraph\build64\lib\osgManipulatord.lib C:\OpenSceneGraph\build64\lib\osgUtild.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\zlato\documents\visual studio 2013\Projects\MapEditor\x64\Debug\MapEditor.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\zlato\documents\visual studio 2013\Projects\MapEditor\x64\Debug\MapEditor.lib" /MACHINE:X64 x64\Debug\Block.obj
          x64\Debug\moc_MapEditor.obj
@@ -10,6 +14,7 @@
          x64\Debug\main.obj
          x64\Debug\Map.obj
          x64\Debug\MapEditor.obj
+         x64\Debug\MouseHandler.obj
          x64\Debug\Tile.obj
          x64\Debug\Viewer.obj
          MapEditor.vcxproj -> C:\Users\zlato\documents\visual studio 2013\Projects\MapEditor\x64\Debug\MapEditor.exe
@@ -17,4 +22,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.07
+Time Elapsed 00:00:08.77

@@ -2,6 +2,7 @@
 #include <Viewer.h>
 #include <memory>
 #include <Map.h>
+#include <MouseHandler.h>
 
 MapEditor::MapEditor(QWidget *parent)
 	: QMainWindow(parent)
@@ -43,6 +44,8 @@ void MapEditor::renderScene()
 	int hViewer = 480;
 
 	viewer.setUpViewInWindow(xViewer, yViewer, wViewer, hViewer);
+
+	viewer.addEventHandler(new MouseHandler);
 
 	//установка объектов на сцену
 	osg::ref_ptr<Map> map = new Map;

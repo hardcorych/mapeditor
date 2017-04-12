@@ -1,7 +1,8 @@
 #include "MouseHandler.h"
 
 
-MouseHandler::MouseHandler()
+MouseHandler::MouseHandler():
+_mx(0), _my(0)
 {
 }
 
