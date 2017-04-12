@@ -9,7 +9,9 @@ MapEditor::MapEditor(QWidget *parent)
 	ui.setupUi(this);
 
 	menu = new QMenu(this);
+
 	menu->setTitle("&File");
+
 	menu->addAction("&New");
 	menu->addAction("&Load");
 	menu->addAction("&Save");

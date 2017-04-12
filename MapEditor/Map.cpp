@@ -88,12 +88,22 @@ void Map::setBorder()
 
 void Map::AddBlock(int x, int z, BlockType type)
 {
-
+	if (blockMap.find(std::make_pair(x, z)) == blockMap.end())		//проверка на существование блока в карте
+	{
+		blockMap[std::make_pair(x, z)] = new Block(x, z, type);
+		addChild(blockMap[std::make_pair(x, z)]);
+	}
 }
 
-void Map::RemoveBlock()
+void Map::RemoveBlock(int x, int z)
 {
-
+	if (blockMap.find(std::make_pair(x, z)) != blockMap.end())
+	{
+		unsigned int indexRemove = getChildIndex(blockMap[std::make_pair(x, z)]);
+		removeChild(indexRemove);
+		//удаление блока из карты?
+		blockMap.erase(std::make_pair(x, z));
+	}
 }
 
 void Map::ReadFile()

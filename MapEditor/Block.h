@@ -33,6 +33,8 @@ public:
 	Block(int x, int z, BlockType type);
 	~Block();
 
+	BlockType GetType() { return _type; }
+
 	void Remove();		//???
 
 private:

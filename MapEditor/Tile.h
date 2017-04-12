@@ -27,6 +27,7 @@ public:
 	//перегрузить оператор= для установки типа тайла?
 	void SetType(TileType type);
 	std::pair<int, int> GetXZ() { return std::make_pair(_x, _z); }	//для записи в файл
+	TileType GetType() { return _type; }
 
 	static const int Size() { return _size; }
 

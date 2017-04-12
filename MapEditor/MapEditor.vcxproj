@@ -84,6 +84,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapEditor.cpp" />
+    <ClCompile Include="MouseHandler.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
@@ -115,6 +116,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="GeneratedFiles\ui_MapEditor.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MouseHandler.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Viewer.h" />
   </ItemGroup>
