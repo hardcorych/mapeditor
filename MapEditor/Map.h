@@ -25,6 +25,7 @@ private:
 	int _step;		//шаг равный размеру одного блока/тайла
 	
 	//std::map<std::pair<int, int>, osg::ref_ptr<Tile>> tileMap;	//тайлы, ключ - координаты XZ
+	//надо ли blockMap?
 	std::map<std::pair<int, int>, osg::ref_ptr<Block>> blockMap;	//блоки, ключ - координаты XZ
 
 	void setBorder();

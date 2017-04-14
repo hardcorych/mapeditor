@@ -99,6 +99,7 @@ void Map::setGameArea()
 		for (int x = 0; x < _sizeX; x += _step)
 		{
 			//заполнение свободной области пустыми блоками
+			addChild(new Block(x, z, BlockType::BRICK_FULL));
 		}
 	}
 
