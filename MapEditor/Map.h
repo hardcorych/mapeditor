@@ -24,9 +24,10 @@ private:
 	unsigned int _size;		//размер карты. задается любыми цифрами, затем умножается на 16(перевод в блоки) или 8 (перевод в тайлы)	
 	int _step;		//шаг равный размеру одного блока/тайла
 	
-	std::map<std::pair<int, int>, osg::ref_ptr<Tile>> tileMap;	//тайлы, ключ - координаты XZ
+	//std::map<std::pair<int, int>, osg::ref_ptr<Tile>> tileMap;	//тайлы, ключ - координаты XZ
 	std::map<std::pair<int, int>, osg::ref_ptr<Block>> blockMap;	//блоки, ключ - координаты XZ
 
 	void setBorder();
+	void setGameArea();
 };
 

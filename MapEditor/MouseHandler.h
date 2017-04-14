@@ -3,6 +3,7 @@
 #include <osgGA/GUIEventHandler>
 #include <osgViewer/Viewer>
 #include <osgUtil/PolytopeIntersector>
+#include <Block.h>
 
 class MouseHandler : public osgGA::GUIEventHandler
 {
@@ -10,6 +11,8 @@ public:
 	MouseHandler();
 	~MouseHandler();
 
+	//добавление блока по левой кнопке мыши
+	//удаление блока по правой кнопке мыши
 	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
 	{
 		osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
@@ -30,8 +33,10 @@ public:
 			double y = ea.getY();
 			x = ea.getXnormalized();
 			y = ea.getYnormalized();
-			x + y;
-			return true;	//true, чтобы обработать событие
+
+			if (pick(x, y, viewer))
+				return true;	//true, чтобы обработать событие
+			return false;
 		}
 		default:
 			return false;
@@ -40,6 +45,7 @@ public:
 
 protected:
 	double _mx, _my;	//mouse coords
+	osg::ref_ptr<osg::Node> _selectedNode;	//для получения узла из пересечений
 
 	bool pick(const double x, const double y,
 		osgViewer::Viewer* viewer)
@@ -47,7 +53,7 @@ protected:
 		if (!viewer->getSceneData())
 			return false;	//nothing to pick
 
-		double w(.05), h(.05);
+		double w(.05), h(.05);		//площадь "пирамиды"
 		
 		//преобразование координат через пересечения?
 		osgUtil::PolytopeIntersector* picker =
@@ -58,23 +64,45 @@ protected:
 		osgUtil::IntersectionVisitor iv(picker);
 
 		viewer->getCamera()->accept(iv);
+		
+		//osgUtil::PolytopeIntersector::Intersections intersections;		//!!!
 
 		if (picker->containsIntersections())
 		{
 			osg::NodePath& nodePath = picker->getFirstIntersection().nodePath;
 			unsigned int idx = nodePath.size();
 
-			//find the last group?
+			
+			//find the block
 			while (idx--)
 			{
-				osg::Group* group = dynamic_cast<osg::Group*>(nodePath[idx]);
-				if (group == nullptr)
+				Block* block = dynamic_cast<Block*>(nodePath[idx]);
+				if (block == nullptr)
 					continue;
 
-				//found the group in nodePath
 
+				//found the block in nodePath
+				if (_selectedNode.valid())
+				{
+					//previous selected node
+				}
+
+				_selectedNode = block;
+				//remove block?
+				break;
+			}
+
+			if (!_selectedNode.valid())
+			{
+				//pick failed
+				//add block?
 			}
 		}
+		else if (_selectedNode.valid())
+		{
+			//null
+		}
+		return _selectedNode.valid();
 	}
 };
 

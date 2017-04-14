@@ -23,7 +23,7 @@ enum class BlockType			//разновидности блоков
 	BUSHES,
 	ICE,
 
-	EMPTY
+	EMPTY			//пустой блок
 };
 
 class Block : public osg::Group		//блока из 4 тайлов, общим размером 16х16

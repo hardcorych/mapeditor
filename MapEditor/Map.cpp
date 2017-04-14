@@ -32,8 +32,8 @@ void Map::setBorder()
 
 	_step = 16;
 	//потайловое формирование границы
-	_sizeX = (_sizeX + 3)*_step;	//+2 выделение места под рамку
-	_sizeZ = (_sizeZ + 2)*_step;
+	_sizeX = (_sizeX + 3)*_step;	//выделение места под рамку +3 по X
+	_sizeZ = (_sizeZ + 2)*_step;	//выделение места под рамку +2 по Z
 	//формирование границ
 	//карта с 2 индексами, каждый элемент хранит тайл (тип тайла?)
 
@@ -78,12 +78,30 @@ void Map::setBorder()
 	blockMap[std::make_pair(5*_step, 5*_step)] = new Block(5*_step, 5*_step, BlockType::ARMOR_FULL);
 	addChild(blockMap[std::make_pair(5*_step, 5*_step)]);
 
+	blockMap[std::make_pair(5 * _step, 7 * _step)] = new Block(5 * _step, 7 * _step, BlockType::BRICK_RIGHT);
+	addChild(blockMap[std::make_pair(5 * _step, 7 * _step)]);
+
+	blockMap[std::make_pair(4 * _step, 7 * _step)] = new Block(4 * _step, 7 * _step, BlockType::BUSHES);
+	addChild(blockMap[std::make_pair(4 * _step, 7 * _step)]);
+
 	//unsigned int g = getChildIndex(tileMap[std::make_pair(40, 16)]);
 	//unsigned int g2 = g;
 	//узнать, какой child удалять
 	//removeChild(5);
 	_sizeX -= 3 * _step;	//обратное преобразование к размеру игровой области
 	_sizeZ -= 2 * _step;
+}
+
+void Map::setGameArea()
+{
+	for (int z = 0; z < _sizeZ; z += _step)
+	{
+		for (int x = 0; x < _sizeX; x += _step)
+		{
+			//заполнение свободной области пустыми блоками
+		}
+	}
+
 }
 
 void Map::AddBlock(int x, int z, BlockType type)
