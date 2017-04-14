@@ -14,6 +14,14 @@ enum class TileType
 	EMPTY		//свободный тайл
 };
 
+enum class EmptyTile
+{
+	LEFT_BOTTOM,
+	LEFT_TOP,
+	RIGHT_TOP,
+	RIGHT_BOTTOM
+};
+
 //тайл полигон, на который нат€гиваетс€ текстура
 
 class Tile : public osg::Geometry		
@@ -21,6 +29,7 @@ class Tile : public osg::Geometry
 public:
 	Tile();
 	Tile(unsigned int x, unsigned int z, TileType type);
+	Tile(unsigned int x, unsigned int z, TileType type, EmptyTile empty);	//дл€ пустых тайлов
 	~Tile();
 
 	void SetXZ(unsigned int x, unsigned int z) { _x = x; _z = z; }
@@ -42,5 +51,6 @@ private:
 
 	void calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3);
 	void setTexture();
+	void setEmptyTexture(EmptyTile empty);
 };
 

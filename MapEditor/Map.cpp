@@ -26,10 +26,6 @@ Map::~Map()
 
 void Map::setBorder()
 {
-	//вывести поблочно?
-	//блоки 16х161
-	//у блоков step = 16
-
 	_step = 16;
 	//потайловое формирование границы
 	_sizeX = (_sizeX + 3)*_step;	//выделение места под рамку +3 по X
@@ -90,6 +86,8 @@ void Map::setBorder()
 	//removeChild(5);
 	_sizeX -= 3 * _step;	//обратное преобразование к размеру игровой области
 	_sizeZ -= 2 * _step;
+
+	setGameArea();
 }
 
 void Map::setGameArea()
@@ -99,7 +97,9 @@ void Map::setGameArea()
 		for (int x = 0; x < _sizeX; x += _step)
 		{
 			//заполнение свободной области пустыми блоками
-			addChild(new Block(x, z, BlockType::BRICK_FULL));
+			//ok
+			addChild(new Block(x, z, BlockType::EMPTY));
+			//addChild(new Block(x, z, BlockType::BRICK_FULL));
 		}
 	}
 

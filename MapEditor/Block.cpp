@@ -77,6 +77,10 @@ _type(type)
 		_rightBottom = new Tile(x + tileSize, z, TileType::BUSHES);
 		break;
 	case BlockType::EMPTY:
+		_leftBottom = new Tile(x, z, TileType::EMPTY, EmptyTile::LEFT_BOTTOM);
+		_leftTop = new Tile(x, z + tileSize, TileType::EMPTY, EmptyTile::LEFT_TOP);
+		_rightTop = new Tile(x + tileSize, z + tileSize, TileType::EMPTY, EmptyTile::RIGHT_TOP);
+		_rightBottom = new Tile(x + tileSize, z, TileType::EMPTY, EmptyTile::RIGHT_BOTTOM);
 		break;
 	case BlockType::ICE:
 		_leftBottom = new Tile(x, z, TileType::ICE);
