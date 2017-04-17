@@ -4,11 +4,11 @@
 
 Tile::Tile() :
 _x(0), _z(0),
-_type(TileType::BORDER)
+_type(TexType::BORDER)
 {
 }
 
-Tile::Tile(unsigned int x, unsigned int z, TileType type) :
+Tile::Tile(unsigned int x, unsigned int z, TexType type) :
 _x(x), _z(z),
 _type(type)
 {
@@ -42,7 +42,7 @@ _type(type)
 	setTexture();
 }
 
-Tile::Tile(unsigned int x, unsigned int z, TileType type, EmptyTile empty) :
+Tile::Tile(unsigned int x, unsigned int z, TexType type, EmptyTile empty) :
 _x(x), _z(z),
 _type(type)
 {
@@ -86,12 +86,12 @@ void Tile::calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3)
 	_normals->push_back(crossResult);
 }
 
-void Tile::SetType(TileType type)
+void Tile::SetType(TexType type)
 {
 	_type = type;
-	if (_type != TileType::EMPTY)
+	if (_type != TexType::EMPTY)
 		setTexture();
-	//else if (_type == TileType::EMPTY)
+	//else if (_type == TexType::EMPTY)
 		//setEmptyTexture();
 	//else remove
 }
@@ -112,28 +112,27 @@ void Tile::setTexture()
 	
 	std::string texFilename = "Resources/tiles/";
 
-	//_type = TileType::ICE;
 	switch (_type)
 	{
-	case TileType::ARMOR:
+	case TexType::ARMOR:
 		texFilename += "ARMOR.png";
 		break;
-	case TileType::BORDER:
+	case TexType::BORDER:
 		texFilename += "BORDER.png";
 		break;
-	case TileType::BRICK:
+	case TexType::BRICK:
 		texFilename += "BRICK.png";
 		break;
-	case TileType::BUSHES:
+	case TexType::BUSHES:
 		texFilename += "BUSHES.png";
 		break;
-	case TileType::ICE:
+	case TexType::ICE:
 		texFilename += "ICE.png";
 		break;
-	case TileType::WATER:
+	case TexType::WATER:
 		texFilename += "WATER.png";
 		break;
-	case TileType::EMPTY:
+	case TexType::EMPTY:
 
 		break;
 	}

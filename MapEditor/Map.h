@@ -15,8 +15,8 @@ public:
 	void ReadFile();
 	void SaveFile();
 
-	void AddBlock(int x, int z, BlockType type);
-	void RemoveBlock(int x, int z);
+	//void AddBlock(int x, int z, BlockType type);
+	//void RemoveBlock(int x, int z);
 
 private:
 	int _sizeX;

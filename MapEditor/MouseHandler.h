@@ -53,7 +53,7 @@ protected:
 		if (!viewer->getSceneData())
 			return false;	//nothing to pick
 
-		double w(.05), h(.05);		//площадь "пирамиды"
+		double w(.025), h(.025);		//площадь "пирамиды"
 		
 		//преобразование координат через пересечения?
 		osgUtil::PolytopeIntersector* picker =

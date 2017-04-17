@@ -3,7 +3,7 @@
 #include <osg/Geode>
 #include <osgDB/ReadFile>
 
-enum class TileType
+enum class TexType
 {
 	BORDER,		//граница игровой области
 	BRICK,		//кирпич
@@ -28,15 +28,15 @@ class Tile : public osg::Geometry
 {
 public:
 	Tile();
-	Tile(unsigned int x, unsigned int z, TileType type);
-	Tile(unsigned int x, unsigned int z, TileType type, EmptyTile empty);	//для пустых тайлов
+	Tile(unsigned int x, unsigned int z, TexType type);
+	Tile(unsigned int x, unsigned int z, TexType type, EmptyTile empty);	//для пустых тайлов
 	~Tile();
 
 	void SetXZ(unsigned int x, unsigned int z) { _x = x; _z = z; }
 	//перегрузить оператор= для установки типа тайла?
-	void SetType(TileType type);
+	void SetType(TexType type);
 	std::pair<int, int> GetXZ() { return std::make_pair(_x, _z); }	//для записи в файл
-	TileType GetType() { return _type; }
+	TexType GetType() { return _type; }
 
 	static const int Size() { return _size; }
 
@@ -44,7 +44,7 @@ private:
 	int _x;		//координаты тайла
 	int _z;
 	static const int _size = 8;		//размер тайла 8х8
-	TileType _type;
+	TexType _type;
 
 	osg::ref_ptr<osg::Vec3Array> _vertices = new osg::Vec3Array;
 	osg::ref_ptr<osg::Vec3Array> _normals = new osg::Vec3Array;

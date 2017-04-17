@@ -39,7 +39,7 @@ void Map::setBorder()
 	for (int x = startBorder; x < _sizeX + startBorder; x += _step)
 	{
 		blockMap[std::make_pair(x, startBorder)] = 
-			new Block(x, startBorder, BlockType::BORDER);
+			new Block(x, startBorder, TexType::BORDER, FillType::FULL);
 
 		addChild(blockMap[std::make_pair(x, startBorder)]);
 	}
@@ -49,7 +49,7 @@ void Map::setBorder()
 		for (int x = _sizeX + 3 * startBorder; x < _sizeX + startBorder; x += _step)
 		{
 			blockMap[std::make_pair(x, z)] =
-				new Block(x, z, BlockType::BORDER);
+				new Block(x, z, TexType::BORDER, FillType::FULL);
 
 			addChild(blockMap[std::make_pair(x, z)]);
 		}
@@ -58,7 +58,7 @@ void Map::setBorder()
 	for (int x = _sizeX + 3 * startBorder; x >= startBorder; x -= _step)
 	{
 		blockMap[std::make_pair(x, _sizeZ + 2 * startBorder)] = 
-			new Block(x, _sizeZ + 2 * startBorder, BlockType::BORDER);
+			new Block(x, _sizeZ + 2 * startBorder, TexType::BORDER, FillType::FULL);
 
 		addChild(blockMap[std::make_pair(x, _sizeZ + 2 * startBorder)]);
 	}
@@ -66,19 +66,23 @@ void Map::setBorder()
 	for (int z = _sizeZ + 3 * startBorder; z > startBorder; z -= _step)
 	{
 		blockMap[std::make_pair(startBorder, z)] =
-			new Block(startBorder, z, BlockType::BORDER);
+			new Block(startBorder, z, TexType::BORDER, FillType::FULL);
 
 		addChild(blockMap[std::make_pair(startBorder, z)]);
 	}
 
-	blockMap[std::make_pair(5*_step, 5*_step)] = new Block(5*_step, 5*_step, BlockType::ARMOR_FULL);
+	blockMap[std::make_pair(5*_step, 5*_step)] = new Block(5*_step, 5*_step, TexType::ARMOR, FillType::FULL);
 	addChild(blockMap[std::make_pair(5*_step, 5*_step)]);
 
-	blockMap[std::make_pair(5 * _step, 7 * _step)] = new Block(5 * _step, 7 * _step, BlockType::BRICK_RIGHT);
+	blockMap[std::make_pair(5 * _step, 7 * _step)] = new Block(5 * _step, 7 * _step, 
+		TexType::BRICK, FillType::RIGHT);
 	addChild(blockMap[std::make_pair(5 * _step, 7 * _step)]);
 
-	blockMap[std::make_pair(4 * _step, 7 * _step)] = new Block(4 * _step, 7 * _step, BlockType::BUSHES);
+	blockMap[std::make_pair(4 * _step, 7 * _step)] = new Block(4 * _step, 7 * _step, 
+		TexType::BUSHES, FillType::FULL);
 	addChild(blockMap[std::make_pair(4 * _step, 7 * _step)]);
+
+	addChild(new Block(2 * _step, 1 * _step, TexType::BRICK, FillType::BOTTOM));
 
 	//unsigned int g = getChildIndex(tileMap[std::make_pair(40, 16)]);
 	//unsigned int g2 = g;
@@ -98,18 +102,19 @@ void Map::setGameArea()
 		{
 			//заполнение свободной области пустыми блоками
 			//ok
-			addChild(new Block(x, z, BlockType::EMPTY));
-			//addChild(new Block(x, z, BlockType::BRICK_FULL));
+			addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
+			//addChild(new Block(x, z, TexType::BRICK_FULL));
 		}
 	}
 
 }
 
-void Map::AddBlock(int x, int z, BlockType type)
+/*
+void Map::AddBlock(int x, int z, TexType type)
 {
 	if (blockMap.find(std::make_pair(x, z)) == blockMap.end())		//проверка на существование блока в карте
 	{
-		blockMap[std::make_pair(x, z)] = new Block(x, z, type);
+		blockMap[std::make_pair(x, z)] = new Block(x, z, typeW);
 		addChild(blockMap[std::make_pair(x, z)]);
 	}
 }
@@ -124,6 +129,7 @@ void Map::RemoveBlock(int x, int z)
 		blockMap.erase(std::make_pair(x, z));
 	}
 }
+*/
 
 void Map::ReadFile()
 {
