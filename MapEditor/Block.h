@@ -3,33 +3,6 @@
 #include <osg/Group>
 #include <Tile.h>
 
-/*
-enum class BlockType			//разновидности блоков
-{
-	BORDER,
-
-	BRICK,
-	//BRICK_FULL,		//5 вариаций кирпичей, все 4 тайла
-	//BRICK_RIGHT,	//по 2 тайла
-	//BRICK_BOTTOM,
-	//BRICK_LEFT,
-	//BRICK_TOP,
-
-	ARMOR,
-	//ARMOR_FULL,		//5 вариаций брони, все 4 тайла
-	//ARMOR_RIGHT,	//по 2 тайла
-	//ARMOR_BOTTOM,
-	//ARMOR_LEFT,
-	//ARMOR_TOP,
-
-	WATER,
-	BUSHES,
-	ICE,
-
-	EMPTY			//пустой блок
-};
-*/
-
 enum class FillType		//заполненность блока
 {
 	FULL,		//4 тайла
@@ -49,6 +22,7 @@ public:
 	TexType GetType() { return _type; }
 
 	void Remove();		//???
+	void SetBlock(TexType texType, FillType fillType);
 
 private:
 	int _x;
@@ -63,6 +37,6 @@ private:
 	TexType _type;
 	FillType _fType;
 
-	void createBlock(TexType blockType, FillType fillType);
+	void createBlock(TexType texType, FillType fillType);
 };
 

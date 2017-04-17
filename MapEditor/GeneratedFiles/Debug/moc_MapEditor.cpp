@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
-    QByteArrayData data[4];
-    char stringdata0[36];
+    QByteArrayData data[9];
+    char stringdata0[80];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,10 +34,17 @@ static const qt_meta_stringdata_MapEditor_t qt_meta_stringdata_MapEditor = {
 QT_MOC_LITERAL(0, 0, 9), // "MapEditor"
 QT_MOC_LITERAL(1, 10, 10), // "QuitViewer"
 QT_MOC_LITERAL(2, 21, 0), // ""
-QT_MOC_LITERAL(3, 22, 13) // "QuitAppToMain"
+QT_MOC_LITERAL(3, 22, 13), // "QuitAppToMain"
+QT_MOC_LITERAL(4, 36, 9), // "SendBlock"
+QT_MOC_LITERAL(5, 46, 7), // "TexType"
+QT_MOC_LITERAL(6, 54, 7), // "texType"
+QT_MOC_LITERAL(7, 62, 8), // "FillType"
+QT_MOC_LITERAL(8, 71, 8) // "fillType"
 
     },
-    "MapEditor\0QuitViewer\0\0QuitAppToMain"
+    "MapEditor\0QuitViewer\0\0QuitAppToMain\0"
+    "SendBlock\0TexType\0texType\0FillType\0"
+    "fillType"
 };
 #undef QT_MOC_LITERAL
 
@@ -47,20 +54,22 @@ static const uint qt_meta_data_MapEditor[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   24,    2, 0x06 /* Public */,
-       3,    0,   25,    2, 0x06 /* Public */,
+       1,    0,   29,    2, 0x06 /* Public */,
+       3,    0,   30,    2, 0x06 /* Public */,
+       4,    2,   31,    2, 0x06 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 5, 0x80000000 | 7,    6,    8,
 
        0        // eod
 };
@@ -73,6 +82,7 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         switch (_id) {
         case 0: _t->QuitViewer(); break;
         case 1: _t->QuitAppToMain(); break;
+        case 2: _t->SendBlock((*reinterpret_cast< TexType(*)>(_a[1])),(*reinterpret_cast< FillType(*)>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -92,8 +102,14 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
                 return;
             }
         }
+        {
+            typedef void (MapEditor::*_t)(TexType , FillType );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MapEditor::SendBlock)) {
+                *result = 2;
+                return;
+            }
+        }
     }
-    Q_UNUSED(_a);
 }
 
 const QMetaObject MapEditor::staticMetaObject = {
@@ -121,13 +137,13 @@ int MapEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
+        if (_id < 3)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 2;
+        _id -= 3;
     }
     return _id;
 }
@@ -142,6 +158,13 @@ void MapEditor::QuitViewer()
 void MapEditor::QuitAppToMain()
 {
     QMetaObject::activate(this, &staticMetaObject, 1, Q_NULLPTR);
+}
+
+// SIGNAL 2
+void MapEditor::SendBlock(TexType _t1, FillType _t2)
+{
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

@@ -35,6 +35,9 @@ void Block::createBlock(TexType texType, FillType fillType)
 {
 	int tileSize = Tile::Size();
 
+	_type = texType;
+	_fType = fillType;
+
 	if (texType == TexType::EMPTY)
 	{
 		_leftBottom = new Tile(_x, _z, TexType::EMPTY, EmptyTile::LEFT_BOTTOM);
@@ -77,5 +80,42 @@ void Block::createBlock(TexType texType, FillType fillType)
 			_rightBottom = new Tile(_x + tileSize, _z, TexType::EMPTY, EmptyTile::RIGHT_BOTTOM);
 			break;
 		}
+	}
+}
+
+void Block::Remove()
+{
+	_leftBottom = nullptr;
+	_leftTop = nullptr;
+	_rightTop = nullptr;
+	_rightBottom = nullptr;
+}
+
+void Block::SetBlock(TexType texType, FillType fillType)
+{
+	if (_type == TexType::EMPTY)
+	{
+		//добавление блока
+		createBlock(texType, fillType);
+
+		if (_leftBottom != nullptr)	addChild(_leftBottom);
+		if (_leftTop != nullptr) addChild(_leftTop);
+		if (_rightTop != nullptr) addChild(_rightTop);
+		if (_rightBottom != nullptr) addChild(_rightBottom);
+	}
+	if ((_type != texType) || (_fType != fillType))		//если блок точно такой же, ничего не меняется
+	{													//иначе происходит замена
+		//замена блока
+		removeChild(_leftBottom);
+		removeChild(_leftTop);
+		removeChild(_rightTop);
+		removeChild(_rightBottom);
+
+		createBlock(texType, fillType);
+		
+		if (_leftBottom != nullptr)	addChild(_leftBottom);
+		if (_leftTop != nullptr) addChild(_leftTop);
+		if (_rightTop != nullptr) addChild(_rightTop);
+		if (_rightBottom != nullptr) addChild(_rightBottom);
 	}
 }

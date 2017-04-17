@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MapEditor.h"
 #include <thread>
+#include <Block.h>
 
 class MapEditor : public QMainWindow
 {
@@ -22,4 +23,5 @@ private:
 signals:
 	void QuitViewer();
 	void QuitAppToMain();
+	void SendBlock(TexType texType, FillType fillType);
 };
