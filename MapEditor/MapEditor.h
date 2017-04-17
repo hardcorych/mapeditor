@@ -20,6 +20,23 @@ private:
 
 	void renderScene();
 
+	public slots:
+	void onClickedBushes();
+	void onClickedWater();
+	void onClickedIce();
+
+	void onClickedArmorFull();
+	void onClickedArmorLeft();
+	void onClickedArmorRight();
+	void onClickedArmorTop();
+	void onClickedArmorBottom();
+
+	void onClickedBrickFull();
+	void onClickedBrickLeft();
+	void onClickedBrickRight();
+	void onClickedBrickTop();
+	void onClickedBrickBottom();
+
 signals:
 	void QuitViewer();
 	void QuitAppToMain();

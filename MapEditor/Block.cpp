@@ -93,29 +93,20 @@ void Block::Remove()
 
 void Block::SetBlock(TexType texType, FillType fillType)
 {
-	if (_type == TexType::EMPTY)
-	{
-		//добавление блока
-		createBlock(texType, fillType);
-
-		if (_leftBottom != nullptr)	addChild(_leftBottom);
-		if (_leftTop != nullptr) addChild(_leftTop);
-		if (_rightTop != nullptr) addChild(_rightTop);
-		if (_rightBottom != nullptr) addChild(_rightBottom);
-	}
 	if ((_type != texType) || (_fType != fillType))		//если блок точно такой же, ничего не меняется
 	{													//иначе происходит замена
+		osg::ref_ptr<Tile> oldLB = _leftBottom;
+		osg::ref_ptr<Tile> oldLT = _leftTop;
+		osg::ref_ptr<Tile> oldRT = _rightTop;
+		osg::ref_ptr<Tile> oldRB = _rightBottom;
+
 		//замена блока
-		removeChild(_leftBottom);
-		removeChild(_leftTop);
-		removeChild(_rightTop);
-		removeChild(_rightBottom);
 
 		createBlock(texType, fillType);
 		
-		if (_leftBottom != nullptr)	addChild(_leftBottom);
-		if (_leftTop != nullptr) addChild(_leftTop);
-		if (_rightTop != nullptr) addChild(_rightTop);
-		if (_rightBottom != nullptr) addChild(_rightBottom);
+		replaceChild(oldLB, _leftBottom);
+		replaceChild(oldLT, _leftTop);
+		replaceChild(oldRT, _rightTop);
+		replaceChild(oldRB, _rightBottom);
 	}
 }
