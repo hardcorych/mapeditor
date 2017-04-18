@@ -23,16 +23,8 @@ protected:
 
 	TexType _type;
 	FillType _fType;
-	
-	//операции с блоками
-	//void addBlock();
-	//void removeBlock();
-	//void changeBlock();
 
-	bool setBlock(const double x, const double y, osgViewer::Viewer* viewer);
-	bool removeBlock(const double x, const double y, osgViewer::Viewer* viewer);
-	bool findBlockAndSet(const double x, const double y, osgViewer::Viewer* viewer,
-		void(Block::*BlockOperation)(TexType type, FillType fillType));		//callback
+	std::pair<bool, Block*> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);	
 
 	public slots:
 	void ReceiveBlock(TexType type, FillType fillType);

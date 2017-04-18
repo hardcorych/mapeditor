@@ -3,6 +3,9 @@
 #include <memory>
 #include <Map.h>
 #include <MouseHandler.h>
+#include <osgViewer/ViewerEventHandlers>
+#include <qfiledialog.h>
+#include <qxmlstream.h>
 
 MapEditor::MapEditor(QWidget *parent)
 	: QMainWindow(parent)
@@ -13,9 +16,17 @@ MapEditor::MapEditor(QWidget *parent)
 
 	menu->setTitle("&File");
 
-	menu->addAction("&New");
-	menu->addAction("&Load");
-	menu->addAction("&Save");
+	newAct = new QAction(tr("&New"), this);
+	loadAct = new QAction(tr("&Load"), this);
+	saveAct = new QAction(tr("&Save"), this);
+
+	connect(newAct, &QAction::triggered, this, &MapEditor::NewMap);
+	connect(loadAct, &QAction::triggered, this, &MapEditor::LoadXMLFile);
+	connect(saveAct, &QAction::triggered, this, &MapEditor::SaveXMLFile);
+
+	menu->addAction(newAct);
+	menu->addAction(loadAct);
+	menu->addAction(saveAct);
 
 	ui.menuBar->addMenu(menu);
 
@@ -44,6 +55,41 @@ MapEditor::~MapEditor()
 	{
 		emit QuitViewer();
 		_renderThread.join();
+	}
+}
+
+void MapEditor::NewMap()
+{
+
+}
+
+void MapEditor::LoadXMLFile()
+{
+
+}
+
+void MapEditor::SaveXMLFile()
+{
+	//диалог выбора для сохранения файла
+	QString filename = QFileDialog::getSaveFileName(
+		this, tr("Save XML"), ".",
+		tr("XML files (*.xml)"));
+
+	if (filename != "")
+	{
+		//сохранение файла по заданному пути
+		QFile file(filename);
+		file.open(QIODevice::WriteOnly);
+
+		//XML поток записи
+		QXmlStreamWriter xmlWriter(&file);
+		xmlWriter.setAutoFormatting(true);
+
+		xmlWriter.writeStartDocument();		//начало записи в файл
+
+		//сделать запись карты в XML-файл
+
+		xmlWriter.writeEndDocument();		//конец записи в файл
 	}
 }
 
@@ -128,16 +174,17 @@ void MapEditor::renderScene()
 
 	osg::ref_ptr<MouseHandler> mouseHandler = new MouseHandler;
 	viewer.addEventHandler(mouseHandler);
+	viewer.addEventHandler(new osgViewer::StatsHandler);
 
 	connect(this, &MapEditor::SendBlock, mouseHandler, &MouseHandler::ReceiveBlock, Qt::DirectConnection);
 	ui.radioBtnBushes->setChecked(true);
 	ui.radioBtnBushes->clicked();
 
 	//установка объектов на сцену
-	osg::ref_ptr<Map> map = new Map;
+	osg::ref_ptr<Map> map = new Map(10,10);
 
 	viewer.setSceneData(map);
-
+	
 	/////////////////////////////
 	viewer.run();
 

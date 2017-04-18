@@ -17,6 +17,9 @@ private:
     Ui::MapEditorClass ui;
 	std::thread _renderThread;
 	QMenu* menu;
+	QAction* newAct;
+	QAction* loadAct;
+	QAction* saveAct;
 
 	void renderScene();
 
@@ -36,6 +39,11 @@ private:
 	void onClickedBrickRight();
 	void onClickedBrickTop();
 	void onClickedBrickBottom();
+
+	//операции с файлами
+	void NewMap();
+	void LoadXMLFile();
+	void SaveXMLFile();
 
 signals:
 	void QuitViewer();
