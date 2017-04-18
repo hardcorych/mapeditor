@@ -71,6 +71,7 @@ void Map::setBorder()
 		addChild(blockMap[std::make_pair(startBorder, z)]);
 	}
 
+	/*
 	blockMap[std::make_pair(5*_step, 5*_step)] = new Block(5*_step, 5*_step, TexType::ARMOR, FillType::FULL);
 	addChild(blockMap[std::make_pair(5*_step, 5*_step)]);
 
@@ -83,6 +84,7 @@ void Map::setBorder()
 	addChild(blockMap[std::make_pair(4 * _step, 7 * _step)]);
 
 	addChild(new Block(2 * _step, 1 * _step, TexType::BRICK, FillType::BOTTOM));
+	*/
 
 	//unsigned int g = getChildIndex(tileMap[std::make_pair(40, 16)]);
 	//unsigned int g2 = g;

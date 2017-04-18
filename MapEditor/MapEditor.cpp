@@ -35,8 +35,6 @@ MapEditor::MapEditor(QWidget *parent)
 	connect(ui.radioBtnBrickBottom, &QRadioButton::clicked, this, &MapEditor::onClickedBrickBottom);
 	connect(ui.radioBtnBrickTop, &QRadioButton::clicked, this, &MapEditor::onClickedBrickTop);
 
-	ui.radioBtnBushes->setChecked(true);
-
 	_renderThread = std::thread(&MapEditor::renderScene, this);
 }
 
@@ -132,6 +130,8 @@ void MapEditor::renderScene()
 	viewer.addEventHandler(mouseHandler);
 
 	connect(this, &MapEditor::SendBlock, mouseHandler, &MouseHandler::ReceiveBlock, Qt::DirectConnection);
+	ui.radioBtnBushes->setChecked(true);
+	ui.radioBtnBushes->clicked();
 
 	//установка объектов на сцену
 	osg::ref_ptr<Map> map = new Map;

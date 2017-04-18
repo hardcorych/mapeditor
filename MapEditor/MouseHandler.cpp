@@ -18,22 +18,21 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 
 	switch (ea.getEventType())	//получаем событие
 	{
-	case(osgGA::GUIEventAdapter::PUSH) :
-	case(osgGA::GUIEventAdapter::MOVE) :
-	{
-		_mx = ea.getX();
-		_my = ea.getY();
-		return false;
-	}
 	case(osgGA::GUIEventAdapter::RELEASE) :
 	{
-		double x = ea.getX();	//получает координаты относительно вьювера
-		double y = ea.getY();
-		x = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
-		y = ea.getYnormalized();
+		switch (ea.getButton())
+		{
+		case(osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON):
+			double x = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
+			double y = ea.getYnormalized();
 
-		if (pick(x, y, viewer))
-			return true;	//true, чтобы обработать событие
+			if (pick(x, y, viewer))
+				return true;	//true, чтобы обработать событие
+
+		case(osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON) :
+			return true;
+		}
+		
 		return false;
 	}
 	default:
@@ -89,10 +88,17 @@ bool MouseHandler::pick(const double x, const double y, osgViewer::Viewer* viewe
 			break;
 		}
 
-		//remove block?
-		//if (block->GetType() != TexType::EMPTY)
+
 		if ((map != nullptr) && (block != nullptr))
-			map->removeChild(block);
+		{
+			if (block->GetType() != TexType::BORDER)
+			{
+				block->SetBlock(_type, _fType);
+			}
+		}
+			
+		//if (block->GetType() != TexType::EMPTY)
+		//map->removeChild(block);
 
 		/*
 		if (!_selectedNode.valid())
