@@ -19,19 +19,21 @@ public:
 	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 protected:
-	double _mx, _my;	//mouse coords
-	osg::ref_ptr<osg::Node> _selectedNode;	//для получения узла из пересечений
+	double _mouseX, _mouseY;	//mouse coords
 
 	TexType _type;
 	FillType _fType;
 	
 	//операции с блоками
-	void addBlock();
-	void removeBlock();
-	void changeBlock();
+	//void addBlock();
+	//void removeBlock();
+	//void changeBlock();
 
-	bool pick(const double x, const double y, osgViewer::Viewer* viewer);
-	
+	bool setBlock(const double x, const double y, osgViewer::Viewer* viewer);
+	bool removeBlock(const double x, const double y, osgViewer::Viewer* viewer);
+	bool findBlockAndSet(const double x, const double y, osgViewer::Viewer* viewer,
+		void(Block::*BlockOperation)(TexType type, FillType fillType));		//callback
+
 	public slots:
 	void ReceiveBlock(TexType type, FillType fillType);
 };

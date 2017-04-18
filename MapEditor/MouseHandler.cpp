@@ -2,7 +2,7 @@
 
 
 MouseHandler::MouseHandler():
-_mx(0), _my(0)
+_mouseX(0), _mouseY(0)
 {
 }
 
@@ -23,14 +23,20 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 		switch (ea.getButton())
 		{
 		case(osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON):
-			double x = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
-			double y = ea.getYnormalized();
+			//добавление/изменение блока
+			_mouseX = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
+			_mouseY = ea.getYnormalized();
 
-			if (pick(x, y, viewer))
+			if (setBlock(_mouseX, _mouseY, viewer))
 				return true;	//true, чтобы обработать событие
 
 		case(osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON) :
-			return true;
+			//удаление блока
+			_mouseX = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
+			_mouseY = ea.getYnormalized();
+
+			if (removeBlock(_mouseX, _mouseY, viewer))
+				return true;
 		}
 		
 		return false;
@@ -40,7 +46,8 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 	}
 }
 
-bool MouseHandler::pick(const double x, const double y, osgViewer::Viewer* viewer)
+bool MouseHandler::findBlockAndSet(const double x, const double y, osgViewer::Viewer* viewer,
+	void(Block::*BlockOperation)(TexType type, FillType fillType))
 {
 	if (!viewer->getSceneData())
 		return false;	//nothing to pick
@@ -58,6 +65,8 @@ bool MouseHandler::pick(const double x, const double y, osgViewer::Viewer* viewe
 	viewer->getCamera()->accept(iv);
 
 	//osgUtil::PolytopeIntersector::Intersections intersections;		//!!!
+	osg::ref_ptr<osg::Node> selectedBlock = new osg::Node;
+	osg::ref_ptr<osg::Node> selectedMap = new osg::Node;
 
 	if (picker->containsIntersections())
 	{
@@ -67,27 +76,78 @@ bool MouseHandler::pick(const double x, const double y, osgViewer::Viewer* viewe
 		//получить карту и блок
 		Map* map = nullptr;
 		Block* block = nullptr;
+
 		//find block and map
-		while (idx--)
+		while ((idx--) && ((block == nullptr) || (map == nullptr)))
 		{
 			if (block == nullptr)
 				block = dynamic_cast<Block*>(nodePath[idx]);
 			if (map == nullptr)
 				map = dynamic_cast<Map*>(nodePath[idx]);
 
-			if ((block == nullptr) || (map == nullptr));
-			continue;
+			//if ((block == nullptr) || (map == nullptr));
+			//continue;
 
-			//found the block in nodePath
-			if (_selectedNode.valid())
-			{
-				//previous selected node
-			}
-
-			_selectedNode = block;
-			break;
+			//break;
 		}
 
+		selectedBlock = block;
+		selectedMap = map;
+
+		if ((map != nullptr) && (block != nullptr))
+		{
+			if (block->GetType() != TexType::BORDER)
+			{
+				//block->SetBlock(_type, _fType);
+				//BlockOperation
+				//block->BlockOperation(_type, _fType);
+			}
+		}
+	}
+	return (selectedBlock.valid() && selectedMap.valid());
+}
+
+bool MouseHandler::setBlock(const double x, const double y, osgViewer::Viewer* viewer)
+{
+	if (!viewer->getSceneData())
+		return false;	//nothing to pick
+
+	double w(.025), h(.025);		//площадь "пирамиды"
+
+	//преобразование координат через пересечения?
+	osgUtil::PolytopeIntersector* picker =
+		new osgUtil::PolytopeIntersector(
+		osgUtil::Intersector::PROJECTION,
+		x - w, y - h, x + w, y + h);
+
+	osgUtil::IntersectionVisitor iv(picker);
+
+	viewer->getCamera()->accept(iv);
+
+	//osgUtil::PolytopeIntersector::Intersections intersections;		//!!!
+	osg::ref_ptr<osg::Node> selectedBlock = new osg::Node;
+	osg::ref_ptr<osg::Node> selectedMap = new osg::Node;
+
+	if (picker->containsIntersections())
+	{
+		osg::NodePath& nodePath = picker->getFirstIntersection().nodePath;
+		unsigned int idx = nodePath.size();
+
+		//получить карту и блок
+		Map* map = nullptr;
+		Block* block = nullptr;
+
+		//find block and map
+		while ((idx--) && ((block == nullptr) || (map == nullptr)))
+		{
+			if (block == nullptr)
+				block = dynamic_cast<Block*>(nodePath[idx]);
+			if (map == nullptr)
+				map = dynamic_cast<Map*>(nodePath[idx]);
+		}
+
+		selectedBlock = block;
+		selectedMap = map;
 
 		if ((map != nullptr) && (block != nullptr))
 		{
@@ -96,25 +156,62 @@ bool MouseHandler::pick(const double x, const double y, osgViewer::Viewer* viewe
 				block->SetBlock(_type, _fType);
 			}
 		}
-			
-		//if (block->GetType() != TexType::EMPTY)
-		//map->removeChild(block);
+	}
+	return (selectedBlock.valid() && selectedMap.valid());
+}
 
-		/*
-		if (!_selectedNode.valid())
-		{
-		//pick failed
-		//add block?
-		}
-		*/
-	}
-	/*
-	else if (_selectedNode.valid())
+bool MouseHandler::removeBlock(const double x, const double y, osgViewer::Viewer* viewer)
+{
+	if (!viewer->getSceneData())
+		return false;	//nothing to pick
+
+	double w(.025), h(.025);		//площадь "пирамиды"
+
+	//преобразование координат через пересечения?
+	osgUtil::PolytopeIntersector* picker =
+		new osgUtil::PolytopeIntersector(
+		osgUtil::Intersector::PROJECTION,
+		x - w, y - h, x + w, y + h);
+
+	osgUtil::IntersectionVisitor iv(picker);
+
+	viewer->getCamera()->accept(iv);
+
+	//osgUtil::PolytopeIntersector::Intersections intersections;		//!!!
+	osg::ref_ptr<osg::Node> selectedBlock = new osg::Node;
+	osg::ref_ptr<osg::Node> selectedMap = new osg::Node;
+
+	if (picker->containsIntersections())
 	{
-	//null
+		osg::NodePath& nodePath = picker->getFirstIntersection().nodePath;
+		unsigned int idx = nodePath.size();
+
+		//получить карту и блок
+		Map* map = nullptr;
+		Block* block = nullptr;
+
+		//find block and map
+		while ((idx--) && ((block == nullptr) || (map == nullptr)))
+		{
+			if (block == nullptr)
+				block = dynamic_cast<Block*>(nodePath[idx]);
+			if (map == nullptr)
+				map = dynamic_cast<Map*>(nodePath[idx]);
+		}
+
+		selectedBlock = block;
+		selectedMap = map;
+
+		if ((map != nullptr) && (block != nullptr))
+		{
+			if (block->GetType() != TexType::BORDER)
+			{
+				block->SetBlock(TexType::EMPTY, FillType::FULL);
+			}
+		}
 	}
-	*/
-	return _selectedNode.valid();
+
+	return (selectedBlock.valid() && selectedMap.valid());
 }
 
 void MouseHandler::ReceiveBlock(TexType type, FillType fillType)
