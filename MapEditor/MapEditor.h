@@ -5,6 +5,7 @@
 #include <thread>
 #include <Block.h>
 #include <Map.h>
+#include <mutex>
 
 class MapEditor : public QMainWindow
 {
@@ -24,7 +25,7 @@ private:
 	osg::ref_ptr<Map> _map = new Map(10,10);
 	int _mapSizeX;
 	int _mapSizeZ;
-
+	std::mutex _mutex;
 	void renderScene();
 
 	public slots:

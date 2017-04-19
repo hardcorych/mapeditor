@@ -6,7 +6,7 @@
 #include <qfiledialog.h>
 #include <qxmlstream.h>
 #include <qmessagebox.h>
-#include <mutex>
+#include <osgGA/TrackballManipulator>
 
 MapEditor::MapEditor(QWidget *parent)
 	: QMainWindow(parent)
@@ -61,14 +61,11 @@ MapEditor::~MapEditor()
 
 void MapEditor::NewMap()
 {
-	std::mutex mutex;
-	{
-		std::lock_guard <std::mutex> lgMutex(mutex);
-		_map->Remove();
-		//можно выполнить, если размер отличен от предыдущего
-		//иногда вылазит ошибка с traverse
-		_map->Set(7, 7);
-	}
+	std::lock_guard <std::mutex> lgMutex(_mutex);
+	_map->Remove();
+	//можно выполнить, если размер отличен от предыдущего
+	//иногда вылазит ошибка с traverse
+	_map->Set(15, 15);
 }
 
 void MapEditor::LoadXMLFile()
@@ -258,6 +255,7 @@ void MapEditor::renderScene()
 
 	viewer.setUpViewInWindow(xViewer, yViewer, wViewer, hViewer);
 
+	viewer.realize();
 	osg::ref_ptr<MouseHandler> mouseHandler = new MouseHandler;
 	viewer.addEventHandler(mouseHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
@@ -270,9 +268,16 @@ void MapEditor::renderScene()
 	//osg::ref_ptr<Map> map = new Map(10,10);
 
 	viewer.setSceneData(_map);
-
+	viewer.setCameraManipulator(new osgGA::TrackballManipulator);
+	viewer.realize();
 	/////////////////////////////
-	viewer.run();
+	//viewer.run();
 
+	while (!viewer.done())
+	{
+		std::lock_guard<std::mutex> lgMutex(_mutex);
+		viewer.frame();
+	}
+	
 	emit QuitAppToMain();
 }
