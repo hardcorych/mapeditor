@@ -1,7 +1,6 @@
 #include "MapEditor.h"
 #include <Viewer.h>
 #include <memory>
-#include <Map.h>
 #include <MouseHandler.h>
 #include <osgViewer/ViewerEventHandlers>
 #include <qfiledialog.h>
@@ -12,23 +11,23 @@ MapEditor::MapEditor(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	menu = new QMenu(this);
+	_menu = new QMenu(this);
 
-	menu->setTitle("&File");
+	_menu->setTitle("&File");
 
-	newAct = new QAction(tr("&New"), this);
-	loadAct = new QAction(tr("&Load"), this);
-	saveAct = new QAction(tr("&Save"), this);
+	_newAct = new QAction(tr("&New"), this);
+	_loadAct = new QAction(tr("&Load"), this);
+	_saveAct = new QAction(tr("&Save"), this);
 
-	connect(newAct, &QAction::triggered, this, &MapEditor::NewMap);
-	connect(loadAct, &QAction::triggered, this, &MapEditor::LoadXMLFile);
-	connect(saveAct, &QAction::triggered, this, &MapEditor::SaveXMLFile);
+	connect(_newAct, &QAction::triggered, this, &MapEditor::NewMap);
+	connect(_loadAct, &QAction::triggered, this, &MapEditor::LoadXMLFile);
+	connect(_saveAct, &QAction::triggered, this, &MapEditor::SaveXMLFile);
 
-	menu->addAction(newAct);
-	menu->addAction(loadAct);
-	menu->addAction(saveAct);
+	_menu->addAction(_newAct);
+	_menu->addAction(_loadAct);
+	_menu->addAction(_saveAct);
 
-	ui.menuBar->addMenu(menu);
+	ui.menuBar->addMenu(_menu);
 
 	connect(ui.radioBtnBushes, &QRadioButton::clicked, this, &MapEditor::onClickedBushes);
 	connect(ui.radioBtnWater, &QRadioButton::clicked, this, &MapEditor::onClickedWater);
@@ -87,7 +86,52 @@ void MapEditor::SaveXMLFile()
 
 		xmlWriter.writeStartDocument();		//начало записи в файл
 
-		//сделать запись карты в XML-файл
+		//запись карты в XML-файл
+		//ок
+		xmlWriter.writeStartElement("map");
+
+		xmlWriter.writeTextElement("sizeX", _map->GetSizeX_str());
+		xmlWriter.writeTextElement("sizeZ", _map->GetSizeZ_str());
+
+		Block* block = nullptr;
+		Tile* tile = nullptr;
+		std::pair<QString, QString> bTexFill;	//тип текстуры и заполнения блока
+
+		for (int blockIndex = 0; blockIndex < _map->getNumChildren(); blockIndex++)
+		{
+			block = dynamic_cast<Block*>(_map->getChild(blockIndex));
+			bTexFill = block->GetType_str();
+
+			if (std::get<0>(bTexFill) != "EMPTY")	//пустые блоки не пишутся в файл
+			{
+				xmlWriter.writeStartElement("block");
+
+				xmlWriter.writeAttribute("texType", std::get<0>(bTexFill));
+				xmlWriter.writeAttribute("fillType", std::get<1>(bTexFill));
+				xmlWriter.writeTextElement("x", block->GetX_str());
+				xmlWriter.writeTextElement("z", block->GetZ_str());
+				
+				for (int tileIndex = 0; tileIndex < block->getNumChildren(); tileIndex++)
+				{
+					tile = dynamic_cast<Tile*>(block->getChild(tileIndex));
+
+					if (tile->GetType_str() != "EMPTY")
+					{
+						xmlWriter.writeStartElement("tile");
+
+						xmlWriter.writeAttribute("type", tile->GetType_str());
+						xmlWriter.writeTextElement("x", tile->GetX_str());
+						xmlWriter.writeTextElement("z", tile->GetZ_str());
+
+						xmlWriter.writeEndElement();
+					}
+				}
+
+				xmlWriter.writeEndElement();
+			}
+		}
+
+		xmlWriter.writeEndElement();
 
 		xmlWriter.writeEndDocument();		//конец записи в файл
 	}
@@ -181,10 +225,10 @@ void MapEditor::renderScene()
 	ui.radioBtnBushes->clicked();
 
 	//установка объектов на сцену
-	osg::ref_ptr<Map> map = new Map(10,10);
+	//osg::ref_ptr<Map> map = new Map(10,10);
 
-	viewer.setSceneData(map);
-	
+	viewer.setSceneData(_map);
+
 	/////////////////////////////
 	viewer.run();
 

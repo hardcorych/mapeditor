@@ -2,6 +2,7 @@
 
 #include <osg/Group>
 #include <Tile.h>
+#include <qstring.h>
 
 enum class FillType		//заполненность блока
 {
@@ -21,7 +22,11 @@ public:
 
 	TexType GetType() { return _type; }
 
-	void Remove();		//???
+	std::pair<QString, QString> GetType_str();
+	
+	QString GetX_str()	{ return QString::number(_x); }
+	QString GetZ_str()	{ return QString::number(_z); }
+
 	void SetBlock(TexType texType, FillType fillType);
 
 private:

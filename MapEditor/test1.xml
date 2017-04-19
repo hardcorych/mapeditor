@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map>
+    <sizeX>160</sizeX>
+    <sizeZ>160</sizeZ>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>0</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>16</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>32</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>48</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>64</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>80</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>96</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>112</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>128</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>144</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>-16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>0</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>0</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>32</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>32</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>48</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>48</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>64</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>64</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>80</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>80</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>96</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>96</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>112</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>112</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>128</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>128</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>144</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>144</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>176</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>160</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>144</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>128</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>112</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>96</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>80</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>64</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>48</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>32</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>16</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>0</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>160</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>144</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>128</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>112</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>96</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>80</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>64</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>48</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>32</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>16</z>
+    </block>
+    <block texType="BORDER" fillType="FULL">
+        <x>-16</x>
+        <z>0</z>
+    </block>
+    <block texType="ARMOR" fillType="TOP">
+        <x>48</x>
+        <z>48</z>
+    </block>
+    <block texType="ARMOR" fillType="TOP">
+        <x>64</x>
+        <z>48</z>
+    </block>
+    <block texType="ARMOR" fillType="TOP">
+        <x>80</x>
+        <z>48</z>
+    </block>
+    <block texType="BRICK" fillType="TOP">
+        <x>48</x>
+        <z>64</z>
+    </block>
+    <block texType="BRICK" fillType="TOP">
+        <x>64</x>
+        <z>64</z>
+    </block>
+    <block texType="ARMOR" fillType="LEFT">
+        <x>80</x>
+        <z>64</z>
+    </block>
+    <block texType="WATER" fillType="FULL">
+        <x>96</x>
+        <z>64</z>
+    </block>
+    <block texType="BRICK" fillType="FULL">
+        <x>48</x>
+        <z>80</z>
+    </block>
+    <block texType="BRICK" fillType="FULL">
+        <x>64</x>
+        <z>80</z>
+    </block>
+    <block texType="ARMOR" fillType="LEFT">
+        <x>80</x>
+        <z>80</z>
+    </block>
+    <block texType="WATER" fillType="FULL">
+        <x>96</x>
+        <z>80</z>
+    </block>
+    <block texType="WATER" fillType="FULL">
+        <x>112</x>
+        <z>80</z>
+    </block>
+    <block texType="ARMOR" fillType="BOTTOM">
+        <x>32</x>
+        <z>96</z>
+    </block>
+    <block texType="ARMOR" fillType="BOTTOM">
+        <x>48</x>
+        <z>96</z>
+    </block>
+    <block texType="ARMOR" fillType="BOTTOM">
+        <x>64</x>
+        <z>96</z>
+    </block>
+    <block texType="ARMOR" fillType="LEFT">
+        <x>80</x>
+        <z>96</z>
+    </block>
+    <block texType="ICE" fillType="FULL">
+        <x>96</x>
+        <z>112</z>
+    </block>
+    <block texType="ICE" fillType="FULL">
+        <x>112</x>
+        <z>112</z>
+    </block>
+    <block texType="BUSHES" fillType="FULL">
+        <x>96</x>
+        <z>128</z>
+    </block>
+    <block texType="BUSHES" fillType="FULL">
+        <x>112</x>
+        <z>128</z>
+    </block>
+</map>

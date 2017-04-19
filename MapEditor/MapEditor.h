@@ -4,6 +4,7 @@
 #include "ui_MapEditor.h"
 #include <thread>
 #include <Block.h>
+#include <Map.h>
 
 class MapEditor : public QMainWindow
 {
@@ -16,10 +17,12 @@ public:
 private:
     Ui::MapEditorClass ui;
 	std::thread _renderThread;
-	QMenu* menu;
-	QAction* newAct;
-	QAction* loadAct;
-	QAction* saveAct;
+	QMenu* _menu;
+	QAction* _newAct;
+	QAction* _loadAct;
+	QAction* _saveAct;
+	osg::ref_ptr<Map> _map = new Map(10,10);
+
 
 	void renderScene();
 

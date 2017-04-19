@@ -2,6 +2,7 @@
 
 #include <osg/Geode>
 #include <osgDB/ReadFile>
+#include <qstring.h>
 
 enum class TexType
 {
@@ -35,8 +36,13 @@ public:
 	void SetXZ(unsigned int x, unsigned int z) { _x = x; _z = z; }
 	//перегрузить оператор= для установки типа тайла?
 	void SetType(TexType type);
-	std::pair<int, int> GetXZ() { return std::make_pair(_x, _z); }	//для записи в файл
+
+	QString GetX_str()	{ return QString::number(_x); }
+	QString GetZ_str()	{ return QString::number(_z); }
+	
 	TexType GetType() { return _type; }
+	
+	QString GetType_str();
 
 	static const int Size() { return _size; }
 
