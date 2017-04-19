@@ -5,6 +5,8 @@
 #include <osgViewer/ViewerEventHandlers>
 #include <qfiledialog.h>
 #include <qxmlstream.h>
+#include <qmessagebox.h>
+#include <mutex>
 
 MapEditor::MapEditor(QWidget *parent)
 	: QMainWindow(parent)
@@ -59,12 +61,52 @@ MapEditor::~MapEditor()
 
 void MapEditor::NewMap()
 {
-
+	std::mutex mutex;
+	{
+		std::lock_guard <std::mutex> lgMutex(mutex);
+		_map->Remove();
+		//можно выполнить, если размер отличен от предыдущего
+		//иногда вылазит ошибка с traverse
+		_map->Set(7, 7);
+	}
 }
 
 void MapEditor::LoadXMLFile()
 {
+	//диалог выбора для открытия файла
+	QString filename = QFileDialog::getOpenFileName(
+		this, tr("Open XML"), ".",
+		tr("XML files (*.xml)"));
 
+	QFile file(filename);
+
+	if (!file.open(QIODevice::ReadOnly | QFile::Text))
+	{
+		//обработка ошибки
+		QMessageBox::warning(this, "file error",
+			"file can't be opened", QMessageBox::Ok);
+	}
+	else
+	{
+		//чтение файла
+		QXmlStreamReader xmlReader(&file);
+
+		while (!xmlReader.atEnd())
+		{
+			if (xmlReader.readNextStartElement())
+			{
+				QString element = xmlReader.name().toString();
+				if (element == "sizeX")
+				{
+					_mapSizeX = xmlReader.readElementText().toInt();
+				}
+				else if (element == "sizeZ")
+				{
+					_mapSizeZ = xmlReader.readElementText().toInt();
+				}
+			}
+		}
+	}
 }
 
 void MapEditor::SaveXMLFile()

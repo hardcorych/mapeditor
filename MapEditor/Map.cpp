@@ -7,6 +7,7 @@ _step(8),	//для тайлов
 _sizeX(10), _sizeZ(10)
 {
 	setBorder();
+	setGameArea();
 }
 
 Map::Map(unsigned int sizeX, unsigned int sizeZ) :
@@ -18,10 +19,19 @@ _step(16)
 	//размер задается в количестве блоков игровой области
 	//формирование границ
 	setBorder();
+	setGameArea();
 }
 
 Map::~Map()
 {
+}
+
+void Map::Set(int sizeX, int sizeZ)		//создание новой карты
+{
+	if (_sizeX != sizeX) _sizeX = sizeX;
+	if (_sizeZ != sizeZ) _sizeZ = sizeZ;
+	setBorder();
+	setGameArea();
 }
 
 void Map::setBorder()
@@ -61,8 +71,6 @@ void Map::setBorder()
 
 	_sizeX -= 3 * _step;	//обратное преобразование к размеру игровой области
 	_sizeZ -= 2 * _step;
-
-	setGameArea();
 }
 
 void Map::setGameArea()
@@ -76,6 +84,11 @@ void Map::setGameArea()
 		}
 	}
 
+}
+
+void Map::Remove()		//удаление карты
+{
+	removeChildren(0, getNumChildren());
 }
 
 void Map::ReadFile()

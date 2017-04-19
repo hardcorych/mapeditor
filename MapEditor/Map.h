@@ -19,6 +19,8 @@ public:
 	QString GetSizeX_str()	{ return QString::number(_sizeX); }
 	QString GetSizeZ_str()	{ return QString::number(_sizeZ); }
 
+	void Set(int sizeX, int sizeZ);
+	void Remove();
 	void ReadFile();
 	void SaveFile();
 

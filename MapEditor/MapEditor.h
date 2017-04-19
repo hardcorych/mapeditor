@@ -22,7 +22,8 @@ private:
 	QAction* _loadAct;
 	QAction* _saveAct;
 	osg::ref_ptr<Map> _map = new Map(10,10);
-
+	int _mapSizeX;
+	int _mapSizeZ;
 
 	void renderScene();
 
