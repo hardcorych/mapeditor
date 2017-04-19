@@ -63,8 +63,6 @@ void MapEditor::NewMap()
 {
 	std::lock_guard <std::mutex> lgMutex(_mutex);
 	_map->Remove();
-	//можно выполнить, если размер отличен от предыдущего
-	//иногда вылазит ошибка с traverse
 	_map->Set(15, 15);
 }
 

@@ -6,6 +6,7 @@
 #include <Block.h>
 #include <Map.h>
 #include <mutex>
+#include <NewMapDialog.h>
 
 class MapEditor : public QMainWindow
 {
@@ -26,6 +27,8 @@ private:
 	int _mapSizeX;
 	int _mapSizeZ;
 	std::mutex _mutex;
+	NewMapDialog* _newMapDialog;
+
 	void renderScene();
 
 	public slots:
