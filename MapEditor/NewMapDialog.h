@@ -1,6 +1,7 @@
 #pragma once
 #include "qdialog.h"
 #include <qlineedit.h>
+#include <qspinbox.h>
 
 class NewMapDialog :
 	public QDialog
@@ -10,11 +11,11 @@ public:
 	NewMapDialog(QWidget* parent = 0);
 	~NewMapDialog();
 
-signals:
-	void applied();
+	int GetSizeX() { return _spnBoxX->value(); }
+	int GetSizeZ() { return _spnBoxZ->value(); }
 
 private:
-	QLineEdit* _editX;
-	QLineEdit* _editZ;
+	QSpinBox* _spnBoxX;
+	QSpinBox* _spnBoxZ;
 };
 

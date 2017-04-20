@@ -7,6 +7,7 @@
 #include <qxmlstream.h>
 #include <qmessagebox.h>
 #include <osgGA/TrackballManipulator>
+#include <qdebug.h>
 
 MapEditor::MapEditor(QWidget *parent)
 	: QMainWindow(parent)
@@ -61,9 +62,28 @@ MapEditor::~MapEditor()
 
 void MapEditor::NewMap()
 {
-	std::lock_guard <std::mutex> lgMutex(_mutex);
+	//создание новой карты через модальный диалог
+	NewMapDialog newMapDialog(this);
+
+	switch (newMapDialog.exec())
+	{
+	case QDialog::Accepted:
+		qDebug() << "accepted";
+		createMap(newMapDialog.GetSizeX(), newMapDialog.GetSizeZ());
+		break;
+	case QDialog::Rejected:
+		qDebug() << "rejected";
+		break;
+	default:
+		qDebug() << "unexpected";
+	}
+}
+
+void MapEditor::createMap(int sizeX, int sizeZ)
+{
+	std::lock_guard <std::mutex> lgMutex(_mutex);	//для избежания конфликта с перерисовкой
 	_map->Remove();
-	_map->Set(15, 15);
+	_map->Set(sizeX, sizeZ);
 }
 
 void MapEditor::LoadXMLFile()
@@ -273,7 +293,7 @@ void MapEditor::renderScene()
 
 	while (!viewer.done())
 	{
-		std::lock_guard<std::mutex> lgMutex(_mutex);
+		std::lock_guard<std::mutex> lgMutex(_mutex);	//для избежания конфликта при создании новой карты
 		viewer.frame();
 	}
 	

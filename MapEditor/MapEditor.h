@@ -27,9 +27,9 @@ private:
 	int _mapSizeX;
 	int _mapSizeZ;
 	std::mutex _mutex;
-	NewMapDialog* _newMapDialog;
 
 	void renderScene();
+	void createMap(int sizeX, int sizeZ);
 
 	public slots:
 	void onClickedBushes();
