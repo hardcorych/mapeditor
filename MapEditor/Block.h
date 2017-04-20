@@ -24,8 +24,12 @@ public:
 
 	std::pair<QString, QString> GetType_str();
 	
-	QString GetX_str()	{ return QString::number(_x); }
-	QString GetZ_str()	{ return QString::number(_z); }
+	int GetX()	{ return _x; }
+	int GetZ()	{ return _z; }
+
+	//для записи в файл
+	QString GetX_str()	{ return QString::number(_x+16); }	//+16 для согласования
+	QString GetZ_str()	{ return QString::number(_z+16); }
 
 	void SetBlock(TexType texType, FillType fillType);
 

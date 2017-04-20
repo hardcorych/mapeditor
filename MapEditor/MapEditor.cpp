@@ -69,7 +69,9 @@ void MapEditor::NewMap()
 	{
 	case QDialog::Accepted:
 		qDebug() << "accepted";
-		createMap(newMapDialog.GetSizeX(), newMapDialog.GetSizeZ());
+		_mapSizeX = newMapDialog.GetSizeX();
+		_mapSizeZ = newMapDialog.GetSizeZ();
+		createMap(_mapSizeX, _mapSizeZ);
 		break;
 	case QDialog::Rejected:
 		qDebug() << "rejected";
@@ -113,14 +115,57 @@ void MapEditor::LoadXMLFile()
 				QString element = xmlReader.name().toString();
 				if (element == "sizeX")
 				{
-					_mapSizeX = xmlReader.readElementText().toInt();
+					_mapSizeX = xmlReader.readElementText().toInt()/16;	//получаем размер в блоках
 				}
 				else if (element == "sizeZ")
 				{
-					_mapSizeZ = xmlReader.readElementText().toInt();
+					_mapSizeZ = xmlReader.readElementText().toInt()/16;	//получаем размер в блоках
+					createMap(_mapSizeX, _mapSizeZ);
+				}
+				else if (element == "block")
+				{
+					//чтение блока
+					//чтение типа блока
+					int x, z;
+					TexType texType;
+					FillType fillType;
+					for each (const QXmlStreamAttribute &attr in xmlReader.attributes())
+					{
+						QString attrStr = attr.name().toString();
+						if (attrStr == "texType")
+						{
+							QString attrValue = attr.value().toString();
+							if (attrValue == "BORDER") texType = TexType::BORDER;
+							else if (attrValue == "BRICK") texType = TexType::BRICK;
+							else if (attrValue == "ARMOR") texType = TexType::ARMOR;
+							else if (attrValue == "BUSHES") texType = TexType::BUSHES;
+							else if (attrValue == "ICE") texType = TexType::ICE;
+							else if (attrValue == "WATER") texType = TexType::WATER;
+						}
+						else if (attrStr == "fillType")
+						{
+							QString attrValue = attr.value().toString();
+							if (attrValue == "BOTTOM") fillType = FillType::BOTTOM;
+							else if (attrValue == "FULL") fillType = FillType::FULL;
+							else if (attrValue == "LEFT") fillType = FillType::LEFT;
+							else if (attrValue == "RIGHT") fillType = FillType::RIGHT;
+							else if (attrValue == "TOP") fillType = FillType::TOP;
+						}
+					}
+					//чтение координат
+					xmlReader.readNextStartElement();
+					x = xmlReader.readElementText().toInt()-16;		//-16 для согласования
+					xmlReader.readNextStartElement();
+					z = xmlReader.readElementText().toInt()-16;		//-16 для согласования
+
+					{
+						std::lock_guard<std::mutex> lgMutex(_mutex);
+						_map->AddBlock(new Block(x, z, texType, fillType), x, z);
+					}
 				}
 			}
 		}
+		file.close();
 	}
 }
 

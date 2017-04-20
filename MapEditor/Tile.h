@@ -23,8 +23,6 @@ enum class EmptyTile
 	RIGHT_BOTTOM
 };
 
-//тайл полигон, на который нат€гиваетс€ текстура
-
 class Tile : public osg::Geometry		
 {
 public:
@@ -34,11 +32,11 @@ public:
 	~Tile();
 
 	void SetXZ(unsigned int x, unsigned int z) { _x = x; _z = z; }
-	//перегрузить оператор= дл€ установки типа тайла?
 	void SetType(TexType type);
 
-	QString GetX_str()	{ return QString::number(_x); }
-	QString GetZ_str()	{ return QString::number(_z); }
+	//дл€ записи в файл
+	QString GetX_str()	{ return QString::number(_x+16); }	//+16 дл€ согласовани€
+	QString GetZ_str()	{ return QString::number(_z+16); }
 	
 	TexType GetType() { return _type; }
 	
