@@ -83,7 +83,6 @@ void Map::setGameArea()
 			addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
 		}
 	}
-
 }
 
 void Map::Remove()		//удаление карты
@@ -93,7 +92,7 @@ void Map::Remove()		//удаление карты
 
 void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файла
 {
-	Block* blockOld;
+	Block* blockOld = nullptr;
 	//поиск блока, который нужно заменить
 	for (int i = 0; i < getNumChildren(); i++)
 	{
@@ -103,31 +102,4 @@ void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файл
 			replaceChild(blockOld, block);
 		}
 	}
-}
-
-/*
-void Map::FillRestBlocksWithFree()	//заполнение пустых мест для редактора
-{
-	for (int z = 0; z < _sizeZ; z += _step)
-	{
-		for (int x = 0; x < _sizeX; x += _step)
-		{
-			if (blockMap.find(std::make_pair(x, z)) != blockMap.end())	//проверка на существование блока
-			{
-				addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
-			}
-		}
-	}
-	blockMap.clear();	//map больше не нужен
-}
-*/
-
-void Map::ReadFile()
-{
-
-}
-
-void Map::SaveFile()
-{
-
 }

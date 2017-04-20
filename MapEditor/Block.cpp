@@ -11,13 +11,7 @@ _x(x), _z(z),
 _type(type),
 _fType(fillType)
 {
-	//x *= 16;
-	//перевод в тайловые координаты
 	int tileSize = Tile::Size();
-	//x *= tileSize;
-	//z *= tileSize;
-	//x *= _size;
-	//z *= _size;
 
 	createBlock(type, fillType);
 

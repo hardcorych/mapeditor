@@ -22,7 +22,6 @@ public:
 	void Set(int sizeX, int sizeZ);
 	void Remove();
 	void AddBlock(osg::ref_ptr<Block> block, int x, int z);
-	void FillRestBlocksWithFree();
 
 	void ReadFile();
 	void SaveFile();
@@ -30,7 +29,7 @@ public:
 private:
 	int _sizeX;
 	int _sizeZ;
-	unsigned int _size;		//размер карты. задается любыми цифрами, затем умножается на 16(перевод в блоки) или 8 (перевод в тайлы)	
+	unsigned int _size;		//размер карты. задается любыми цифрами, затем умножается на 16(перевод в блоки)	
 	int _step;		//шаг равный размеру одного блока/тайла
 
 	//std::map<std::pair<int, int>, osg::ref_ptr<Block>> blockMap;	//карта для расстановки пустых блоков при чтении карты с файла

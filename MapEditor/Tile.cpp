@@ -18,11 +18,6 @@ _type(type)
 	_vertices->push_back(osg::Vec3(_x + _size, 0., _z));
 	_vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
 
-	//osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;    //цвет
-	//colors->push_back(osg::Vec4(105 / 255.f, 105 / 255.f, 105 / 255.f, 0.0f));
-	//colors->push_back(osg::Vec4(1.f, 1.f, 1.f, 1.f));
-	//setColorArray(colors.get(), osg::Array::BIND_OVERALL);
-
 	setVertexArray(_vertices);
 	addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP, 0, _vertices->size()));
 
@@ -91,9 +86,6 @@ void Tile::SetType(TexType type)
 	_type = type;
 	if (_type != TexType::EMPTY)
 		setTexture();
-	//else if (_type == TexType::EMPTY)
-		//setEmptyTexture();
-	//else remove
 }
 
 void Tile::setTexture()

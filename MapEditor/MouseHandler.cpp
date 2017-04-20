@@ -22,7 +22,12 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 	{
 		_mouseX = ea.getX();
 		_mouseY = ea.getY();
-		return false;
+		viewer->getCamera()->setViewMatrixAsLookAt(osg::Vec3(_mouseX, _mouseY, 0),
+			osg::Vec3(_mouseX, _mouseY, 0), osg::Vec3(0, 0, 1));
+		//viewer->getCamera()->setProjectionMatrixAsOrtho2D();
+		//viewer->getCamera()->getProjectionMatrixAsOrtho();
+		return true;
+		//return false;
 	}						   
 	case(osgGA::GUIEventAdapter::RELEASE) :
 	{
