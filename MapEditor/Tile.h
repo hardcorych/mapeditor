@@ -31,14 +31,9 @@ public:
 	Tile(unsigned int x, unsigned int z, TexType type, EmptyTile empty);	//для пустых тайлов
 	~Tile();
 
-	void SetXZ(unsigned int x, unsigned int z) { _x = x; _z = z; }
-	void SetType(TexType type);
-
 	//для записи в файл
 	QString GetX_str()	{ return QString::number(_x+16); }	//+16 для согласования
 	QString GetZ_str()	{ return QString::number(_z+16); }
-	
-	TexType GetType() { return _type; }
 	
 	QString GetType_str();
 

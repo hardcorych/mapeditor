@@ -114,7 +114,6 @@ std::pair<bool, Block*> MouseHandler::findBlockAndMap(const double x, const doub
 
 		selectedBlock = block;
 		selectedMap = map;
-		//map->Remove();
 	}
 	return std::make_pair((selectedBlock.valid() && selectedMap.valid()), block);
 }

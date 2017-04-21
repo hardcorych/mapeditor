@@ -81,13 +81,6 @@ void Tile::calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3)
 	_normals->push_back(crossResult);
 }
 
-void Tile::SetType(TexType type)
-{
-	_type = type;
-	if (_type != TexType::EMPTY)
-		setTexture();
-}
-
 void Tile::setTexture()
 {
 	//нат€гивание текстуры на тайл

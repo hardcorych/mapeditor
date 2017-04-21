@@ -65,19 +65,11 @@ void MapEditor::NewMap()
 	//создание новой карты через модальный диалог
 	NewMapDialog newMapDialog(this);
 
-	switch (newMapDialog.exec())
+	if (newMapDialog.exec() == QDialog::Accepted)
 	{
-	case QDialog::Accepted:
-		qDebug() << "accepted";
 		_mapSizeX = newMapDialog.GetSizeX();
 		_mapSizeZ = newMapDialog.GetSizeZ();
 		createMap(_mapSizeX, _mapSizeZ);
-		break;
-	case QDialog::Rejected:
-		qDebug() << "rejected";
-		break;
-	default:
-		qDebug() << "unexpected";
 	}
 }
 

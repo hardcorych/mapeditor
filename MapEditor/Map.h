@@ -23,9 +23,6 @@ public:
 	void Remove();
 	void AddBlock(osg::ref_ptr<Block> block, int x, int z);
 
-	void ReadFile();
-	void SaveFile();
-
 private:
 	int _sizeX;
 	int _sizeZ;
