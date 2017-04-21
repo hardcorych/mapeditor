@@ -22,12 +22,8 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 	{
 		_mouseX = ea.getX();
 		_mouseY = ea.getY();
-		viewer->getCamera()->setViewMatrixAsLookAt(osg::Vec3(_mouseX, _mouseY, 0),
-			osg::Vec3(_mouseX, _mouseY, 0), osg::Vec3(0, 0, 1));
-		//viewer->getCamera()->setProjectionMatrixAsOrtho2D();
-		//viewer->getCamera()->getProjectionMatrixAsOrtho();
-		return true;
-		//return false;
+
+		return false;
 	}						   
 	case(osgGA::GUIEventAdapter::RELEASE) :
 	{
@@ -41,7 +37,6 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 				_mouseX = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
 				_mouseY = ea.getYnormalized();
 
-				//if (setBlock(_mouseX, _mouseY, viewer))
 				std::pair<bool, Block*> validBlock = findBlockAndMap(_mouseX, _mouseY, viewer);
 				bool isValid = std::get<0>(validBlock);
 				if (isValid)
@@ -60,7 +55,6 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 				_mouseX = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
 				_mouseY = ea.getYnormalized();
 
-				//if (removeBlock(_mouseX, _mouseY, viewer))
 				std::pair<bool, Block*> validBlock = findBlockAndMap(_mouseX, _mouseY, viewer);
 				bool isValid = std::get<0>(validBlock);
 				if (isValid)
@@ -110,7 +104,7 @@ std::pair<bool, Block*> MouseHandler::findBlockAndMap(const double x, const doub
 		unsigned int idx = nodePath.size();
 
 		//find block and map
-		while ((idx--) && ((block == nullptr) || (map == nullptr)))
+		while ((idx--) && (block == nullptr || map == nullptr))
 		{
 			if (block == nullptr)
 				block = dynamic_cast<Block*>(nodePath[idx]);

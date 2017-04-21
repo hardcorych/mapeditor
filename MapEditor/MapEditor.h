@@ -48,8 +48,8 @@ private:
 	void onClickedBrickTop();
 	void onClickedBrickBottom();
 
-	//операции с файлами
 	void NewMap();
+	//операции с файлами
 	void LoadXMLFile();
 	void SaveXMLFile();
 

@@ -332,6 +332,9 @@ void MapEditor::renderScene()
 
 	viewer.setSceneData(_map);
 	viewer.setCameraManipulator(new osgGA::TrackballManipulator);
+	
+	//viewer.getCamera()->setClearColor(osg::Vec4(0., 0., 0., 0.));
+	
 	viewer.realize();
 	/////////////////////////////
 	//viewer.run();

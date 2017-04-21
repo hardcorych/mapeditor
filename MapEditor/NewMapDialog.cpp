@@ -16,9 +16,9 @@ NewMapDialog::NewMapDialog(QWidget* parent) : QDialog(parent)
 	_spnBoxX = new QSpinBox(this);
 	_spnBoxZ = new QSpinBox(this);
 	_spnBoxX->setMinimum(5);
-	_spnBoxX->setMaximum(30);
+	_spnBoxX->setMaximum(50);
 	_spnBoxZ->setMinimum(5);
-	_spnBoxZ->setMaximum(30);
+	_spnBoxZ->setMaximum(50);
 
 	QPushButton* okBtn = new QPushButton(this);
 	okBtn->setText("OK");
