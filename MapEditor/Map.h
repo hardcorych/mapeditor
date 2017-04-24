@@ -23,6 +23,10 @@ public:
 	void Remove();
 	void AddBlock(osg::ref_ptr<Block> block, int x, int z);
 
+	//resizing
+	void Resize(int sizeX, int sizeZ);
+	void SaveGameArea();
+
 private:
 	int _sizeX;
 	int _sizeZ;

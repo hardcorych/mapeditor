@@ -15,6 +15,12 @@ MapEditor::MapEditor(QWidget *parent)
 {
 	ui.setupUi(this);
 
+	ui.spnBoxSizeX->setMinimum(5);
+	ui.spnBoxSizeX->setMaximum(30);
+
+	ui.spnBoxSizeZ->setMinimum(5);
+	ui.spnBoxSizeZ->setMaximum(30);
+
 	_fileMenu = new QMenu(this);
 	_editMenu = new QMenu(this);
 
@@ -59,6 +65,8 @@ MapEditor::MapEditor(QWidget *parent)
 	connect(ui.radioBtnBrickRight, &QRadioButton::clicked, this, &MapEditor::onClickedBrickRight);
 	connect(ui.radioBtnBrickBottom, &QRadioButton::clicked, this, &MapEditor::onClickedBrickBottom);
 	connect(ui.radioBtnBrickTop, &QRadioButton::clicked, this, &MapEditor::onClickedBrickTop);
+
+	connect(ui.pBtnChangeSize, &QPushButton::clicked, this, &MapEditor::onClickedChangeSize);
 
 	_renderThread = std::thread(&MapEditor::renderScene, this);
 }
@@ -382,4 +390,9 @@ void MapEditor::RemoveBlock(Block* block)
 {
 	QUndoCommand* removeCommand = new RemoveCommand(block);
 	_undoStack->push(removeCommand);
+}
+
+void onClickedChangeSize()
+{
+	//resize map
 }

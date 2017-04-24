@@ -102,3 +102,20 @@ void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файл
 		}
 	}
 }
+
+void Map::Resize(int sizeX, int sizeZ)
+{
+	//_sizeX = sizeX;
+	//_sizeZ = sizeZ;
+	if (sizeX < _sizeX || sizeZ < _sizeZ)
+	{
+		//удалить ненужную игровую область
+
+	}
+}
+
+void Map::SaveGameArea()
+{
+	//сохранение игровой области и удаление части, которая не попадает
+	//в рамки нового размера
+}

@@ -67,6 +67,8 @@ private:
 	void AddBlock(Block* block, TexType type, FillType fType);
 	void RemoveBlock(Block* block);
 
+	void onClickedChangeSize();
+
 signals:
 	void QuitViewer();
 	void QuitAppToMain();
