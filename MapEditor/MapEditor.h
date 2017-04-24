@@ -7,6 +7,8 @@
 #include <Map.h>
 #include <mutex>
 #include <NewMapDialog.h>
+#include <qundostack.h>
+#include <qundoview.h>
 
 class MapEditor : public QMainWindow
 {
@@ -19,10 +21,17 @@ public:
 private:
     Ui::MapEditorClass ui;
 	std::thread _renderThread;
-	QMenu* _menu;
+	QMenu* _fileMenu;
+	QMenu* _editMenu;
 	QAction* _newAct;
 	QAction* _loadAct;
 	QAction* _saveAct;
+	QAction* _undoAct;
+	QAction* _redoAct;
+
+	QUndoStack* undoStack;
+	QUndoView* undoView;
+
 	osg::ref_ptr<Map> _map = new Map(10,10);
 	int _mapSizeX;
 	int _mapSizeZ;

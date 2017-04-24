@@ -1203,23 +1203,63 @@
         </tile>
     </block>
     <block texType="BRICK" fillType="FULL">
-        <x>144</x>
+        <x>96</x>
         <z>48</z>
         <tile type="BRICK">
-            <x>144</x>
+            <x>96</x>
             <z>48</z>
         </tile>
         <tile type="BRICK">
-            <x>144</x>
+            <x>96</x>
             <z>56</z>
         </tile>
         <tile type="BRICK">
-            <x>152</x>
+            <x>104</x>
             <z>56</z>
         </tile>
         <tile type="BRICK">
-            <x>152</x>
+            <x>104</x>
             <z>48</z>
+        </tile>
+    </block>
+    <block texType="BRICK" fillType="FULL">
+        <x>112</x>
+        <z>48</z>
+        <tile type="BRICK">
+            <x>112</x>
+            <z>48</z>
+        </tile>
+        <tile type="BRICK">
+            <x>112</x>
+            <z>56</z>
+        </tile>
+        <tile type="BRICK">
+            <x>120</x>
+            <z>56</z>
+        </tile>
+        <tile type="BRICK">
+            <x>120</x>
+            <z>48</z>
+        </tile>
+    </block>
+    <block texType="BRICK" fillType="FULL">
+        <x>16</x>
+        <z>64</z>
+        <tile type="BRICK">
+            <x>16</x>
+            <z>64</z>
+        </tile>
+        <tile type="BRICK">
+            <x>16</x>
+            <z>72</z>
+        </tile>
+        <tile type="BRICK">
+            <x>24</x>
+            <z>72</z>
+        </tile>
+        <tile type="BRICK">
+            <x>24</x>
+            <z>64</z>
         </tile>
     </block>
     <block texType="BRICK" fillType="FULL">
@@ -1243,62 +1283,42 @@
         </tile>
     </block>
     <block texType="BRICK" fillType="FULL">
-        <x>96</x>
+        <x>48</x>
         <z>64</z>
         <tile type="BRICK">
-            <x>96</x>
+            <x>48</x>
             <z>64</z>
         </tile>
         <tile type="BRICK">
-            <x>96</x>
+            <x>48</x>
             <z>72</z>
         </tile>
         <tile type="BRICK">
-            <x>104</x>
+            <x>56</x>
             <z>72</z>
         </tile>
         <tile type="BRICK">
-            <x>104</x>
+            <x>56</x>
             <z>64</z>
         </tile>
     </block>
     <block texType="BRICK" fillType="FULL">
-        <x>144</x>
+        <x>112</x>
         <z>64</z>
         <tile type="BRICK">
-            <x>144</x>
+            <x>112</x>
             <z>64</z>
         </tile>
         <tile type="BRICK">
-            <x>144</x>
+            <x>112</x>
             <z>72</z>
         </tile>
         <tile type="BRICK">
-            <x>152</x>
+            <x>120</x>
             <z>72</z>
         </tile>
         <tile type="BRICK">
-            <x>152</x>
-            <z>64</z>
-        </tile>
-    </block>
-    <block texType="BRICK" fillType="FULL">
-        <x>160</x>
-        <z>64</z>
-        <tile type="BRICK">
-            <x>160</x>
-            <z>64</z>
-        </tile>
-        <tile type="BRICK">
-            <x>160</x>
-            <z>72</z>
-        </tile>
-        <tile type="BRICK">
-            <x>168</x>
-            <z>72</z>
-        </tile>
-        <tile type="BRICK">
-            <x>168</x>
+            <x>120</x>
             <z>64</z>
         </tile>
     </block>
@@ -1363,6 +1383,26 @@
         </tile>
     </block>
     <block texType="BRICK" fillType="FULL">
+        <x>96</x>
+        <z>80</z>
+        <tile type="BRICK">
+            <x>96</x>
+            <z>80</z>
+        </tile>
+        <tile type="BRICK">
+            <x>96</x>
+            <z>88</z>
+        </tile>
+        <tile type="BRICK">
+            <x>104</x>
+            <z>88</z>
+        </tile>
+        <tile type="BRICK">
+            <x>104</x>
+            <z>80</z>
+        </tile>
+    </block>
+    <block texType="BRICK" fillType="FULL">
         <x>112</x>
         <z>80</z>
         <tile type="BRICK">
@@ -1383,42 +1423,82 @@
         </tile>
     </block>
     <block texType="BRICK" fillType="FULL">
-        <x>144</x>
-        <z>80</z>
-        <tile type="BRICK">
-            <x>144</x>
-            <z>80</z>
-        </tile>
-        <tile type="BRICK">
-            <x>144</x>
-            <z>88</z>
-        </tile>
-        <tile type="BRICK">
-            <x>152</x>
-            <z>88</z>
-        </tile>
-        <tile type="BRICK">
-            <x>152</x>
-            <z>80</z>
-        </tile>
-    </block>
-    <block texType="BRICK" fillType="FULL">
-        <x>160</x>
+        <x>16</x>
         <z>96</z>
         <tile type="BRICK">
-            <x>160</x>
+            <x>16</x>
             <z>96</z>
         </tile>
         <tile type="BRICK">
-            <x>160</x>
+            <x>16</x>
             <z>104</z>
         </tile>
         <tile type="BRICK">
-            <x>168</x>
+            <x>24</x>
             <z>104</z>
         </tile>
         <tile type="BRICK">
-            <x>168</x>
+            <x>24</x>
+            <z>96</z>
+        </tile>
+    </block>
+    <block texType="BRICK" fillType="FULL">
+        <x>48</x>
+        <z>96</z>
+        <tile type="BRICK">
+            <x>48</x>
+            <z>96</z>
+        </tile>
+        <tile type="BRICK">
+            <x>48</x>
+            <z>104</z>
+        </tile>
+        <tile type="BRICK">
+            <x>56</x>
+            <z>104</z>
+        </tile>
+        <tile type="BRICK">
+            <x>56</x>
+            <z>96</z>
+        </tile>
+    </block>
+    <block texType="BRICK" fillType="FULL">
+        <x>80</x>
+        <z>96</z>
+        <tile type="BRICK">
+            <x>80</x>
+            <z>96</z>
+        </tile>
+        <tile type="BRICK">
+            <x>80</x>
+            <z>104</z>
+        </tile>
+        <tile type="BRICK">
+            <x>88</x>
+            <z>104</z>
+        </tile>
+        <tile type="BRICK">
+            <x>88</x>
+            <z>96</z>
+        </tile>
+    </block>
+    <block texType="BRICK" fillType="FULL">
+        <x>112</x>
+        <z>96</z>
+        <tile type="BRICK">
+            <x>112</x>
+            <z>96</z>
+        </tile>
+        <tile type="BRICK">
+            <x>112</x>
+            <z>104</z>
+        </tile>
+        <tile type="BRICK">
+            <x>120</x>
+            <z>104</z>
+        </tile>
+        <tile type="BRICK">
+            <x>120</x>
             <z>96</z>
         </tile>
     </block>

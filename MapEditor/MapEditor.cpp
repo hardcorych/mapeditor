@@ -14,23 +14,31 @@ MapEditor::MapEditor(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	_menu = new QMenu(this);
+	_fileMenu = new QMenu(this);
+	_editMenu = new QMenu(this);
 
-	_menu->setTitle("&File");
+	_fileMenu->setTitle("&File");
+	_editMenu->setTitle("&Edit");
 
 	_newAct = new QAction(tr("&New"), this);
 	_loadAct = new QAction(tr("&Load"), this);
 	_saveAct = new QAction(tr("&Save"), this);
+	_undoAct = new QAction(tr("&Undo"), this);
+	_redoAct = new QAction(tr("&Redo"), this);
 
 	connect(_newAct, &QAction::triggered, this, &MapEditor::NewMap);
 	connect(_loadAct, &QAction::triggered, this, &MapEditor::LoadXMLFile);
 	connect(_saveAct, &QAction::triggered, this, &MapEditor::SaveXMLFile);
 
-	_menu->addAction(_newAct);
-	_menu->addAction(_loadAct);
-	_menu->addAction(_saveAct);
+	_fileMenu->addAction(_newAct);
+	_fileMenu->addAction(_loadAct);
+	_fileMenu->addAction(_saveAct);
 
-	ui.menuBar->addMenu(_menu);
+	_editMenu->addAction(_undoAct);
+	_editMenu->addAction(_redoAct);
+
+	ui.menuBar->addMenu(_fileMenu);
+	ui.menuBar->addMenu(_editMenu);
 
 	connect(ui.radioBtnBushes, &QRadioButton::clicked, this, &MapEditor::onClickedBushes);
 	connect(ui.radioBtnWater, &QRadioButton::clicked, this, &MapEditor::onClickedWater);
