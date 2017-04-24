@@ -29,8 +29,8 @@ private:
 	QAction* _undoAct;
 	QAction* _redoAct;
 
-	QUndoStack* undoStack;
-	QUndoView* undoView;
+	QUndoStack* _undoStack;
+	QUndoView* _undoView;
 
 	osg::ref_ptr<Map> _map = new Map(10,10);
 	int _mapSizeX;
@@ -39,6 +39,8 @@ private:
 
 	void renderScene();
 	void createMap(int sizeX, int sizeZ);
+	void createUndoView();
+	void createUndoRedoActions();
 
 	public slots:
 	void onClickedBushes();

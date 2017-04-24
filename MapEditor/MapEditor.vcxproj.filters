@@ -85,6 +85,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_NewMapDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Commands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MapEditor.h">
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

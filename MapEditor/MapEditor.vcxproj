@@ -69,6 +69,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Commands.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_MapEditor.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -127,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Commands.h" />
     <ClInclude Include="GeneratedFiles\ui_MapEditor.h" />
     <ClInclude Include="Map.h" />
     <CustomBuild Include="MouseHandler.h">

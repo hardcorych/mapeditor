@@ -44,7 +44,7 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 					osg::ref_ptr<Block> block = std::get<1>(validBlock);
 					if (block->GetType() != TexType::BORDER)
 					{
-						block->SetBlock(_type, _fType);
+						block->SetBlock(_type, _fType);		//add command
 					}
 					return true;	//true, чтобы обработать событие
 				}
@@ -60,9 +60,11 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 				if (isValid)
 				{
 					osg::ref_ptr<Block> block = std::get<1>(validBlock);
-					if (block->GetType() != TexType::BORDER)
+					TexType blockType = block->GetType();
+					if (blockType != TexType::BORDER &&
+						blockType != TexType::EMPTY)
 					{
-						block->SetBlock(TexType::EMPTY, FillType::FULL);
+						block->SetBlock(TexType::EMPTY, FillType::FULL);		//delete command
 					}
 					return true;	//true, чтобы обработать событие
 				}

@@ -23,8 +23,11 @@ MapEditor::MapEditor(QWidget *parent)
 	_newAct = new QAction(tr("&New"), this);
 	_loadAct = new QAction(tr("&Load"), this);
 	_saveAct = new QAction(tr("&Save"), this);
-	_undoAct = new QAction(tr("&Undo"), this);
-	_redoAct = new QAction(tr("&Redo"), this);
+
+	_undoStack = new QUndoStack(this);
+
+	createUndoRedoActions();
+	createUndoView();
 
 	connect(_newAct, &QAction::triggered, this, &MapEditor::NewMap);
 	connect(_loadAct, &QAction::triggered, this, &MapEditor::LoadXMLFile);
@@ -346,4 +349,21 @@ void MapEditor::renderScene()
 	}
 	
 	emit QuitAppToMain();
+}
+
+void MapEditor::createUndoView()
+{
+	_undoView = new QUndoView(_undoStack);
+	_undoView->setWindowTitle(tr("command list"));
+	_undoView->show();
+	_undoView->setAttribute(Qt::WA_QuitOnClose, false);
+}
+
+void MapEditor::createUndoRedoActions()
+{
+	_undoAct = _undoStack->createUndoAction(this, tr("&Undo"));
+	_undoAct->setShortcuts(QKeySequence::Undo);
+
+	_redoAct = _undoStack->createRedoAction(this, tr("&Redo"));
+	_redoAct->setShortcuts(QKeySequence::Redo);
 }
