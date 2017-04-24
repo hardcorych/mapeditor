@@ -64,6 +64,9 @@ private:
 	void LoadXMLFile();
 	void SaveXMLFile();
 
+	void AddBlock(Block* block, TexType type, FillType fType);
+	void RemoveBlock(Block* block);
+
 signals:
 	void QuitViewer();
 	void QuitAppToMain();

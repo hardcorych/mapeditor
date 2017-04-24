@@ -1,43 +1,51 @@
+#pragma once
+
 #include <Commands.h>
 
-AddCommand::AddCommand(Block* block, QUndoCommand* parent) :
+AddCommand::AddCommand(Block* block, TexType type, FillType fType, QUndoCommand* parent) :
 QUndoCommand(parent)
 {
-
+	_block = block;
+	_type = type;
+	_fType = fType;
 }
 
 AddCommand::~AddCommand()
 {
-
 }
 
 void AddCommand::undo()
 {
 	//remove
+	_block->SetBlock(TexType::EMPTY, FillType::FULL);
 }
 
 void AddCommand::redo()
 {
 	//add
+	_block->SetBlock(_type, _fType);
 }
 
-DeleteCommand::DeleteCommand(Block* block, QUndoCommand* parent) :
+RemoveCommand::RemoveCommand(Block* block, QUndoCommand* parent) :
 QUndoCommand(parent)
 {
-
+	_block = block;
+	_type = _block->GetType();
+	_fType = _block->GetFillType();
 }
 
-DeleteCommand::~DeleteCommand()
+RemoveCommand::~RemoveCommand()
 {
-
 }
 
-void DeleteCommand::undo()
+void RemoveCommand::undo()
 {
 	//add
+	_block->SetBlock(_type, _fType);
 }
 
-void DeleteCommand::redo()
+void RemoveCommand::redo()
 {
 	//remove
+	_block->SetBlock(TexType::EMPTY, FillType::FULL);
 }

@@ -8,6 +8,7 @@
 #include <qmessagebox.h>
 #include <osgGA/TrackballManipulator>
 #include <qdebug.h>
+#include <Commands.h>
 
 MapEditor::MapEditor(QWidget *parent)
 	: QMainWindow(parent)
@@ -327,6 +328,9 @@ void MapEditor::renderScene()
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 
 	connect(this, &MapEditor::SendBlock, mouseHandler, &MouseHandler::ReceiveBlock, Qt::DirectConnection);
+	connect(mouseHandler, &MouseHandler::AddableBlock, this, &MapEditor::AddBlock, Qt::DirectConnection);
+	connect(mouseHandler, &MouseHandler::RemovableBlock, this, &MapEditor::RemoveBlock, Qt::DirectConnection);
+
 	ui.radioBtnBushes->setChecked(true);
 	ui.radioBtnBushes->clicked();
 
@@ -366,4 +370,16 @@ void MapEditor::createUndoRedoActions()
 
 	_redoAct = _undoStack->createRedoAction(this, tr("&Redo"));
 	_redoAct->setShortcuts(QKeySequence::Redo);
+}
+
+void MapEditor::AddBlock(Block* block, TexType type, FillType fType)
+{
+	QUndoCommand* addCommand = new AddCommand(block, type, fType);
+	_undoStack->push(addCommand);
+}
+
+void MapEditor::RemoveBlock(Block* block)
+{
+	QUndoCommand* removeCommand = new RemoveCommand(block);
+	_undoStack->push(removeCommand);
 }

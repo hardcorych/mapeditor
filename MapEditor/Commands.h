@@ -1,28 +1,34 @@
 // undo/redo commands
-
+#pragma once
 #include <qundostack.h>
 #include <Block.h>
 
-class AddCommand : public QUndoCommand
+class AddCommand : public QUndoCommand	//команда добавления блока на карту
 {
 public:
-	AddCommand(Block* block, QUndoCommand* parent);
+	AddCommand(Block* block, TexType type, FillType fType, QUndoCommand* parent = 0);
 	~AddCommand();
 
 	void undo() override;
 	void redo() override;
 
 private:
+	Block* _block = nullptr;
+	TexType _type;
+	FillType _fType;
 };
 
-class DeleteCommand : public QUndoCommand
+class RemoveCommand : public QUndoCommand	//команда удаления блока с карты
 {
 public:
-	DeleteCommand(Block* block, QUndoCommand* parent);
-	~DeleteCommand();
+	RemoveCommand(Block* block, QUndoCommand* parent = 0);
+	~RemoveCommand();
 
 	void undo() override;
 	void redo() override;
 
 private:
+	Block* _block = nullptr;
+	TexType _type;
+	FillType _fType;
 };

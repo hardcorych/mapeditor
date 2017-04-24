@@ -26,6 +26,10 @@ protected:
 
 	std::pair<bool, Block*> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);	
 
+signals:
+	void AddableBlock(Block* block, TexType type, FillType fType);
+	void RemovableBlock(Block* block);
+
 	public slots:
 	void ReceiveBlock(TexType type, FillType fillType);
 };

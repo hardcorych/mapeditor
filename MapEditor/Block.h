@@ -21,6 +21,7 @@ public:
 	~Block();
 
 	TexType GetType() { return _type; }
+	FillType GetFillType()	{ return _fType; }
 
 	std::pair<QString, QString> GetType_str();
 	
