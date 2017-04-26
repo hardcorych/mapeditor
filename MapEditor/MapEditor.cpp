@@ -392,7 +392,9 @@ void MapEditor::RemoveBlock(Block* block)
 	_undoStack->push(removeCommand);
 }
 
-void onClickedChangeSize()
+void MapEditor::onClickedChangeSize()
 {
 	//resize map
+	std::lock_guard<std::mutex> lgMutex(_mutex);
+	_map->Resize(ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
 }
