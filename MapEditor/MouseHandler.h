@@ -24,11 +24,13 @@ protected:
 	TexType _type;
 	FillType _fType;
 
-	std::pair<bool, Block*> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);	
+	std::pair<bool, Block*> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);
 
 signals:
 	void AddableBlock(Block* block, TexType type, FillType fType);
 	void RemovableBlock(Block* block);
+	void Undo();
+	void Redo();
 
 	public slots:
 	void ReceiveBlock(TexType type, FillType fillType);

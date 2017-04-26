@@ -69,6 +69,8 @@ private:
 
 	void onClickedChangeSize();
 
+	void Undo();
+
 signals:
 	void QuitViewer();
 	void QuitAppToMain();

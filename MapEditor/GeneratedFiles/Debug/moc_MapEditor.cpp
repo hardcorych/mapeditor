@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
-    QByteArrayData data[32];
-    char stringdata0[414];
+    QByteArrayData data[33];
+    char stringdata0[419];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -62,7 +62,8 @@ QT_MOC_LITERAL(27, 365, 5), // "block"
 QT_MOC_LITERAL(28, 371, 4), // "type"
 QT_MOC_LITERAL(29, 376, 5), // "fType"
 QT_MOC_LITERAL(30, 382, 11), // "RemoveBlock"
-QT_MOC_LITERAL(31, 394, 19) // "onClickedChangeSize"
+QT_MOC_LITERAL(31, 394, 19), // "onClickedChangeSize"
+QT_MOC_LITERAL(32, 414, 4) // "Undo"
 
     },
     "MapEditor\0QuitViewer\0\0QuitAppToMain\0"
@@ -75,7 +76,8 @@ QT_MOC_LITERAL(31, 394, 19) // "onClickedChangeSize"
     "onClickedBrickRight\0onClickedBrickTop\0"
     "onClickedBrickBottom\0NewMap\0LoadXMLFile\0"
     "SaveXMLFile\0AddBlock\0Block*\0block\0"
-    "type\0fType\0RemoveBlock\0onClickedChangeSize"
+    "type\0fType\0RemoveBlock\0onClickedChangeSize\0"
+    "Undo"
 };
 #undef QT_MOC_LITERAL
 
@@ -85,7 +87,7 @@ static const uint qt_meta_data_MapEditor[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      22,   14, // methods
+      23,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -93,30 +95,31 @@ static const uint qt_meta_data_MapEditor[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,  124,    2, 0x06 /* Public */,
-       3,    0,  125,    2, 0x06 /* Public */,
-       4,    2,  126,    2, 0x06 /* Public */,
+       1,    0,  129,    2, 0x06 /* Public */,
+       3,    0,  130,    2, 0x06 /* Public */,
+       4,    2,  131,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       9,    0,  131,    2, 0x0a /* Public */,
-      10,    0,  132,    2, 0x0a /* Public */,
-      11,    0,  133,    2, 0x0a /* Public */,
-      12,    0,  134,    2, 0x0a /* Public */,
-      13,    0,  135,    2, 0x0a /* Public */,
-      14,    0,  136,    2, 0x0a /* Public */,
-      15,    0,  137,    2, 0x0a /* Public */,
-      16,    0,  138,    2, 0x0a /* Public */,
-      17,    0,  139,    2, 0x0a /* Public */,
-      18,    0,  140,    2, 0x0a /* Public */,
-      19,    0,  141,    2, 0x0a /* Public */,
-      20,    0,  142,    2, 0x0a /* Public */,
-      21,    0,  143,    2, 0x0a /* Public */,
-      22,    0,  144,    2, 0x0a /* Public */,
-      23,    0,  145,    2, 0x0a /* Public */,
-      24,    0,  146,    2, 0x0a /* Public */,
-      25,    3,  147,    2, 0x0a /* Public */,
-      30,    1,  154,    2, 0x0a /* Public */,
-      31,    0,  157,    2, 0x0a /* Public */,
+       9,    0,  136,    2, 0x0a /* Public */,
+      10,    0,  137,    2, 0x0a /* Public */,
+      11,    0,  138,    2, 0x0a /* Public */,
+      12,    0,  139,    2, 0x0a /* Public */,
+      13,    0,  140,    2, 0x0a /* Public */,
+      14,    0,  141,    2, 0x0a /* Public */,
+      15,    0,  142,    2, 0x0a /* Public */,
+      16,    0,  143,    2, 0x0a /* Public */,
+      17,    0,  144,    2, 0x0a /* Public */,
+      18,    0,  145,    2, 0x0a /* Public */,
+      19,    0,  146,    2, 0x0a /* Public */,
+      20,    0,  147,    2, 0x0a /* Public */,
+      21,    0,  148,    2, 0x0a /* Public */,
+      22,    0,  149,    2, 0x0a /* Public */,
+      23,    0,  150,    2, 0x0a /* Public */,
+      24,    0,  151,    2, 0x0a /* Public */,
+      25,    3,  152,    2, 0x0a /* Public */,
+      30,    1,  159,    2, 0x0a /* Public */,
+      31,    0,  162,    2, 0x0a /* Public */,
+      32,    0,  163,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -142,6 +145,7 @@ static const uint qt_meta_data_MapEditor[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 26, 0x80000000 | 5, 0x80000000 | 7,   27,   28,   29,
     QMetaType::Void, 0x80000000 | 26,   27,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -175,6 +179,7 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 19: _t->AddBlock((*reinterpret_cast< Block*(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
         case 20: _t->RemoveBlock((*reinterpret_cast< Block*(*)>(_a[1]))); break;
         case 21: _t->onClickedChangeSize(); break;
+        case 22: _t->Undo(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -229,13 +234,13 @@ int MapEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 22)
+        if (_id < 23)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 22;
+        _id -= 23;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 22)
+        if (_id < 23)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 22;
+        _id -= 23;
     }
     return _id;
 }

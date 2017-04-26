@@ -1,5 +1,5 @@
 #include "MouseHandler.h"
-
+#include <algorithm>
 
 MouseHandler::MouseHandler():
 _mouseX(0), _mouseY(0)
@@ -77,9 +77,28 @@ bool MouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdap
 			}
 			}
 		}
+	}
+	case (osgGA::GUIEventAdapter::KEYDOWN) :
+	{
+		//undo/redo actions
+
+		if (ea.getUnmodifiedKey() == osgGA::GUIEventAdapter::KEY_Z && 
+			(ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
+			ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
+		{
+			emit Undo();
+		}
+		else if (ea.getUnmodifiedKey() == osgGA::GUIEventAdapter::KEY_Y &&
+			(ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
+			ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
+		{
+			emit Redo();
+		}
+
+		return true;
+	}
 	default:
 		return false;
-	}
 	}
 }
 

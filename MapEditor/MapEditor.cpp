@@ -118,6 +118,7 @@ void MapEditor::LoadXMLFile()
 	}
 	else
 	{
+		if (!_undoStack->isClean()) _undoStack->clear();
 		//чтение файла
 		QXmlStreamReader xmlReader(&file);
 
@@ -202,7 +203,6 @@ void MapEditor::SaveXMLFile()
 		xmlWriter.writeStartDocument();		//начало записи в файл
 
 		//запись карты в XML-файл
-		//ок
 		xmlWriter.writeStartElement("map");
 
 		xmlWriter.writeTextElement("sizeX", _map->GetSizeX_str());
@@ -249,6 +249,7 @@ void MapEditor::SaveXMLFile()
 		xmlWriter.writeEndElement();
 
 		xmlWriter.writeEndDocument();		//конец записи в файл
+		file.close();
 	}
 }
 
@@ -339,6 +340,8 @@ void MapEditor::renderScene()
 	connect(this, &MapEditor::SendBlock, mouseHandler, &MouseHandler::ReceiveBlock, Qt::DirectConnection);
 	connect(mouseHandler, &MouseHandler::AddableBlock, this, &MapEditor::AddBlock, Qt::DirectConnection);
 	connect(mouseHandler, &MouseHandler::RemovableBlock, this, &MapEditor::RemoveBlock, Qt::DirectConnection);
+	connect(mouseHandler, &MouseHandler::Undo, _undoStack, &QUndoStack::undo);
+	connect(mouseHandler, &MouseHandler::Redo, _undoStack, &QUndoStack::redo);
 
 	ui.radioBtnBushes->setChecked(true);
 	ui.radioBtnBushes->clicked();
@@ -399,4 +402,9 @@ void MapEditor::onClickedChangeSize()
 	if (!_undoStack->isClean()) _undoStack->clear();
 	std::lock_guard<std::mutex> lgMutex(_mutex);
 	_map->Resize(ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
+}
+
+void MapEditor::Undo()
+{
+	if (_undoStack->canUndo()) _undoStack->undo();
 }
