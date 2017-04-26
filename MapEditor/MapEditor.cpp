@@ -90,6 +90,7 @@ void MapEditor::NewMap()
 		_mapSizeX = newMapDialog.GetSizeX();
 		_mapSizeZ = newMapDialog.GetSizeZ();
 		createMap(_mapSizeX, _mapSizeZ);
+		if (!_undoStack->isClean()) _undoStack->clear();
 	}
 }
 
@@ -395,6 +396,7 @@ void MapEditor::RemoveBlock(Block* block)
 void MapEditor::onClickedChangeSize()
 {
 	//resize map
+	if (!_undoStack->isClean()) _undoStack->clear();
 	std::lock_guard<std::mutex> lgMutex(_mutex);
 	_map->Resize(ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
 }

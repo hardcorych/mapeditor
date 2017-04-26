@@ -88,12 +88,8 @@ std::pair<bool, Block*> MouseHandler::findBlockAndMap(const double x, const doub
 	if (!viewer->getSceneData())
 		return std::make_pair(false, nullptr);	//nothing to pick
 
-	double w(.025), h(.025);		//площадь "пирамиды"
-
-	osgUtil::PolytopeIntersector* picker =
-		new osgUtil::PolytopeIntersector(
-		osgUtil::Intersector::PROJECTION,
-		x - w, y - h, x + w, y + h);
+	osgUtil::LineSegmentIntersector* picker = new osgUtil::LineSegmentIntersector(
+		osgUtil::Intersector::PROJECTION, x, y);
 
 	osgUtil::IntersectionVisitor iv(picker);
 

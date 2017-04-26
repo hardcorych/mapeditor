@@ -32,7 +32,7 @@ private:
 	QUndoStack* _undoStack;
 	QUndoView* _undoView;
 
-	osg::ref_ptr<Map> _map = new Map(6,6);
+	osg::ref_ptr<Map> _map = new Map(10,10);
 	int _mapSizeX;
 	int _mapSizeZ;
 	std::mutex _mutex;

@@ -35,7 +35,6 @@ void Map::Set(int sizeX, int sizeZ)		//создание новой карты
 
 void Map::setBorder()
 {
-	//_step = 16;
 	//потайловое формирование границы
 	_sizeX = (_sizeX + 3)*_step;	//выделение места под рамку +3 по X
 	_sizeZ = (_sizeZ + 2)*_step;	//выделение места под рамку +2 по Z
@@ -44,7 +43,7 @@ void Map::setBorder()
 
 	//заполнение против часовой стрелки, начиная с нижней границы
 	//нижняя граница
-	int startBorder = -1 * _step;
+	//int startBorder = -1 * _step;
 
 	for (int x = -_step; x < _sizeX - _step; x += _step)
 	{
@@ -66,32 +65,9 @@ void Map::setBorder()
 	//левая граница
 	for (int z = _sizeZ - 3 * _step; z > -_step; z -= _step)
 	{
-		addChild(new Block(- _step, z, TexType::BORDER, FillType::FULL));
+		addChild(new Block(-_step, z, TexType::BORDER, FillType::FULL));
 	}
-	/*
-	for (int x = startBorder; x < _sizeX + startBorder; x += _step)
-	{
-		addChild(new Block(x, startBorder, TexType::BORDER, FillType::FULL));
-	}
-	//правая граница
-	for (int z = 0; z < _sizeZ + startBorder; z += _step)
-	{
-		for (int x = _sizeX + 3 * startBorder; x < _sizeX + startBorder; x += _step)
-		{
-			addChild(new Block(x, z, TexType::BORDER, FillType::FULL));
-		}
-	}
-	//верхняя граница
-	for (int x = _sizeX + 4 * startBorder; x >= startBorder; x -= _step)
-	{
-		addChild(new Block(x, _sizeZ + 2 * startBorder, TexType::BORDER, FillType::FULL));
-	}
-	//левая граница
-	for (int z = _sizeZ + 3 * startBorder; z > startBorder; z -= _step)
-	{
-		addChild(new Block(startBorder, z, TexType::BORDER, FillType::FULL));
-	}
-	*/
+
 	_sizeX -= 3 * _step;	//обратное преобразование к размеру игровой области
 	_sizeZ -= 2 * _step;
 }

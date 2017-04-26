@@ -25,15 +25,11 @@ public:
 
 	//resizing
 	void Resize(int sizeX, int sizeZ);
-	void SaveGameArea();
 
 private:
 	int _sizeX;
-	int _sizeZ;
-	unsigned int _size;		//размер карты. задается любыми цифрами, затем умножается на 16(перевод в блоки)	
+	int _sizeZ;	
 	int _step;		//шаг равный размеру одного блока/тайла
-
-	//std::map<std::pair<int, int>, osg::ref_ptr<Block>> blockMap;	//карта для расстановки пустых блоков при чтении карты с файла
 
 	void setBorder();
 	void setGameArea();
