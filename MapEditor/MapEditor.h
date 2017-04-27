@@ -66,6 +66,7 @@ private:
 
 	void AddBlock(Block* block, TexType type, FillType fType);
 	void RemoveBlock(Block* block);
+	void ReplaceBlock(Block* block, TexType type, FillType fType);
 
 	void onClickedChangeSize();
 

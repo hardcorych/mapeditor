@@ -2,6 +2,8 @@
 
 #include <Commands.h>
 
+//AddCommand
+
 AddCommand::AddCommand(Block* block, TexType type, FillType fType, QUndoCommand* parent) :
 QUndoCommand(parent)
 {
@@ -26,6 +28,36 @@ void AddCommand::redo()
 	_block->SetBlock(_type, _fType);
 }
 
+//ReplaceCommand
+
+ReplaceCommand::ReplaceCommand(Block* block, TexType type, FillType fType, QUndoCommand* parent) :
+QUndoCommand(parent)
+{
+	_block = block;
+	_type = type;
+	_fType = fType;
+	_typeOld = block->GetType();
+	_fTypeOld = block->GetFillType();
+}
+
+ReplaceCommand::~ReplaceCommand()
+{
+}
+
+void ReplaceCommand::undo()
+{
+	//replace with old
+	_block->SetBlock(_typeOld, _fTypeOld);
+}
+
+void ReplaceCommand::redo()
+{
+	//replace with new
+	_block->SetBlock(_type, _fType);
+}
+
+//RemoveCommand
+
 RemoveCommand::RemoveCommand(Block* block, QUndoCommand* parent) :
 QUndoCommand(parent)
 {
@@ -48,4 +80,26 @@ void RemoveCommand::redo()
 {
 	//remove
 	_block->SetBlock(TexType::EMPTY, FillType::FULL);
+}
+
+//ChangeSizeCommand
+
+ChangeSizeCommand::ChangeSizeCommand(QUndoCommand* parent) :
+QUndoCommand(parent)
+{
+
+}
+
+ChangeSizeCommand::~ChangeSizeCommand()
+{
+}
+
+void ChangeSizeCommand::undo()
+{
+	//set old map size
+}
+
+void ChangeSizeCommand::redo()
+{
+	//set new map size
 }

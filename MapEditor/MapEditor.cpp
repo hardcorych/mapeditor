@@ -1,7 +1,7 @@
 #include "MapEditor.h"
 #include <Viewer.h>
 #include <memory>
-#include <MouseHandler.h>
+#include <KeyboardMouseHandler.h>
 #include <osgViewer/ViewerEventHandlers>
 #include <qfiledialog.h>
 #include <qxmlstream.h>
@@ -121,6 +121,9 @@ void MapEditor::LoadXMLFile()
 		if (!_undoStack->isClean()) _undoStack->clear();
 		//чтение файла
 		QXmlStreamReader xmlReader(&file);
+
+		bool isWrongType = false;
+		bool isWrongFill = false;
 
 		while (!xmlReader.atEnd())
 		{
@@ -333,15 +336,16 @@ void MapEditor::renderScene()
 	viewer.setUpViewInWindow(xViewer, yViewer, wViewer, hViewer);
 
 	viewer.realize();
-	osg::ref_ptr<MouseHandler> mouseHandler = new MouseHandler;
-	viewer.addEventHandler(mouseHandler);
+	osg::ref_ptr<KeyboardMouseHandler> keyboardMouseHandler = new KeyboardMouseHandler;
+	viewer.addEventHandler(keyboardMouseHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 
-	connect(this, &MapEditor::SendBlock, mouseHandler, &MouseHandler::ReceiveBlock, Qt::DirectConnection);
-	connect(mouseHandler, &MouseHandler::AddableBlock, this, &MapEditor::AddBlock, Qt::DirectConnection);
-	connect(mouseHandler, &MouseHandler::RemovableBlock, this, &MapEditor::RemoveBlock, Qt::DirectConnection);
-	connect(mouseHandler, &MouseHandler::Undo, _undoStack, &QUndoStack::undo);
-	connect(mouseHandler, &MouseHandler::Redo, _undoStack, &QUndoStack::redo);
+	connect(this, &MapEditor::SendBlock, keyboardMouseHandler, &KeyboardMouseHandler::ReceiveBlock, Qt::DirectConnection);
+	connect(keyboardMouseHandler, &KeyboardMouseHandler::AddableBlock, this, &MapEditor::AddBlock, Qt::DirectConnection);
+	connect(keyboardMouseHandler, &KeyboardMouseHandler::RemovableBlock, this, &MapEditor::RemoveBlock, Qt::DirectConnection);
+	connect(keyboardMouseHandler, &KeyboardMouseHandler::ReplaceableBlock, this, &MapEditor::ReplaceBlock, Qt::DirectConnection);
+	connect(keyboardMouseHandler, &KeyboardMouseHandler::Undo, _undoStack, &QUndoStack::undo);
+	connect(keyboardMouseHandler, &KeyboardMouseHandler::Redo, _undoStack, &QUndoStack::redo);
 
 	ui.radioBtnBushes->setChecked(true);
 	ui.radioBtnBushes->clicked();
@@ -396,12 +400,19 @@ void MapEditor::RemoveBlock(Block* block)
 	_undoStack->push(removeCommand);
 }
 
+void MapEditor::ReplaceBlock(Block* block, TexType type, FillType fType)
+{
+	QUndoCommand* replaceCommand = new ReplaceCommand(block, type, fType);
+	_undoStack->push(replaceCommand);
+}
+
 void MapEditor::onClickedChangeSize()
 {
 	//resize map
 	if (!_undoStack->isClean()) _undoStack->clear();
 	std::lock_guard<std::mutex> lgMutex(_mutex);
 	_map->Resize(ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
+	//push undoStack
 }
 
 void MapEditor::Undo()
