@@ -37,6 +37,10 @@ private:
 	int _mapSizeZ;
 	std::mutex _mutex;
 
+	QString _filename;
+
+	//методы
+
 	void renderScene();
 	void createMap(int sizeX, int sizeZ);
 	void createUndoView();

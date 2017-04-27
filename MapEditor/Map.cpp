@@ -103,13 +103,16 @@ void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файл
 	}
 }
 
-void Map::Resize(int sizeX, int sizeZ)
+//void Map::Resize(int sizeX, int sizeZ)
+std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int sizeZ)
 {
 	//перевод размера в осгшные единицы
 	sizeX *= _step;
 	sizeZ *= _step;
 
 	bool isNewSizeSame = (_sizeX == sizeX && _sizeZ == sizeZ);
+
+	std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks;
 
 	if (!isNewSizeSame)
 	{
@@ -128,6 +131,7 @@ void Map::Resize(int sizeX, int sizeZ)
 			if (isBlockCoordsMoreThanSize || isBorderBlock)
 			{
 				//удаление блоков вне игровой области и рамки
+				deletedBlocks[std::make_pair(block->GetX(), block->GetZ())] = block;
 				removeChild(block);
 				i--;
 			}
@@ -158,9 +162,11 @@ void Map::Resize(int sizeX, int sizeZ)
 				}
 			}
 		}
+
 		//перевод координат в блоки для построения новой рамки
 		_sizeX /= _step;
 		_sizeZ /= _step;
 		setBorder();
 	}
+	return deletedBlocks;
 }

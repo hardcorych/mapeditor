@@ -84,10 +84,12 @@ void RemoveCommand::redo()
 
 //ChangeSizeCommand
 
-ChangeSizeCommand::ChangeSizeCommand(QUndoCommand* parent) :
+ChangeSizeCommand::ChangeSizeCommand(osg::ref_ptr<Map> map, int mapSizeX, int mapSizeZ, QUndoCommand* parent) :
 QUndoCommand(parent)
 {
-
+	_map = map;
+	_mapSizeX = mapSizeX;
+	_mapSizeZ = mapSizeZ;
 }
 
 ChangeSizeCommand::~ChangeSizeCommand()
@@ -96,10 +98,12 @@ ChangeSizeCommand::~ChangeSizeCommand()
 
 void ChangeSizeCommand::undo()
 {
-	//set old map size
+	//set old map
+	//restoration of deleted blocks
 }
 
 void ChangeSizeCommand::redo()
 {
 	//set new map size
+	deletedBlocks = _map->Resize(_mapSizeX, _mapSizeZ);
 }

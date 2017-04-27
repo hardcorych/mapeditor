@@ -24,7 +24,9 @@ public:
 	void AddBlock(osg::ref_ptr<Block> block, int x, int z);
 
 	//resizing
-	void Resize(int sizeX, int sizeZ);
+	//void Resize(int sizeX, int sizeZ);
+	//возвращает карту удаленных блоков
+	std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize(int sizeX, int sizeZ);
 
 private:
 	int _sizeX;

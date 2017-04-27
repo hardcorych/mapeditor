@@ -2,6 +2,7 @@
 #pragma once
 #include <qundostack.h>
 #include <Block.h>
+#include <Map.h>
 
 class AddCommand : public QUndoCommand	//команда добавления блока на карту
 {
@@ -53,11 +54,16 @@ private:
 class ChangeSizeCommand : public QUndoCommand	//команда добавления блока на карту
 {
 public:
-	ChangeSizeCommand(QUndoCommand* parent = 0);
+	ChangeSizeCommand(osg::ref_ptr<Map> map, int mapSizeX, int mapSizeZ, QUndoCommand* parent = 0);
 	~ChangeSizeCommand();
-
+	
 	void undo() override;
 	void redo() override;
 
 private:
+	osg::ref_ptr<Map> _map;
+	//osg::ref_ptr<Map> _mapOld;
+	int _mapSizeX;
+	int _mapSizeZ;
+	std::map<std::pair<int,int>, osg::ref_ptr<Block>> deletedBlocks;
 };
