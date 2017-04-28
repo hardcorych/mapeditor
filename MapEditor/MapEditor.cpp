@@ -409,10 +409,18 @@ void MapEditor::ReplaceBlock(Block* block, TexType type, FillType fType)
 void MapEditor::onClickedChangeSize()
 {
 	//resize map
-	if (!_undoStack->isClean()) _undoStack->clear();
-	std::lock_guard<std::mutex> lgMutex(_mutex);
-	_map->Resize(ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
-	//push undoStack
+	//if (!_undoStack->isClean()) _undoStack->clear();
+	int mapSizeX = ui.spnBoxSizeX->value();
+	int mapSizeZ = ui.spnBoxSizeZ->value();
+	if (!(mapSizeX == _map->GetSizeX() / 16 && mapSizeZ == _map->GetSizeZ() / 16))
+	{
+		std::lock_guard<std::mutex> lgMutex(_mutex);
+		//_map->Resize(ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
+		//push undoStack
+		QUndoCommand* changeSizeCommand = new ChangeSizeCommand(_map,
+			ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
+		_undoStack->push(changeSizeCommand);
+	}
 }
 
 void MapEditor::Undo()

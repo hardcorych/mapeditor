@@ -110,7 +110,7 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int si
 	sizeX *= _step;
 	sizeZ *= _step;
 
-	bool isNewSizeSame = (_sizeX == sizeX && _sizeZ == sizeZ);
+	bool isNewSizeSame = (_sizeX == sizeX && _sizeZ == sizeZ);	//лишн€€ проверка?
 
 	std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks;
 
@@ -131,7 +131,8 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int si
 			if (isBlockCoordsMoreThanSize || isBorderBlock)
 			{
 				//удаление блоков вне игровой области и рамки
-				deletedBlocks[std::make_pair(block->GetX(), block->GetZ())] = block;
+				if (!isBorderBlock)		//сохран€ем, если не граничный блок
+					deletedBlocks[std::make_pair(block->GetX(), block->GetZ())] = block;
 				removeChild(block);
 				i--;
 			}
@@ -170,3 +171,65 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int si
 	}
 	return deletedBlocks;
 }
+
+void Map::Restore(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks, int sizeX, int sizeZ)
+{
+	//функци€ дл€ удалени€ рамки?
+
+	_sizeX = sizeX;
+	_sizeZ = sizeZ;
+
+	Block* block = nullptr;
+
+	bool isBorderBlock;
+
+	for (int i = 0; i < getNumChildren(); i++)
+	{
+		block = dynamic_cast<Block*>(getChild(i));
+
+		isBorderBlock = (block->GetType() == TexType::BORDER);
+
+		//удаление блоков вне игровой области и рамки
+		if (isBorderBlock)
+		{
+			removeChild(block);
+			i--;
+		}
+	}
+
+	//if (!deletedBlocks.empty())		//!!
+	{
+		std::map<std::pair<int, int>, osg::ref_ptr<Block>>::iterator it;
+		for (it = deletedBlocks.begin(); it != deletedBlocks.end(); ++it)
+		{
+			addChild(it->second);
+		}
+	}
+
+	_sizeX /= _step;
+	_sizeZ /= _step;
+	setBorder();
+}
+
+/*
+osg::ref_ptr<Map> Map::operator=(Map& map)
+{
+	if (this != map)
+	{
+		_sizeX = map.GetSizeX();
+		_sizeZ = map->GetSizeZ();
+
+		for (int i = 0; i < getNumChildren(); i++)
+		{
+			removeChild(getChild(i));
+		}
+
+		for (int i = 0; i < map->getNumChildren(); i++)
+		{
+			addChild(map->getChild(i));
+		}
+	}
+
+	return this;
+}
+*/

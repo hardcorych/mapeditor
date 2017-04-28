@@ -3,6 +3,7 @@
 #include <qundostack.h>
 #include <Block.h>
 #include <Map.h>
+#include <mutex>
 
 class AddCommand : public QUndoCommand	//команда добавления блока на карту
 {
@@ -62,8 +63,11 @@ public:
 
 private:
 	osg::ref_ptr<Map> _map;
-	//osg::ref_ptr<Map> _mapOld;
+	Map _mapOld;
 	int _mapSizeX;
 	int _mapSizeZ;
+	int _mapSizeXOld;
+	int _mapSizeZOld;
 	std::map<std::pair<int,int>, osg::ref_ptr<Block>> deletedBlocks;
+	std::mutex _mutex;
 };
