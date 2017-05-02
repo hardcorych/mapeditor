@@ -113,15 +113,18 @@ void MapEditor::LoadXMLFile()
 
 	if (!file.open(QIODevice::ReadOnly | QFile::Text))
 	{
-		//обработка ошибки
-		QMessageBox::warning(this, "file error",
-			"file can't be opened", QMessageBox::Ok);
+		//обработка ошибки?
+		//QMessageBox::warning(this, "file error", "file can't be opened", QMessageBox::Ok);
 	}
 	else
 	{
 		if (!_undoStack->isClean()) _undoStack->clear();
 		//чтение файла
 		QXmlStreamReader xmlReader(&file);
+
+		//для вывода ошибки
+		bool isError = false;
+		QString errorText;
 
 		bool isWrongType = false;
 		bool isWrongFill = false;
@@ -133,11 +136,55 @@ void MapEditor::LoadXMLFile()
 				QString element = xmlReader.name().toString();
 				if (element == "sizeX")
 				{
-					_mapSizeX = xmlReader.readElementText().toInt()/16;	//получаем размер в блоках
+					_mapSizeX = xmlReader.readElementText().toInt();
+					if (_mapSizeX < 0)
+					{
+						isError = true;
+						errorText = "Отрицательный размер карты по X";
+						break;
+					}
+					if (_mapSizeX % 16 != 0)
+					{
+						isError = true;
+						errorText = "Некорректный размер карты по X: не кратен 16";
+						break;
+					}
+					if (_mapSizeX < ui.spnBoxSizeX->minimum() * 16 ||
+						_mapSizeX > ui.spnBoxSizeX->maximum() * 16)
+					{
+						isError = true;
+						errorText = "Размер карты может быть от " + QString::number(ui.spnBoxSizeX->minimum()) +
+							"до " + QString::number(ui.spnBoxSizeX->maximum()) + " блоков";
+						break;
+					}
+					//получаем размер в блоках
+					_mapSizeX /= 16;
 				}
 				else if (element == "sizeZ")
 				{
-					_mapSizeZ = xmlReader.readElementText().toInt()/16;	//получаем размер в блоках
+					_mapSizeZ = xmlReader.readElementText().toInt();
+					if (_mapSizeZ < 0)
+					{
+						isError = true;
+						errorText = "Отрицательный размер карты по Z";
+						break;
+					}
+					if (_mapSizeZ % 16 != 0)
+					{
+						isError = true;
+						errorText = "Некорректный размер карты по Z: не кратен 16";
+						break;
+					}
+					if (_mapSizeZ < ui.spnBoxSizeZ->minimum() * 16 ||
+						_mapSizeZ > ui.spnBoxSizeZ->maximum() * 16)
+					{
+						isError = true;
+						errorText = "Размер карты может быть от " + QString::number(ui.spnBoxSizeZ->minimum()) +
+							"до " + QString::number(ui.spnBoxSizeZ->maximum()) + " блоков";
+						break;
+					}
+					//получаем размер в блоках
+					_mapSizeZ /= 16;
 					createMap(_mapSizeX, _mapSizeZ);
 				}
 				else if (element == "block")
@@ -147,6 +194,7 @@ void MapEditor::LoadXMLFile()
 					int x, z;
 					TexType texType;
 					FillType fillType;
+
 					for each (const QXmlStreamAttribute &attr in xmlReader.attributes())
 					{
 						QString attrStr = attr.name().toString();
@@ -181,6 +229,12 @@ void MapEditor::LoadXMLFile()
 			}
 		}
 		file.close();
+		
+		//сообщение об ошибке
+		if (isError)
+		{
+			QMessageBox::critical(this, "File error", errorText, QMessageBox::Ok);
+		}
 	}
 }
 
