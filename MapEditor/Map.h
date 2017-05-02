@@ -3,6 +3,7 @@
 #include <osg/Group>
 #include <Block.h>
 #include <qstring.h>
+#include <mutex>
 
 //вывод в XML-файл по тайлам
 
@@ -32,11 +33,14 @@ public:
 	std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize(int sizeX, int sizeZ);
 
 	//osg::ref_ptr<Map> operator=(Map map);
+	std::mutex& GetMutex() { return std::ref(_mutex); }
 
 private:
 	int _sizeX;
 	int _sizeZ;	
 	int _step;		//шаг равный размеру одного блока/тайла
+
+	std::mutex _mutex;
 
 	void setBorder();
 	void setGameArea();

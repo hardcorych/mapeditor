@@ -4,18 +4,19 @@
 #include <Block.h>
 #include <Map.h>
 #include <mutex>
+#include <MapEditor.h>
 
 class AddCommand : public QUndoCommand	//команда добавления блока на карту
 {
 public:
-	AddCommand(Block* block, TexType type, FillType fType, QUndoCommand* parent = 0);
+	AddCommand(osg::ref_ptr<Block> block, TexType type, FillType fType, QUndoCommand* parent = 0);
 	~AddCommand();
 
 	void undo() override;
 	void redo() override;
 
 private:
-	Block* _block = nullptr;
+	osg::ref_ptr<Block> _block = nullptr;
 	TexType _type;
 	FillType _fType;
 };
@@ -23,14 +24,14 @@ private:
 class ReplaceCommand : public QUndoCommand	//команда замены существующего блока
 {
 public:
-	ReplaceCommand(Block* block, TexType type, FillType fType, QUndoCommand* parent = 0);
+	ReplaceCommand(osg::ref_ptr<Block> block, TexType type, FillType fType, QUndoCommand* parent = 0);
 	~ReplaceCommand();
 
 	void undo() override;
 	void redo() override;
 
 private:
-	Block* _block = nullptr;
+	osg::ref_ptr<Block> _block = nullptr;
 	TexType _type;
 	TexType _typeOld;
 	FillType _fType;
@@ -40,19 +41,19 @@ private:
 class RemoveCommand : public QUndoCommand	//команда удаления блока с карты
 {
 public:
-	RemoveCommand(Block* block, QUndoCommand* parent = 0);
+	RemoveCommand(osg::ref_ptr<Block> block, QUndoCommand* parent = 0);
 	~RemoveCommand();
 
 	void undo() override;
 	void redo() override;
 
 private:
-	Block* _block = nullptr;
+	osg::ref_ptr<Block> _block = nullptr;
 	TexType _type;
 	FillType _fType;
 };
 
-class ChangeSizeCommand : public QUndoCommand	//команда добавления блока на карту
+class ChangeSizeCommand : public QUndoCommand	//команда смены размера карты
 {
 public:
 	ChangeSizeCommand(osg::ref_ptr<Map> map, int mapSizeX, int mapSizeZ, QUndoCommand* parent = 0);
@@ -69,5 +70,4 @@ private:
 	int _mapSizeXOld;
 	int _mapSizeZOld;
 	std::map<std::pair<int,int>, osg::ref_ptr<Block>> deletedBlocks;
-	std::mutex _mutex;
 };

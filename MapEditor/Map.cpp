@@ -86,12 +86,18 @@ void Map::setGameArea()
 
 void Map::Remove()		//удаление карты
 {
+	std::lock_guard<std::mutex> lgMutex(_mutex);
+
 	removeChildren(0, getNumChildren());
 }
 
 void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файла
 {
-	Block* blockOld = nullptr;
+	std::lock_guard<std::mutex> lgMutex(_mutex);
+
+	//Block* blockOld = nullptr;
+	osg::ref_ptr<Block> blockOld = nullptr;
+
 	//поиск блока, который нужно заменить
 	for (int i = 0; i < getNumChildren(); i++)
 	{
@@ -106,6 +112,8 @@ void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файл
 //void Map::Resize(int sizeX, int sizeZ)
 std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int sizeZ)
 {
+	std::lock_guard<std::mutex> lgMutex(_mutex);
+
 	//перевод размера в осгшные единицы
 	sizeX *= _step;
 	sizeZ *= _step;
@@ -116,7 +124,8 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int si
 
 	if (!isNewSizeSame)
 	{
-		Block* block = nullptr;
+		//Block* block = nullptr;
+		osg::ref_ptr<Block> block = nullptr;
 
 		bool isBlockCoordsMoreThanSize;
 		bool isBorderBlock;
@@ -174,12 +183,15 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int si
 
 void Map::Restore(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks, int sizeX, int sizeZ)
 {
+	std::lock_guard<std::mutex> lgMutex(_mutex);
+
 	//функция для удаления рамки?
 
 	_sizeX = sizeX;
 	_sizeZ = sizeZ;
 
-	Block* block = nullptr;
+	//Block* block = nullptr;
+	osg::ref_ptr<Block> block = nullptr;
 
 	bool isBorderBlock;
 
@@ -197,7 +209,7 @@ void Map::Restore(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBloc
 		}
 	}
 
-	//if (!deletedBlocks.empty())		//!!
+	if (!deletedBlocks.empty())		//!!
 	{
 		std::map<std::pair<int, int>, osg::ref_ptr<Block>>::iterator it;
 		for (it = deletedBlocks.begin(); it != deletedBlocks.end(); ++it)

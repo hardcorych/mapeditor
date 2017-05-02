@@ -24,12 +24,12 @@ protected:
 	TexType _type;
 	FillType _fType;
 
-	std::pair<bool, Block*> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);
+	std::pair<bool, osg::ref_ptr<Block>> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);
 
 signals:
-	void AddableBlock(Block* block, TexType type, FillType fType);
-	void RemovableBlock(Block* block);
-	void ReplaceableBlock(Block* block, TexType type, FillType fType);
+	void AddableBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
+	void RemovableBlock(osg::ref_ptr<Block> block);
+	void ReplaceableBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
 	void Undo();
 	void Redo();
 

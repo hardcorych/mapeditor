@@ -1,5 +1,6 @@
 #include "KeyboardMouseHandler.h"
 #include <algorithm>
+#include <memory>
 
 KeyboardMouseHandler::KeyboardMouseHandler():
 _mouseX(0), _mouseY(0)
@@ -13,6 +14,7 @@ KeyboardMouseHandler::~KeyboardMouseHandler()
 bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
 {
 	osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
+
 	if (!viewer) return false;
 
 	switch (ea.getEventType())	//получаем событие
@@ -37,7 +39,7 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
 				_mouseX = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
 				_mouseY = ea.getYnormalized();
 
-				std::pair<bool, Block*> validBlock = findBlockAndMap(_mouseX, _mouseY, viewer);
+				std::pair<bool, osg::ref_ptr<Block>> validBlock = findBlockAndMap(_mouseX, _mouseY, viewer);
 				bool isValid = std::get<0>(validBlock);
 				if (isValid)
 				{
@@ -57,6 +59,7 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
 					}
 					return true;	//true, чтобы обработать событие
 				}
+				return false;
 			}
 			case(osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON) :
 			{
@@ -64,7 +67,7 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
 				_mouseX = ea.getXnormalized();	//нормализация экранных координат для polytope intersector
 				_mouseY = ea.getYnormalized();
 
-				std::pair<bool, Block*> validBlock = findBlockAndMap(_mouseX, _mouseY, viewer);
+				std::pair<bool, osg::ref_ptr<Block>> validBlock = findBlockAndMap(_mouseX, _mouseY, viewer);
 				bool isValid = std::get<0>(validBlock);
 				if (isValid)
 				{
@@ -79,6 +82,7 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
 					}
 					return true;	//true, чтобы обработать событие
 				}
+				return false;
 			}
 			}
 		}
@@ -104,17 +108,17 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
 
 		return false;
 	}
-	default:
-		return false;
+	//default:
+		//return false;
 	}
 }
 
-std::pair<bool, Block*> KeyboardMouseHandler::findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer)
+std::pair<bool, osg::ref_ptr<Block>> KeyboardMouseHandler::findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer)
 {
 	if (!viewer->getSceneData())
 		return std::make_pair(false, nullptr);	//nothing to pick
 
-	osgUtil::LineSegmentIntersector* picker = new osgUtil::LineSegmentIntersector(
+	osg::ref_ptr<osgUtil::LineSegmentIntersector> picker = new osgUtil::LineSegmentIntersector(
 		osgUtil::Intersector::PROJECTION, x, y);
 
 	osgUtil::IntersectionVisitor iv(picker);
@@ -125,8 +129,10 @@ std::pair<bool, Block*> KeyboardMouseHandler::findBlockAndMap(const double x, co
 	osg::ref_ptr<osg::Node> selectedMap = nullptr;
 
 	//получить карту и блок
-	Map* map = nullptr;
-	Block* block = nullptr;
+	//Map* map = nullptr;
+	//Block* block = nullptr;
+	osg::ref_ptr<Map> map = nullptr;
+	osg::ref_ptr<Block> block = nullptr;
 
 	if (picker->containsIntersections())
 	{

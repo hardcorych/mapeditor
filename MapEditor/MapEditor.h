@@ -68,13 +68,15 @@ private:
 	void LoadXMLFile();
 	void SaveXMLFile();
 
-	void AddBlock(Block* block, TexType type, FillType fType);
-	void RemoveBlock(Block* block);
-	void ReplaceBlock(Block* block, TexType type, FillType fType);
+	void AddBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
+	void RemoveBlock(osg::ref_ptr<Block> block);
+	void ReplaceBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
 
 	void onClickedChangeSize();
 
 	void Undo();
+
+	std::mutex& GetMutex()	{ return _mutex; }
 
 signals:
 	void QuitViewer();

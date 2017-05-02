@@ -96,7 +96,7 @@ void MapEditor::NewMap()
 
 void MapEditor::createMap(int sizeX, int sizeZ)
 {
-	std::lock_guard <std::mutex> lgMutex(_mutex);	//для избежания конфликта с перерисовкой
+	//std::lock_guard <std::mutex> lgMutex(_mutex);	//для избежания конфликта с перерисовкой
 	_map->Remove();
 	_map->Set(sizeX, sizeZ);
 }
@@ -176,7 +176,7 @@ void MapEditor::LoadXMLFile()
 					z = xmlReader.readElementText().toInt()-16;		//-16 для согласования
 
 					{
-						std::lock_guard<std::mutex> lgMutex(_mutex);
+						//std::lock_guard<std::mutex> lgMutex(_mutex);
 						_map->AddBlock(new Block(x, z, texType, fillType), x, z);
 					}
 				}
@@ -211,8 +211,11 @@ void MapEditor::SaveXMLFile()
 		xmlWriter.writeTextElement("sizeX", _map->GetSizeX_str());
 		xmlWriter.writeTextElement("sizeZ", _map->GetSizeZ_str());
 
-		Block* block = nullptr;
-		Tile* tile = nullptr;
+		//Block* block = nullptr;
+		//Tile* tile = nullptr;
+		osg::ref_ptr<Block> block = nullptr;
+		osg::ref_ptr<Tile> tile = nullptr;
+		
 		std::pair<QString, QString> bTexFill;	//тип текстуры и заполнения блока
 
 		for (int blockIndex = 0; blockIndex < _map->getNumChildren(); blockIndex++)
@@ -336,6 +339,7 @@ void MapEditor::renderScene()
 	viewer.setUpViewInWindow(xViewer, yViewer, wViewer, hViewer);
 
 	viewer.realize();
+	
 	osg::ref_ptr<KeyboardMouseHandler> keyboardMouseHandler = new KeyboardMouseHandler;
 	viewer.addEventHandler(keyboardMouseHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
@@ -364,7 +368,8 @@ void MapEditor::renderScene()
 
 	while (!viewer.done())
 	{
-		std::lock_guard<std::mutex> lgMutex(_mutex);	//для избежания конфликта при создании новой карты
+		//std::lock_guard<std::mutex> lgMutex(_mutex);	//для избежания конфликта при создании новой карты
+		std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
 		viewer.frame();
 	}
 	
@@ -388,19 +393,19 @@ void MapEditor::createUndoRedoActions()
 	_redoAct->setShortcuts(QKeySequence::Redo);
 }
 
-void MapEditor::AddBlock(Block* block, TexType type, FillType fType)
+void MapEditor::AddBlock(osg::ref_ptr<Block> block, TexType type, FillType fType)
 {
 	QUndoCommand* addCommand = new AddCommand(block, type, fType);
 	_undoStack->push(addCommand);
 }
 
-void MapEditor::RemoveBlock(Block* block)
+void MapEditor::RemoveBlock(osg::ref_ptr<Block> block)
 {
 	QUndoCommand* removeCommand = new RemoveCommand(block);
 	_undoStack->push(removeCommand);
 }
 
-void MapEditor::ReplaceBlock(Block* block, TexType type, FillType fType)
+void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, TexType type, FillType fType)
 {
 	QUndoCommand* replaceCommand = new ReplaceCommand(block, type, fType);
 	_undoStack->push(replaceCommand);
@@ -414,7 +419,7 @@ void MapEditor::onClickedChangeSize()
 	int mapSizeZ = ui.spnBoxSizeZ->value();
 	if (!(mapSizeX == _map->GetSizeX() / 16 && mapSizeZ == _map->GetSizeZ() / 16))
 	{
-		std::lock_guard<std::mutex> lgMutex(_mutex);
+		//std::lock_guard<std::mutex> lgMutex(_mutex);
 		//_map->Resize(ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
 		//push undoStack
 		QUndoCommand* changeSizeCommand = new ChangeSizeCommand(_map,

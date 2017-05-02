@@ -4,7 +4,7 @@
 
 //AddCommand
 
-AddCommand::AddCommand(Block* block, TexType type, FillType fType, QUndoCommand* parent) :
+AddCommand::AddCommand(osg::ref_ptr<Block> block, TexType type, FillType fType, QUndoCommand* parent) :
 QUndoCommand(parent)
 {
 	_block = block;
@@ -30,7 +30,7 @@ void AddCommand::redo()
 
 //ReplaceCommand
 
-ReplaceCommand::ReplaceCommand(Block* block, TexType type, FillType fType, QUndoCommand* parent) :
+ReplaceCommand::ReplaceCommand(osg::ref_ptr<Block> block, TexType type, FillType fType, QUndoCommand* parent) :
 QUndoCommand(parent)
 {
 	_block = block;
@@ -58,7 +58,7 @@ void ReplaceCommand::redo()
 
 //RemoveCommand
 
-RemoveCommand::RemoveCommand(Block* block, QUndoCommand* parent) :
+RemoveCommand::RemoveCommand(osg::ref_ptr<Block> block, QUndoCommand* parent) :
 QUndoCommand(parent)
 {
 	_block = block;
@@ -102,19 +102,14 @@ void ChangeSizeCommand::undo()
 {
 	//set old map
 	//restoration of deleted blocks
-	//std::lock_guard<std::mutex> lgMutex(_mutex);
+	//!!!
 	_map->Restore(deletedBlocks, _mapSizeXOld, _mapSizeZOld);
-	//_map = _mapOld;
-	//_mapSizeX = _mapSizeXOld/16;
-	//_mapSizeZ = _mapSizeZOld/16;
-	//_mapSizeX /= 16;
-	//_mapSizeZ /= 16;
 }
 
 void ChangeSizeCommand::redo()
 {
 	//set new map size
-	//std::lock_guard<std::mutex> lgMutex(_mutex);
+	if (!deletedBlocks.empty()) deletedBlocks.clear();
 	deletedBlocks = _map->Resize(_mapSizeX, _mapSizeZ);
 	//_mapOld = _map.get();
 	//_map->Resize(_mapSizeX, _mapSizeZ);

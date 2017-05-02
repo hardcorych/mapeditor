@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_KeyboardMouseHandler_t {
     QByteArrayData data[15];
-    char stringdata0[140];
+    char stringdata0[153];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,24 +34,25 @@ static const qt_meta_stringdata_KeyboardMouseHandler_t qt_meta_stringdata_Keyboa
 QT_MOC_LITERAL(0, 0, 20), // "KeyboardMouseHandler"
 QT_MOC_LITERAL(1, 21, 12), // "AddableBlock"
 QT_MOC_LITERAL(2, 34, 0), // ""
-QT_MOC_LITERAL(3, 35, 6), // "Block*"
-QT_MOC_LITERAL(4, 42, 5), // "block"
-QT_MOC_LITERAL(5, 48, 7), // "TexType"
-QT_MOC_LITERAL(6, 56, 4), // "type"
-QT_MOC_LITERAL(7, 61, 8), // "FillType"
-QT_MOC_LITERAL(8, 70, 5), // "fType"
-QT_MOC_LITERAL(9, 76, 14), // "RemovableBlock"
-QT_MOC_LITERAL(10, 91, 16), // "ReplaceableBlock"
-QT_MOC_LITERAL(11, 108, 4), // "Undo"
-QT_MOC_LITERAL(12, 113, 4), // "Redo"
-QT_MOC_LITERAL(13, 118, 12), // "ReceiveBlock"
-QT_MOC_LITERAL(14, 131, 8) // "fillType"
+QT_MOC_LITERAL(3, 35, 19), // "osg::ref_ptr<Block>"
+QT_MOC_LITERAL(4, 55, 5), // "block"
+QT_MOC_LITERAL(5, 61, 7), // "TexType"
+QT_MOC_LITERAL(6, 69, 4), // "type"
+QT_MOC_LITERAL(7, 74, 8), // "FillType"
+QT_MOC_LITERAL(8, 83, 5), // "fType"
+QT_MOC_LITERAL(9, 89, 14), // "RemovableBlock"
+QT_MOC_LITERAL(10, 104, 16), // "ReplaceableBlock"
+QT_MOC_LITERAL(11, 121, 4), // "Undo"
+QT_MOC_LITERAL(12, 126, 4), // "Redo"
+QT_MOC_LITERAL(13, 131, 12), // "ReceiveBlock"
+QT_MOC_LITERAL(14, 144, 8) // "fillType"
 
     },
     "KeyboardMouseHandler\0AddableBlock\0\0"
-    "Block*\0block\0TexType\0type\0FillType\0"
-    "fType\0RemovableBlock\0ReplaceableBlock\0"
-    "Undo\0Redo\0ReceiveBlock\0fillType"
+    "osg::ref_ptr<Block>\0block\0TexType\0"
+    "type\0FillType\0fType\0RemovableBlock\0"
+    "ReplaceableBlock\0Undo\0Redo\0ReceiveBlock\0"
+    "fillType"
 };
 #undef QT_MOC_LITERAL
 
@@ -97,9 +98,9 @@ void KeyboardMouseHandler::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         KeyboardMouseHandler *_t = static_cast<KeyboardMouseHandler *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->AddableBlock((*reinterpret_cast< Block*(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
-        case 1: _t->RemovableBlock((*reinterpret_cast< Block*(*)>(_a[1]))); break;
-        case 2: _t->ReplaceableBlock((*reinterpret_cast< Block*(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
+        case 0: _t->AddableBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
+        case 1: _t->RemovableBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1]))); break;
+        case 2: _t->ReplaceableBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
         case 3: _t->Undo(); break;
         case 4: _t->Redo(); break;
         case 5: _t->ReceiveBlock((*reinterpret_cast< TexType(*)>(_a[1])),(*reinterpret_cast< FillType(*)>(_a[2]))); break;
@@ -109,21 +110,21 @@ void KeyboardMouseHandler::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (KeyboardMouseHandler::*_t)(Block * , TexType , FillType );
+            typedef void (KeyboardMouseHandler::*_t)(osg::ref_ptr<Block> , TexType , FillType );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&KeyboardMouseHandler::AddableBlock)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (KeyboardMouseHandler::*_t)(Block * );
+            typedef void (KeyboardMouseHandler::*_t)(osg::ref_ptr<Block> );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&KeyboardMouseHandler::RemovableBlock)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (KeyboardMouseHandler::*_t)(Block * , TexType , FillType );
+            typedef void (KeyboardMouseHandler::*_t)(osg::ref_ptr<Block> , TexType , FillType );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&KeyboardMouseHandler::ReplaceableBlock)) {
                 *result = 2;
                 return;
@@ -185,21 +186,21 @@ int KeyboardMouseHandler::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void KeyboardMouseHandler::AddableBlock(Block * _t1, TexType _t2, FillType _t3)
+void KeyboardMouseHandler::AddableBlock(osg::ref_ptr<Block> _t1, TexType _t2, FillType _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
-void KeyboardMouseHandler::RemovableBlock(Block * _t1)
+void KeyboardMouseHandler::RemovableBlock(osg::ref_ptr<Block> _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void KeyboardMouseHandler::ReplaceableBlock(Block * _t1, TexType _t2, FillType _t3)
+void KeyboardMouseHandler::ReplaceableBlock(osg::ref_ptr<Block> _t1, TexType _t2, FillType _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
