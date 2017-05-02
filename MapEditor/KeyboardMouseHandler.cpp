@@ -46,7 +46,6 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
 					osg::ref_ptr<Block> block = std::get<1>(validBlock);
 					if (block->GetType() != TexType::BORDER)
 					{
-						//block->SetBlock(_type, _fType);		//add command
 						//emit to add command
 						if (block->GetType() == TexType::EMPTY)
 						{
@@ -76,7 +75,6 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
 					if (blockType != TexType::BORDER &&
 						blockType != TexType::EMPTY)
 					{
-						//block->SetBlock(TexType::EMPTY, FillType::FULL);		//delete command
 						//emit to delete command
 						emit RemovableBlock(block);
 					}
@@ -108,8 +106,8 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
 
 		return false;
 	}
-	//default:
-		//return false;
+	default:
+		return false;
 	}
 }
 
@@ -129,8 +127,6 @@ std::pair<bool, osg::ref_ptr<Block>> KeyboardMouseHandler::findBlockAndMap(const
 	osg::ref_ptr<osg::Node> selectedMap = nullptr;
 
 	//получить карту и блок
-	//Map* map = nullptr;
-	//Block* block = nullptr;
 	osg::ref_ptr<Map> map = nullptr;
 	osg::ref_ptr<Block> block = nullptr;
 

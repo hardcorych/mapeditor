@@ -64,7 +64,7 @@ public:
 
 private:
 	osg::ref_ptr<Map> _map;
-	Map _mapOld;
+
 	int _mapSizeX;
 	int _mapSizeZ;
 	int _mapSizeXOld;

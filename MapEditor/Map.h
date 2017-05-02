@@ -23,16 +23,13 @@ public:
 	void Set(int sizeX, int sizeZ);
 	void Remove();
 	void AddBlock(osg::ref_ptr<Block> block, int x, int z);
-
-	//восстановление прежней карты после отката ресайзинга
-	void Restore(std::map<std::pair<int, int>, osg::ref_ptr<Block>>, int sizeX, int sizeZ);	
+	void RemoveBlock(int x, int z);
 
 	//resizing
-	//void Resize(int sizeX, int sizeZ);
-	//возвращает карту удаленных блоков
-	std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize(int sizeX, int sizeZ);
-
-	//osg::ref_ptr<Map> operator=(Map map);
+	std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize
+		(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
+		int sizeX, int sizeZ);
+	
 	std::mutex& GetMutex() { return std::ref(_mutex); }
 
 private:

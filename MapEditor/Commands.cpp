@@ -90,8 +90,8 @@ QUndoCommand(parent)
 	_map = map;
 	_mapSizeX = mapSizeX;
 	_mapSizeZ = mapSizeZ;
-	_mapSizeXOld = _map->GetSizeX();
-	_mapSizeZOld = _map->GetSizeZ();
+	_mapSizeXOld = _map->GetSizeX()/16;
+	_mapSizeZOld = _map->GetSizeZ()/16;
 }
 
 ChangeSizeCommand::~ChangeSizeCommand()
@@ -101,16 +101,11 @@ ChangeSizeCommand::~ChangeSizeCommand()
 void ChangeSizeCommand::undo()
 {
 	//set old map
-	//restoration of deleted blocks
-	//!!!
-	_map->Restore(deletedBlocks, _mapSizeXOld, _mapSizeZOld);
+	deletedBlocks = _map->Resize(deletedBlocks, _mapSizeXOld, _mapSizeZOld);
 }
 
 void ChangeSizeCommand::redo()
 {
 	//set new map size
-	if (!deletedBlocks.empty()) deletedBlocks.clear();
-	deletedBlocks = _map->Resize(_mapSizeX, _mapSizeZ);
-	//_mapOld = _map.get();
-	//_map->Resize(_mapSizeX, _mapSizeZ);
+	deletedBlocks = _map->Resize(deletedBlocks, _mapSizeX, _mapSizeZ);
 }

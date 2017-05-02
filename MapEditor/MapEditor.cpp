@@ -96,13 +96,14 @@ void MapEditor::NewMap()
 
 void MapEditor::createMap(int sizeX, int sizeZ)
 {
-	//std::lock_guard <std::mutex> lgMutex(_mutex);	//для избежания конфликта с перерисовкой
 	_map->Remove();
 	_map->Set(sizeX, sizeZ);
 }
 
 void MapEditor::LoadXMLFile()
 {
+	//СДЕЛАТЬ ОБРАБОТКУ ОШИБОК
+
 	//диалог выбора для открытия файла
 	QString filename = QFileDialog::getOpenFileName(
 		this, tr("Open XML"), ".",
@@ -175,10 +176,7 @@ void MapEditor::LoadXMLFile()
 					xmlReader.readNextStartElement();
 					z = xmlReader.readElementText().toInt()-16;		//-16 для согласования
 
-					{
-						//std::lock_guard<std::mutex> lgMutex(_mutex);
-						_map->AddBlock(new Block(x, z, texType, fillType), x, z);
-					}
+					_map->AddBlock(new Block(x, z, texType, fillType), x, z);
 				}
 			}
 		}
@@ -211,8 +209,6 @@ void MapEditor::SaveXMLFile()
 		xmlWriter.writeTextElement("sizeX", _map->GetSizeX_str());
 		xmlWriter.writeTextElement("sizeZ", _map->GetSizeZ_str());
 
-		//Block* block = nullptr;
-		//Tile* tile = nullptr;
 		osg::ref_ptr<Block> block = nullptr;
 		osg::ref_ptr<Tile> tile = nullptr;
 		
@@ -419,8 +415,6 @@ void MapEditor::onClickedChangeSize()
 	int mapSizeZ = ui.spnBoxSizeZ->value();
 	if (!(mapSizeX == _map->GetSizeX() / 16 && mapSizeZ == _map->GetSizeZ() / 16))
 	{
-		//std::lock_guard<std::mutex> lgMutex(_mutex);
-		//_map->Resize(ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
 		//push undoStack
 		QUndoCommand* changeSizeCommand = new ChangeSizeCommand(_map,
 			ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());

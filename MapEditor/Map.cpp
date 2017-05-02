@@ -95,7 +95,6 @@ void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файл
 {
 	std::lock_guard<std::mutex> lgMutex(_mutex);
 
-	//Block* blockOld = nullptr;
 	osg::ref_ptr<Block> blockOld = nullptr;
 
 	//поиск блока, который нужно заменить
@@ -109,8 +108,25 @@ void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файл
 	}
 }
 
-//void Map::Resize(int sizeX, int sizeZ)
-std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int sizeZ)
+void Map::RemoveBlock(int x, int z)
+{
+	std::lock_guard<std::mutex> lgMutex(_mutex);
+
+	osg::ref_ptr<Block> block = nullptr;
+
+	for (int i = 0; i < getNumChildren(); i++)
+	{
+		block = dynamic_cast<Block*>(getChild(i));
+
+		if (block->GetX() == x && block->GetZ() == z)
+		{
+			replaceChild(block, new Block(x, z, TexType::EMPTY, FillType::FULL));
+		}
+	}
+}
+
+std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
+	int sizeX, int sizeZ)
 {
 	std::lock_guard<std::mutex> lgMutex(_mutex);
 
@@ -157,18 +173,29 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int si
 		if (isNewSizeGreater)
 		{
 			//заполнение свободной области пустыми блоками
-			for (int z = oldSizeZ; z < _sizeZ; z += _step)
+			if (!deletedBlocksOld.empty())
 			{
-				for (int x = 0; x < _sizeX; x += _step)
+				std::map<std::pair<int, int>, osg::ref_ptr<Block>>::iterator it;
+				for (it = deletedBlocksOld.begin(); it != deletedBlocksOld.end(); ++it)
 				{
-					addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
+					addChild(it->second);
 				}
 			}
-			for (int z = oldSizeZ - _step; z >= 0; z -= _step)
+			else
 			{
-				for (int x = oldSizeX; x < _sizeX; x += _step)
+				for (int z = oldSizeZ; z < _sizeZ; z += _step)
 				{
-					addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
+					for (int x = 0; x < _sizeX; x += _step)
+					{
+						addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
+					}
+				}
+				for (int z = oldSizeZ - _step; z >= 0; z -= _step)
+				{
+					for (int x = oldSizeX; x < _sizeX; x += _step)
+					{
+						addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
+					}
 				}
 			}
 		}
@@ -180,68 +207,3 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(int sizeX, int si
 	}
 	return deletedBlocks;
 }
-
-void Map::Restore(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks, int sizeX, int sizeZ)
-{
-	std::lock_guard<std::mutex> lgMutex(_mutex);
-
-	//функция для удаления рамки?
-
-	_sizeX = sizeX;
-	_sizeZ = sizeZ;
-
-	//Block* block = nullptr;
-	osg::ref_ptr<Block> block = nullptr;
-
-	bool isBorderBlock;
-
-	for (int i = 0; i < getNumChildren(); i++)
-	{
-		block = dynamic_cast<Block*>(getChild(i));
-
-		isBorderBlock = (block->GetType() == TexType::BORDER);
-
-		//удаление блоков вне игровой области и рамки
-		if (isBorderBlock)
-		{
-			removeChild(block);
-			i--;
-		}
-	}
-
-	if (!deletedBlocks.empty())		//!!
-	{
-		std::map<std::pair<int, int>, osg::ref_ptr<Block>>::iterator it;
-		for (it = deletedBlocks.begin(); it != deletedBlocks.end(); ++it)
-		{
-			addChild(it->second);
-		}
-	}
-
-	_sizeX /= _step;
-	_sizeZ /= _step;
-	setBorder();
-}
-
-/*
-osg::ref_ptr<Map> Map::operator=(Map& map)
-{
-	if (this != map)
-	{
-		_sizeX = map.GetSizeX();
-		_sizeZ = map->GetSizeZ();
-
-		for (int i = 0; i < getNumChildren(); i++)
-		{
-			removeChild(getChild(i));
-		}
-
-		for (int i = 0; i < map->getNumChildren(); i++)
-		{
-			addChild(map->getChild(i));
-		}
-	}
-
-	return this;
-}
-*/
