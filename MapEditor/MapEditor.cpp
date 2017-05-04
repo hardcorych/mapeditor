@@ -30,6 +30,7 @@ MapEditor::MapEditor(QWidget *parent)
 	_newAct = new QAction(tr("&New"), this);
 	_loadAct = new QAction(tr("&Load"), this);
 	_saveAct = new QAction(tr("&Save"), this);
+	_saveAsAct = new QAction(tr("&Save As"), this);
 
 	_undoStack = new QUndoStack(this);
 
@@ -39,16 +40,20 @@ MapEditor::MapEditor(QWidget *parent)
 	connect(_newAct, &QAction::triggered, this, &MapEditor::NewMap);
 	connect(_loadAct, &QAction::triggered, this, &MapEditor::LoadXMLFile);
 	connect(_saveAct, &QAction::triggered, this, &MapEditor::SaveXMLFile);
+	connect(_saveAsAct, &QAction::triggered, this, &MapEditor::SaveAsXMLFile);
 
 	_fileMenu->addAction(_newAct);
 	_fileMenu->addAction(_loadAct);
 	_fileMenu->addAction(_saveAct);
+	_saveAct->setDisabled(true);
+	_fileMenu->addAction(_saveAsAct);
 
 	_editMenu->addAction(_undoAct);
 	_editMenu->addAction(_redoAct);
 
 	ui.menuBar->addMenu(_fileMenu);
 	ui.menuBar->addMenu(_editMenu);
+	ui.labelMessage->clear();
 
 	connect(ui.radioBtnBushes, &QRadioButton::clicked, this, &MapEditor::onClickedBushes);
 	connect(ui.radioBtnWater, &QRadioButton::clicked, this, &MapEditor::onClickedWater);
@@ -105,11 +110,11 @@ void MapEditor::LoadXMLFile()
 	//СДЕЛАТЬ ОБРАБОТКУ ОШИБОК
 
 	//диалог выбора для открытия файла
-	QString filename = QFileDialog::getOpenFileName(
+	_filename = QFileDialog::getOpenFileName(
 		this, tr("Open XML"), ".",
 		tr("XML files (*.xml)"));
 
-	QFile file(filename);
+	QFile file(_filename);
 
 	if (!file.open(QIODevice::ReadOnly | QFile::Text))
 	{
@@ -119,6 +124,8 @@ void MapEditor::LoadXMLFile()
 	else
 	{
 		if (!_undoStack->isClean()) _undoStack->clear();
+
+		_saveAct->setDisabled(true);
 		//чтение файла
 		QXmlStreamReader xmlReader(&file);
 
@@ -330,22 +337,23 @@ void MapEditor::LoadXMLFile()
 		if (isError)
 		{
 			QMessageBox::critical(this, "File error", errorText, QMessageBox::Ok);
+			_filename.clear();
+			ui.labelMessage->setText("There were some errors while reading file.");
 		}
-		
+		else
+		{
+			_saveAct->setEnabled(true);
+			ui.labelMessage->setText("File was loaded successful.");
+		}
 	}
 }
 
 void MapEditor::SaveXMLFile()
 {
-	//диалог выбора для сохранения файла
-	QString filename = QFileDialog::getSaveFileName(
-		this, tr("Save XML"), ".",
-		tr("XML files (*.xml)"));
-
-	if (filename != "")
+	if (_filename != "")
 	{
 		//сохранение файла по заданному пути
-		QFile file(filename);
+		QFile file(_filename);
 		file.open(QIODevice::WriteOnly);
 
 		//XML поток записи
@@ -362,7 +370,7 @@ void MapEditor::SaveXMLFile()
 
 		osg::ref_ptr<Block> block = nullptr;
 		osg::ref_ptr<Tile> tile = nullptr;
-		
+
 		std::pair<QString, QString> bTexFill;	//тип текстуры и заполнения блока
 
 		for (int blockIndex = 0; blockIndex < _map->getNumChildren(); blockIndex++)
@@ -378,7 +386,7 @@ void MapEditor::SaveXMLFile()
 				xmlWriter.writeAttribute("fillType", std::get<1>(bTexFill));
 				xmlWriter.writeTextElement("x", block->GetX_str());
 				xmlWriter.writeTextElement("z", block->GetZ_str());
-				
+
 				for (int tileIndex = 0; tileIndex < block->getNumChildren(); tileIndex++)
 				{
 					tile = dynamic_cast<Tile*>(block->getChild(tileIndex));
@@ -403,6 +411,22 @@ void MapEditor::SaveXMLFile()
 
 		xmlWriter.writeEndDocument();		//конец записи в файл
 		file.close();
+		
+		ui.labelMessage->setText("File was saved succesful.");
+	}
+}
+
+void MapEditor::SaveAsXMLFile()
+{
+	//диалог выбора для сохранения файла
+	_filename = QFileDialog::getSaveFileName(
+		this, tr("Save XML"), ".",
+		tr("XML files (*.xml)"));
+
+	if (_filename != "")
+	{
+		SaveXMLFile();
+		_saveAct->setEnabled(true);
 	}
 }
 

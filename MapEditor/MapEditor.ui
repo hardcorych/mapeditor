@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>632</width>
-    <height>431</height>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -409,6 +409,19 @@
       <string>Change Size</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QLabel" name="labelMessage">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>370</y>
+      <width>191</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>label</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

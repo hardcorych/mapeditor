@@ -25,6 +25,7 @@ private:
 	QMenu* _editMenu;
 	QAction* _newAct;
 	QAction* _loadAct;
+	QAction* _saveAsAct;
 	QAction* _saveAct;
 	QAction* _undoAct;
 	QAction* _redoAct;
@@ -70,6 +71,7 @@ private:
 	//операции с файлами
 	void LoadXMLFile();
 	void SaveXMLFile();
+	void SaveAsXMLFile();
 
 	void AddBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
 	void RemoveBlock(osg::ref_ptr<Block> block);

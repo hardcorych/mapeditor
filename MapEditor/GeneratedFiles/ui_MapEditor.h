@@ -51,6 +51,7 @@ public:
     QLabel *labelSizeX;
     QLabel *labelSizeZ;
     QPushButton *pBtnChangeSize;
+    QLabel *labelMessage;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -59,7 +60,7 @@ public:
     {
         if (MapEditorClass->objectName().isEmpty())
             MapEditorClass->setObjectName(QStringLiteral("MapEditorClass"));
-        MapEditorClass->resize(632, 431);
+        MapEditorClass->resize(632, 491);
         centralWidget = new QWidget(MapEditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         groupBox = new QGroupBox(centralWidget);
@@ -177,6 +178,9 @@ public:
         pBtnChangeSize = new QPushButton(groupBox_2);
         pBtnChangeSize->setObjectName(QStringLiteral("pBtnChangeSize"));
         pBtnChangeSize->setGeometry(QRect(10, 70, 101, 23));
+        labelMessage = new QLabel(centralWidget);
+        labelMessage->setObjectName(QStringLiteral("labelMessage"));
+        labelMessage->setGeometry(QRect(0, 370, 191, 16));
         MapEditorClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MapEditorClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -216,6 +220,7 @@ public:
         labelSizeX->setText(QApplication::translate("MapEditorClass", "X", Q_NULLPTR));
         labelSizeZ->setText(QApplication::translate("MapEditorClass", "Z", Q_NULLPTR));
         pBtnChangeSize->setText(QApplication::translate("MapEditorClass", "Change Size", Q_NULLPTR));
+        labelMessage->setText(QApplication::translate("MapEditorClass", "label", Q_NULLPTR));
     } // retranslateUi
 
 };

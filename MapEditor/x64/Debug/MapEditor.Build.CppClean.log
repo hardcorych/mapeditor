@@ -12,11 +12,13 @@ c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\x64\deb
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\x64\debug\commands.obj
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\x64\debug\block.obj
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\x64\debug\qrc_mapeditor.obj
-c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\generatedfiles\ui_mapeditor.h
-c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\generatedfiles\debug\moc_mousehandler.cpp
+c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\x64\debug\keyboardmousehandler.obj
+c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\x64\debug\moc_keyboardmousehandler.obj
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\generatedfiles\debug\moc_newmapdialog.cpp
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\generatedfiles\qrc_mapeditor.cpp
+c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\generatedfiles\debug\moc_keyboardmousehandler.cpp
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\generatedfiles\debug\moc_mapeditor.cpp
+c:\users\zlato\documents\visual studio 2013\projects\mapeditor\mapeditor\generatedfiles\ui_mapeditor.h
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\x64\debug\mapeditor.ilk
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\x64\debug\mapeditor.exe
 c:\users\zlato\documents\visual studio 2013\projects\mapeditor\x64\debug\mapeditor.pdb
