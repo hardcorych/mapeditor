@@ -53,7 +53,7 @@ MapEditor::MapEditor(QWidget *parent)
 
 	ui.menuBar->addMenu(_fileMenu);
 	ui.menuBar->addMenu(_editMenu);
-	ui.labelMessage->clear();
+	ui.labelMessage->setText("Information label");
 
 	connect(ui.radioBtnBushes, &QRadioButton::clicked, this, &MapEditor::onClickedBushes);
 	connect(ui.radioBtnWater, &QRadioButton::clicked, this, &MapEditor::onClickedWater);

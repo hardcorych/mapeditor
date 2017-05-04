@@ -69,7 +69,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BlockEditor.cpp" />
     <ClCompile Include="Commands.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_KeyboardMouseHandler.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -128,7 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockEditor.h" />
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="GeneratedFiles\ui_MapEditor.h" />
     <ClInclude Include="Map.h" />
     <CustomBuild Include="KeyboardMouseHandler.h">

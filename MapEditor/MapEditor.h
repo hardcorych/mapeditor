@@ -9,8 +9,10 @@
 #include <NewMapDialog.h>
 #include <qundostack.h>
 #include <qundoview.h>
+#include <Editor.h>
 
-class MapEditor : public QMainWindow
+class MapEditor : public QMainWindow, 
+	public Editor
 {
     Q_OBJECT
 
