@@ -35,6 +35,8 @@ private:
 	osg::ref_ptr<Map> _map = new Map(10,10);
 	int _mapSizeX;
 	int _mapSizeZ;
+
+	//QString _errorText;
 	std::mutex _mutex;
 
 	QString _filename;
@@ -45,6 +47,7 @@ private:
 	void createMap(int sizeX, int sizeZ);
 	void createUndoView();
 	void createUndoRedoActions();
+	//bool isFoundCoordsErrors(int coord, QString coordType);		//функция проверки ошибок
 
 	public slots:
 	void onClickedBushes();

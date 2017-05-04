@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
-    <sizeX>100</sizeX>
+    <sizeX>128</sizeX>
     <sizeZ>80</sizeZ>
     <block texType="BORDER" fillType="FULL">
         <x>0</x>

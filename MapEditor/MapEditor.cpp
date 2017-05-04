@@ -129,6 +129,9 @@ void MapEditor::LoadXMLFile()
 		bool isWrongType = false;
 		bool isWrongFill = false;
 
+		_mapSizeX = 0;
+		_mapSizeZ = 0;
+
 		while (!xmlReader.atEnd())
 		{
 			if (xmlReader.readNextStartElement())
@@ -140,21 +143,21 @@ void MapEditor::LoadXMLFile()
 					if (_mapSizeX < 0)
 					{
 						isError = true;
-						errorText = "ќтрицательный размер карты по X";
+						errorText = "Negative map size X";
 						break;
 					}
 					if (_mapSizeX % 16 != 0)
 					{
 						isError = true;
-						errorText = "Ќекорректный размер карты по X: не кратен 16";
+						errorText = "Incorrect map size X: it's not multiple of 16";
 						break;
 					}
 					if (_mapSizeX < ui.spnBoxSizeX->minimum() * 16 ||
 						_mapSizeX > ui.spnBoxSizeX->maximum() * 16)
 					{
 						isError = true;
-						errorText = "–азмер карты может быть от " + QString::number(ui.spnBoxSizeX->minimum()) +
-							"до " + QString::number(ui.spnBoxSizeX->maximum()) + " блоков";
+						errorText = "Map size may be in range from " + QString::number(ui.spnBoxSizeX->minimum()) +
+							"to " + QString::number(ui.spnBoxSizeX->maximum()) + " blocks";
 						break;
 					}
 					//получаем размер в блоках
@@ -166,21 +169,21 @@ void MapEditor::LoadXMLFile()
 					if (_mapSizeZ < 0)
 					{
 						isError = true;
-						errorText = "ќтрицательный размер карты по Z";
+						errorText = "Negative map size Z";
 						break;
 					}
 					if (_mapSizeZ % 16 != 0)
 					{
 						isError = true;
-						errorText = "Ќекорректный размер карты по Z: не кратен 16";
+						errorText = "Incorrect map size Z: it's not multiple of 16";
 						break;
 					}
 					if (_mapSizeZ < ui.spnBoxSizeZ->minimum() * 16 ||
 						_mapSizeZ > ui.spnBoxSizeZ->maximum() * 16)
 					{
 						isError = true;
-						errorText = "–азмер карты может быть от " + QString::number(ui.spnBoxSizeZ->minimum()) +
-							"до " + QString::number(ui.spnBoxSizeZ->maximum()) + " блоков";
+						errorText = "Map size may be in range from " + QString::number(ui.spnBoxSizeZ->minimum()) +
+							"to " + QString::number(ui.spnBoxSizeZ->maximum()) + " blocks";
 						break;
 					}
 					//получаем размер в блоках
@@ -189,17 +192,33 @@ void MapEditor::LoadXMLFile()
 				}
 				else if (element == "block")
 				{
+					if (_mapSizeX == 0 || _mapSizeZ == 0)
+					{
+						isError = true;
+						errorText = "There is no map size";
+						break;
+					}
 					//чтение блока
 					//чтение типа блока
 					int x, z;
 					TexType texType;
 					FillType fillType;
 
+					int numAttributes = 0;
+
+					if (xmlReader.attributes().size() != 2)
+					{
+						isError = true;
+						errorText = "Incorrect number of block attributes";
+						break;
+					}
+
 					for each (const QXmlStreamAttribute &attr in xmlReader.attributes())
 					{
 						QString attrStr = attr.name().toString();
 						if (attrStr == "texType")
 						{
+							numAttributes++;
 							QString attrValue = attr.value().toString();
 							if (attrValue == "BORDER") texType = TexType::BORDER;
 							else if (attrValue == "BRICK") texType = TexType::BRICK;
@@ -207,22 +226,99 @@ void MapEditor::LoadXMLFile()
 							else if (attrValue == "BUSHES") texType = TexType::BUSHES;
 							else if (attrValue == "ICE") texType = TexType::ICE;
 							else if (attrValue == "WATER") texType = TexType::WATER;
+							else
+							{
+								isError = true;
+								errorText = "Incorrect texType";
+								break;
+							}
 						}
 						else if (attrStr == "fillType")
 						{
+							numAttributes++;
 							QString attrValue = attr.value().toString();
 							if (attrValue == "BOTTOM") fillType = FillType::BOTTOM;
 							else if (attrValue == "FULL") fillType = FillType::FULL;
 							else if (attrValue == "LEFT") fillType = FillType::LEFT;
 							else if (attrValue == "RIGHT") fillType = FillType::RIGHT;
 							else if (attrValue == "TOP") fillType = FillType::TOP;
+							else
+							{
+								isError = true;
+								errorText = "Incorrect fillType";
+								break;
+							}
 						}
 					}
+					
 					//чтение координат
+					int numCoords = 0;
+
 					xmlReader.readNextStartElement();
-					x = xmlReader.readElementText().toInt()-16;		//-16 дл€ согласовани€
+					element = xmlReader.name().toString();
+					if (element == "x")
+					{
+						numCoords++;
+						x = xmlReader.readElementText().toInt();
+
+						if (x < 0)
+						{
+							isError = true;
+							errorText = "Negative X coordinate of block";
+							break;
+						}
+						if (x % 16 != 0)
+						{
+							isError = true;
+							errorText = "X block coordinate is not multiple of 16";
+							break;
+						}
+						if (x > ui.spnBoxSizeX->maximum() * 16)
+						{
+							isError = true;
+							errorText = "X coord may be in range of " 
+								+ QString::number(ui.spnBoxSizeX->maximum()) + " blocks";
+							break;
+						}
+						x -= 16;		//-16 дл€ согласовани€
+					}
+					
 					xmlReader.readNextStartElement();
-					z = xmlReader.readElementText().toInt()-16;		//-16 дл€ согласовани€
+					element = xmlReader.name().toString();
+					if (element == "z")
+					{
+						numCoords++;
+						z = xmlReader.readElementText().toInt();
+
+						if (z < 0)
+						{
+							isError = true;
+							errorText = "Negative Z coordinate of block";
+							break;
+						}
+						if (z % 16 != 0)
+						{
+							isError = true;
+							errorText = "Z block coordinate is not multiple of 16";
+							break;
+						}
+						if (z > ui.spnBoxSizeZ->maximum() * 16)
+						{
+							isError = true;
+							errorText = "Z coord may be in range of " 
+								+ QString::number(ui.spnBoxSizeZ->maximum()) + " blocks";
+							break;
+						}
+						z -= 16;		//-16 дл€ согласовани€
+					}
+					
+
+					if (numCoords != 2)
+					{
+						isError = true;
+						errorText = "Incorrect number of block coordinates";
+						break;
+					}
 
 					_map->AddBlock(new Block(x, z, texType, fillType), x, z);
 				}
@@ -235,6 +331,7 @@ void MapEditor::LoadXMLFile()
 		{
 			QMessageBox::critical(this, "File error", errorText, QMessageBox::Ok);
 		}
+		
 	}
 }
 
