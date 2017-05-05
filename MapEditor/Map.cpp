@@ -45,26 +45,21 @@ void Map::setBorder()
   //нижняя граница
   //int startBorder = -1 * _step;
 
-  for (int x = -_step; x < _sizeX - _step; x += _step)
-  {
+  for (int x = -_step; x < _sizeX - _step; x += _step) {
     addChild(new Block(x, -_step, TexType::BORDER, FillType::FULL));
   }
   //правая граница
-  for (int z = 0; z < _sizeZ - _step; z += _step)
-  {
-    for (int x = _sizeX - 3 * _step; x < _sizeX - _step; x += _step)
-    {
+  for (int z = 0; z < _sizeZ - _step; z += _step) {
+    for (int x = _sizeX - 3 * _step; x < _sizeX - _step; x += _step) {
       addChild(new Block(x, z, TexType::BORDER, FillType::FULL));
     }
   }
   //верхняя граница
-  for (int x = _sizeX - 4 * _step; x >= -_step; x -= _step)
-  {
+  for (int x = _sizeX - 4 * _step; x >= -_step; x -= _step) {
     addChild(new Block(x, _sizeZ - 2 * _step, TexType::BORDER, FillType::FULL));
   }
   //левая граница
-  for (int z = _sizeZ - 3 * _step; z > -_step; z -= _step)
-  {
+  for (int z = _sizeZ - 3 * _step; z > -_step; z -= _step) {
     addChild(new Block(-_step, z, TexType::BORDER, FillType::FULL));
   }
 
@@ -74,10 +69,8 @@ void Map::setBorder()
 
 void Map::setGameArea()
 {
-  for (int z = 0; z < _sizeZ; z += _step)
-  {
-    for (int x = 0; x < _sizeX; x += _step)
-    {
+  for (int z = 0; z < _sizeZ; z += _step) {
+    for (int x = 0; x < _sizeX; x += _step) {
       //заполнение свободной области пустыми блоками
       addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
     }
@@ -98,11 +91,9 @@ void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//для чтения из файл
   osg::ref_ptr<Block> blockOld = nullptr;
 
   //поиск блока, который нужно заменить
-  for (int i = 0; i < getNumChildren(); i++)
-  {
+  for (int i = 0; i < getNumChildren(); i++) {
     blockOld = dynamic_cast<Block*>(getChild(i));
-    if (blockOld->GetX() == x && blockOld->GetZ() == z)
-    {
+    if (blockOld->GetX() == x && blockOld->GetZ() == z) {
       replaceChild(blockOld, block);
     }
   }
@@ -114,12 +105,10 @@ void Map::RemoveBlock(int x, int z)
 
   osg::ref_ptr<Block> block = nullptr;
 
-  for (int i = 0; i < getNumChildren(); i++)
-  {
+  for (int i = 0; i < getNumChildren(); i++) {
     block = dynamic_cast<Block*>(getChild(i));
 
-    if (block->GetX() == x && block->GetZ() == z)
-    {
+    if (block->GetX() == x && block->GetZ() == z) {
       replaceChild(block, new Block(x, z, TexType::EMPTY, FillType::FULL));
     }
   }
@@ -138,23 +127,20 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
 
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks;
 
-  if (!isNewSizeSame)
-  {
+  if (!isNewSizeSame) {
     //Block* block = nullptr;
     osg::ref_ptr<Block> block = nullptr;
 
     bool isBlockCoordsMoreThanSize;
     bool isBorderBlock;
 
-    for (int i = 0; i < getNumChildren(); i++)
-    {
+    for (int i = 0; i < getNumChildren(); i++) {
       block = dynamic_cast<Block*>(getChild(i));
 
       isBlockCoordsMoreThanSize = (block->GetX() >= sizeX || block->GetZ() >= sizeZ);
       isBorderBlock = (block->GetType() == TexType::BORDER);
 
-      if (isBlockCoordsMoreThanSize || isBorderBlock)
-      {
+      if (isBlockCoordsMoreThanSize || isBorderBlock) {
         //удаление блоков вне игровой области и рамки
         if (!isBorderBlock)		//сохраняем, если не граничный блок
           deletedBlocks[std::make_pair(block->GetX(), block->GetZ())] = block;
@@ -170,30 +156,22 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
 
     bool isNewSizeGreater = (_sizeX > oldSizeX || _sizeZ > oldSizeZ);
 
-    if (isNewSizeGreater)
-    {
+    if (isNewSizeGreater) {
       //заполнение свободной области пустыми блоками
-      if (!deletedBlocksOld.empty())
-      {
+      if (!deletedBlocksOld.empty()) {
         std::map<std::pair<int, int>, osg::ref_ptr<Block>>::iterator it;
-        for (it = deletedBlocksOld.begin(); it != deletedBlocksOld.end(); ++it)
-        {
+        for (it = deletedBlocksOld.begin(); it != deletedBlocksOld.end(); ++it) {
           addChild(it->second);
         }
       }
-      else
-      {
-        for (int z = oldSizeZ; z < _sizeZ; z += _step)
-        {
-          for (int x = 0; x < _sizeX; x += _step)
-          {
+      else {
+        for (int z = oldSizeZ; z < _sizeZ; z += _step) {
+          for (int x = 0; x < _sizeX; x += _step) {
             addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
           }
         }
-        for (int z = oldSizeZ - _step; z >= 0; z -= _step)
-        {
-          for (int x = oldSizeX; x < _sizeX; x += _step)
-          {
+        for (int z = oldSizeZ - _step; z >= 0; z -= _step) {
+          for (int x = oldSizeX; x < _sizeX; x += _step) {
             addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
           }
         }

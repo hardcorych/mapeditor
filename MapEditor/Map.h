@@ -13,7 +13,7 @@
 
 class Map : public osg::Group
 {
-public:
+ public:
   Map();
   Map(unsigned int sizeX, unsigned int sizeZ);
   ~Map();
@@ -36,7 +36,7 @@ public:
 
   std::mutex& GetMutex() { return std::ref(_mutex); }
 
-private:
+ private:
   int _sizeX;
   int _sizeZ;
   int _step;		//шаг равный размеру одного блока/тайла

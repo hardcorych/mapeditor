@@ -535,12 +535,18 @@ void MapEditor::renderScene()
   viewer.addEventHandler(keyboardMouseHandler);
   viewer.addEventHandler(new osgViewer::StatsHandler);
 
-  connect(this, &MapEditor::SendBlock, keyboardMouseHandler, &KeyboardMouseHandler::ReceiveBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::AddableBlock, this, &MapEditor::AddBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::RemovableBlock, this, &MapEditor::RemoveBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::ReplaceableBlock, this, &MapEditor::ReplaceBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::Undo, _undoStack, &QUndoStack::undo);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::Redo, _undoStack, &QUndoStack::redo);
+  connect(this, &MapEditor::SendBlock, keyboardMouseHandler,
+    &KeyboardMouseHandler::ReceiveBlock, Qt::DirectConnection);
+  connect(keyboardMouseHandler, &KeyboardMouseHandler::AddableBlock, 
+    this, &MapEditor::AddBlock, Qt::DirectConnection);
+  connect(keyboardMouseHandler, &KeyboardMouseHandler::RemovableBlock, 
+    this, &MapEditor::RemoveBlock, Qt::DirectConnection);
+  connect(keyboardMouseHandler, &KeyboardMouseHandler::ReplaceableBlock, 
+    this, &MapEditor::ReplaceBlock, Qt::DirectConnection);
+  connect(keyboardMouseHandler, &KeyboardMouseHandler::Undo,
+    _undoStack, &QUndoStack::undo);
+  connect(keyboardMouseHandler, &KeyboardMouseHandler::Redo,
+    _undoStack, &QUndoStack::redo);
 
   ui.radioBtnBushes->setChecked(true);
   ui.radioBtnBushes->clicked();
