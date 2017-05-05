@@ -1,39 +1,40 @@
 #pragma once
-
 #include <osgGA/GUIEventHandler>
-#include <osgViewer/Viewer>
 #include <osgUtil/PolytopeIntersector>
+#include <osgViewer/Viewer>
+
+#include <qobject.h>
+
 #include <Block.h>
 #include <Map.h>
-#include <qobject.h>
 
 class KeyboardMouseHandler : public QObject, public osgGA::GUIEventHandler
 {
-	Q_OBJECT
+  Q_OBJECT
 public:
-	KeyboardMouseHandler();
-	~KeyboardMouseHandler();
+  KeyboardMouseHandler();
+  ~KeyboardMouseHandler();
 
-	//добавление блока по левой кнопке мыши
-	//удаление блока по правой кнопке мыши
-	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
+  //добавление блока по левой кнопке мыши
+  //удаление блока по правой кнопке мыши
+  virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 protected:
-	double _mouseX, _mouseY;	//mouse coords
+  double _mouseX, _mouseY;	//mouse coords
 
-	TexType _type;
-	FillType _fType;
+  TexType _type;
+  FillType _fType;
 
-	std::pair<bool, osg::ref_ptr<Block>> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);
+  std::pair<bool, osg::ref_ptr<Block>> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);
 
 signals:
-	void AddableBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
-	void RemovableBlock(osg::ref_ptr<Block> block);
-	void ReplaceableBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
-	void Undo();
-	void Redo();
+  void AddableBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
+  void RemovableBlock(osg::ref_ptr<Block> block);
+  void ReplaceableBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
+  void Undo();
+  void Redo();
 
-	public slots:
-	void ReceiveBlock(TexType type, FillType fillType);
+  public slots:
+  void ReceiveBlock(TexType type, FillType fillType);
 };
 

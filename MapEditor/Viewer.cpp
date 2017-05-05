@@ -12,5 +12,5 @@ Viewer::~Viewer()
 
 void Viewer::onQuitViewer()
 {
-	setDone(true);
+  setDone(true);
 }

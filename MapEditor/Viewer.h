@@ -4,13 +4,13 @@
 #include <qobject.h>
 
 class Viewer : public osgViewer::Viewer,
-	public QObject
+  public QObject
 {
 public:
-	Viewer();
-	~Viewer();
+  Viewer();
+  ~Viewer();
 
-public slots:
-void onQuitViewer();		//выход из потока
+  public slots:
+  void onQuitViewer();		//выход из потока
 };
 

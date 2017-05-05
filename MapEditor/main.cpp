@@ -3,11 +3,11 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MapEditor w;
+  QApplication a(argc, argv);
+  MapEditor w;
 
-	QObject::connect(&w, &MapEditor::QuitAppToMain, &a, &QApplication::quit);
+  QObject::connect(&w, &MapEditor::QuitAppToMain, &a, &QApplication::quit);
 
-    w.show();
-    return a.exec();
+  w.show();
+  return a.exec();
 }

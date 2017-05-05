@@ -1,4 +1,5 @@
 #include "Tile.h"
+
 #include <osg/Texture2D>
 #include <osgDB/ReadFile>
 
@@ -12,58 +13,60 @@ Tile::Tile(unsigned int x, unsigned int z, TexType type) :
 _x(x), _z(z),
 _type(type)
 {
-	//построение полигона
-	_vertices->push_back(osg::Vec3(_x, 0., _z));
-	_vertices->push_back(osg::Vec3(_x, 0., _z + _size));
-	_vertices->push_back(osg::Vec3(_x + _size, 0., _z));
-	_vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
+  //построение полигона
+  _vertices->push_back(osg::Vec3(_x, 0., _z));
+  _vertices->push_back(osg::Vec3(_x, 0., _z + _size));
+  _vertices->push_back(osg::Vec3(_x + _size, 0., _z));
+  _vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
 
-	setVertexArray(_vertices);
-	addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP, 0, _vertices->size()));
+  setVertexArray(_vertices);
+  addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,
+    0, _vertices->size()));
 
-	//нормали
-	_normals->setBinding(osg::Array::BIND_PER_VERTEX);
+  //нормали
+  _normals->setBinding(osg::Array::BIND_PER_VERTEX);
 
-	calculateNormals(osg::Vec3(_x, 0., _z), 
-		osg::Vec3(_x + _size, 0., _z),
-		osg::Vec3(_x, 0., _z + _size));
-	
-	calculateNormals(osg::Vec3(_x, 0., _z + _size),
-		osg::Vec3(_x + _size, 0., _z),
-		osg::Vec3(_x + _size, 0., _z + _size));
+  calculateNormals(osg::Vec3(_x, 0., _z),
+    osg::Vec3(_x + _size, 0., _z),
+    osg::Vec3(_x, 0., _z + _size));
 
-	setNormalArray(_normals);
+  calculateNormals(osg::Vec3(_x, 0., _z + _size),
+    osg::Vec3(_x + _size, 0., _z),
+    osg::Vec3(_x + _size, 0., _z + _size));
 
-	setTexture();
+  setNormalArray(_normals);
+
+  setTexture();
 }
 
 Tile::Tile(unsigned int x, unsigned int z, TexType type, EmptyTile empty) :
 _x(x), _z(z),
 _type(type)
 {
-	//построение полигона
-	_vertices->push_back(osg::Vec3(_x, 0., _z));
-	_vertices->push_back(osg::Vec3(_x, 0., _z + _size));
-	_vertices->push_back(osg::Vec3(_x + _size, 0., _z));
-	_vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
+  //построение полигона
+  _vertices->push_back(osg::Vec3(_x, 0., _z));
+  _vertices->push_back(osg::Vec3(_x, 0., _z + _size));
+  _vertices->push_back(osg::Vec3(_x + _size, 0., _z));
+  _vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
 
-	setVertexArray(_vertices);
-	addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP, 0, _vertices->size()));
+  setVertexArray(_vertices);
+  addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,
+    0, _vertices->size()));
 
-	//нормали
-	_normals->setBinding(osg::Array::BIND_PER_VERTEX);
+  //нормали
+  _normals->setBinding(osg::Array::BIND_PER_VERTEX);
 
-	calculateNormals(osg::Vec3(_x, 0., _z),
-		osg::Vec3(_x + _size, 0., _z),
-		osg::Vec3(_x, 0., _z + _size));
+  calculateNormals(osg::Vec3(_x, 0., _z),
+    osg::Vec3(_x + _size, 0., _z),
+    osg::Vec3(_x, 0., _z + _size));
 
-	calculateNormals(osg::Vec3(_x, 0., _z + _size),
-		osg::Vec3(_x + _size, 0., _z),
-		osg::Vec3(_x + _size, 0., _z + _size));
+  calculateNormals(osg::Vec3(_x, 0., _z + _size),
+    osg::Vec3(_x + _size, 0., _z),
+    osg::Vec3(_x + _size, 0., _z + _size));
 
-	setNormalArray(_normals);
+  setNormalArray(_normals);
 
-	setEmptyTexture(empty);
+  setEmptyTexture(empty);
 }
 
 
@@ -73,146 +76,146 @@ Tile::~Tile()
 
 void Tile::calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3)
 {
-	osg::Vec3 crossResult;
+  osg::Vec3 crossResult;
 
-	(crossResult = (edge2 - edge1) ^ (edge3 - edge1)).normalize();
+  (crossResult = (edge2 - edge1) ^ (edge3 - edge1)).normalize();
 
-	_normals->push_back(crossResult);
-	_normals->push_back(crossResult);
+  _normals->push_back(crossResult);
+  _normals->push_back(crossResult);
 }
 
 void Tile::setTexture()
 {
-	//нат€гивание текстуры на тайл
-	osg::ref_ptr<osg::Vec2Array> texcoords = new osg::Vec2Array;
-	texcoords->push_back(osg::Vec2(0.0f, 0.0f));
-	texcoords->push_back(osg::Vec2(0.0f, 1.0f));
-	texcoords->push_back(osg::Vec2(1.0f, 0.0f));
-	texcoords->push_back(osg::Vec2(1.0f, 1.0f));
-	setTexCoordArray(0, texcoords);
+  //нат€гивание текстуры на тайл
+  osg::ref_ptr<osg::Vec2Array> texcoords = new osg::Vec2Array;
+  texcoords->push_back(osg::Vec2(0.0f, 0.0f));
+  texcoords->push_back(osg::Vec2(0.0f, 1.0f));
+  texcoords->push_back(osg::Vec2(1.0f, 0.0f));
+  texcoords->push_back(osg::Vec2(1.0f, 1.0f));
+  setTexCoordArray(0, texcoords);
 
-	osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
+  osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
 
-	osg::ref_ptr<osg::Image> image;
-	
-	std::string texFilename = "Resources/tiles/";
+  osg::ref_ptr<osg::Image> image;
 
-	switch (_type)
-	{
-	case TexType::ARMOR:
-		texFilename += "ARMOR.png";
-		break;
-	case TexType::BORDER:
-		texFilename += "BORDER.png";
-		break;
-	case TexType::BRICK:
-		texFilename += "BRICK.png";
-		break;
-	case TexType::BUSHES:
-		texFilename += "BUSHES.png";
-		break;
-	case TexType::ICE:
-		texFilename += "ICE.png";
-		break;
-	case TexType::WATER:
-		texFilename += "WATER.png";
-		break;
-	case TexType::EMPTY:
+  std::string texFilename = "Resources/tiles/";
 
-		break;
-	}
+  switch (_type)
+  {
+  case TexType::ARMOR:
+    texFilename += "ARMOR.png";
+    break;
+  case TexType::BORDER:
+    texFilename += "BORDER.png";
+    break;
+  case TexType::BRICK:
+    texFilename += "BRICK.png";
+    break;
+  case TexType::BUSHES:
+    texFilename += "BUSHES.png";
+    break;
+  case TexType::ICE:
+    texFilename += "ICE.png";
+    break;
+  case TexType::WATER:
+    texFilename += "WATER.png";
+    break;
+  case TexType::EMPTY:
 
-	image = osgDB::readImageFile(texFilename);
+    break;
+  }
 
-	if (!image)
-	{
-		// ошибка
-	}
+  image = osgDB::readImageFile(texFilename);
 
-	texture->setImage(image);
+  if (!image)
+  {
+    // ошибка
+  }
 
-	osg::ref_ptr<osg::StateSet> stateTile = new osg::StateSet;
-	stateTile->setTextureAttributeAndModes(0, texture, osg::StateAttribute::ON);
-	setStateSet(stateTile);
+  texture->setImage(image);
+
+  osg::ref_ptr<osg::StateSet> stateTile = new osg::StateSet;
+  stateTile->setTextureAttributeAndModes(0, texture, osg::StateAttribute::ON);
+  setStateSet(stateTile);
 }
 
 void Tile::setEmptyTexture(EmptyTile empty)
 {
-	//нат€гивание текстуры на тайл
-	osg::ref_ptr<osg::Vec2Array> texcoords = new osg::Vec2Array;
-	texcoords->push_back(osg::Vec2(0.0f, 0.0f));
-	texcoords->push_back(osg::Vec2(0.0f, 1.0f));
-	texcoords->push_back(osg::Vec2(1.0f, 0.0f));
-	texcoords->push_back(osg::Vec2(1.0f, 1.0f));
-	setTexCoordArray(0, texcoords);
+  //нат€гивание текстуры на тайл
+  osg::ref_ptr<osg::Vec2Array> texcoords = new osg::Vec2Array;
+  texcoords->push_back(osg::Vec2(0.0f, 0.0f));
+  texcoords->push_back(osg::Vec2(0.0f, 1.0f));
+  texcoords->push_back(osg::Vec2(1.0f, 0.0f));
+  texcoords->push_back(osg::Vec2(1.0f, 1.0f));
+  setTexCoordArray(0, texcoords);
 
-	osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
+  osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
 
-	osg::ref_ptr<osg::Image> image;
+  osg::ref_ptr<osg::Image> image;
 
-	std::string texFilename = "Resources/tiles/";
+  std::string texFilename = "Resources/tiles/";
 
-	switch (empty)
-	{
-	case EmptyTile::LEFT_BOTTOM:
-		texFilename += "empty_leftBottom.png";
-		break;
-	case EmptyTile::LEFT_TOP:
-		texFilename += "empty_leftTop.png";
-		break;
-	case EmptyTile::RIGHT_TOP:
-		texFilename += "empty_rightTop.png";
-		break;
-	case EmptyTile::RIGHT_BOTTOM:
-		texFilename += "empty_rightBottom.png";
-		break;
-	}
+  switch (empty)
+  {
+  case EmptyTile::LEFT_BOTTOM:
+    texFilename += "empty_leftBottom.png";
+    break;
+  case EmptyTile::LEFT_TOP:
+    texFilename += "empty_leftTop.png";
+    break;
+  case EmptyTile::RIGHT_TOP:
+    texFilename += "empty_rightTop.png";
+    break;
+  case EmptyTile::RIGHT_BOTTOM:
+    texFilename += "empty_rightBottom.png";
+    break;
+  }
 
-	image = osgDB::readImageFile(texFilename);
+  image = osgDB::readImageFile(texFilename);
 
-	if (!image)
-	{
-		// ошибка
-	}
+  if (!image)
+  {
+    // ошибка
+  }
 
-	texture->setImage(image);
+  texture->setImage(image);
 
-	osg::ref_ptr<osg::StateSet> stateTile = new osg::StateSet;
-	stateTile->setTextureAttributeAndModes(0, texture, osg::StateAttribute::ON);
-	stateTile->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-	stateTile->setMode(GL_BLEND, osg::StateAttribute::ON);
-	setStateSet(stateTile);
+  osg::ref_ptr<osg::StateSet> stateTile = new osg::StateSet;
+  stateTile->setTextureAttributeAndModes(0, texture, osg::StateAttribute::ON);
+  stateTile->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+  stateTile->setMode(GL_BLEND, osg::StateAttribute::ON);
+  setStateSet(stateTile);
 }
 
 QString Tile::GetType_str()
 {
-	QString texType;
+  QString texType;
 
-	switch (_type)
-	{
-	case TexType::ARMOR:
-		texType = "ARMOR";
-		break;
-	case TexType::BORDER:
-		texType = "BORDER";
-		break;
-	case TexType::BRICK:
-		texType = "BRICK";
-		break;
-	case TexType::BUSHES:
-		texType = "BUSHES";
-		break;
-	case TexType::EMPTY:
-		//не писать в файл
-		texType = "EMPTY";
-		break;
-	case TexType::WATER:
-		texType = "WATER";
-		break;
-	case TexType::ICE:
-		texType = "ICE";
-		break;
-	}
+  switch (_type)
+  {
+  case TexType::ARMOR:
+    texType = "ARMOR";
+    break;
+  case TexType::BORDER:
+    texType = "BORDER";
+    break;
+  case TexType::BRICK:
+    texType = "BRICK";
+    break;
+  case TexType::BUSHES:
+    texType = "BUSHES";
+    break;
+  case TexType::EMPTY:
+    //не писать в файл
+    texType = "EMPTY";
+    break;
+  case TexType::WATER:
+    texType = "WATER";
+    break;
+  case TexType::ICE:
+    texType = "ICE";
+    break;
+  }
 
-	return texType;
+  return texType;
 }

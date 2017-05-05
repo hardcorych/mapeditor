@@ -5,7 +5,6 @@
 class BlockEditor : public Editor
 {
 public:
-	BlockEditor();
-	~BlockEditor();
+  BlockEditor();
+  ~BlockEditor();
 };
-
