@@ -5,6 +5,12 @@
 class BlockEditor : public Editor
 {
 public:
-  BlockEditor();
-  ~BlockEditor();
+  BlockEditor() = default;
+  ~BlockEditor() = default;
+  
+private:
+  //addTexture
+  //setPassability
+  //saveBlock ?
+  //loadBlock ?
 };

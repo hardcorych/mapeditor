@@ -127,7 +127,6 @@ void MapEditor::LoadXMLFile()
 {
   //—ƒ≈Ћј“№ ќЅ–јЅќ“ ” ќЎ»Ѕќ 
 
-  //диалог выбора дл€ открыти€ файла
   _filename = QFileDialog::getOpenFileName(
     this, tr("Open XML"), ".",
     tr("XML files (*.xml)"));
@@ -144,10 +143,10 @@ void MapEditor::LoadXMLFile()
     if (!_undoStack->isClean()) _undoStack->clear();
 
     _saveAct->setDisabled(true);
-    //чтение файла
+    //file reading
     QXmlStreamReader xmlReader(&file);
 
-    //дл€ вывода ошибки
+    //for error output
     bool isError = false;
     QString errorText;
 
@@ -186,7 +185,7 @@ void MapEditor::LoadXMLFile()
               "to " + QString::number(ui.spnBoxSizeX->maximum()) + " blocks";
             break;
           }
-          //получаем размер в блоках
+          //get size in blocks
           _mapSizeX /= 16;
         }
         else if (element == "sizeZ")
@@ -353,7 +352,7 @@ void MapEditor::LoadXMLFile()
     }
     file.close();
 
-    //сообщение об ошибке
+    //error message
     if (isError)
     {
       QMessageBox::critical(this, "File error", errorText, QMessageBox::Ok);
@@ -376,13 +375,12 @@ void MapEditor::SaveXMLFile()
     QFile file(_filename);
     file.open(QIODevice::WriteOnly);
 
-    //XML поток записи
     QXmlStreamWriter xmlWriter(&file);
     xmlWriter.setAutoFormatting(true);
 
-    xmlWriter.writeStartDocument();		//начало записи в файл
+    xmlWriter.writeStartDocument();		//start a file writing
 
-    //запись карты в XML-файл
+    //write map to xml
     xmlWriter.writeStartElement("map");
 
     xmlWriter.writeTextElement("sizeX", _map->GetSizeX_str());
@@ -391,14 +389,14 @@ void MapEditor::SaveXMLFile()
     osg::ref_ptr<Block> block = nullptr;
     osg::ref_ptr<Tile> tile = nullptr;
 
-    std::pair<QString, QString> bTexFill;	//тип текстуры и заполнени€ блока
+    std::pair<QString, QString> bTexFill;	//texture and fill block types
 
     for (int blockIndex = 0; blockIndex < _map->getNumChildren(); blockIndex++)
     {
       block = dynamic_cast<Block*>(_map->getChild(blockIndex));
       bTexFill = block->GetType_str();
 
-      if (std::get<0>(bTexFill) != "EMPTY")	//пустые блоки не пишутс€ в файл
+      if (std::get<0>(bTexFill) != "EMPTY")	//empty blocks aren't written to file
       {
         xmlWriter.writeStartElement("block");
 
@@ -429,7 +427,7 @@ void MapEditor::SaveXMLFile()
 
     xmlWriter.writeEndElement();
 
-    xmlWriter.writeEndDocument();		//конец записи в файл
+    xmlWriter.writeEndDocument();		//end of file writing
     file.close();
 
     ui.labelMessage->setText("File was saved succesful.");

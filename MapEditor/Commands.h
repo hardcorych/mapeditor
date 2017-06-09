@@ -8,7 +8,7 @@
 #include <Map.h>
 #include <MapEditor.h>
 
-class AddCommand : public QUndoCommand	//команда добавления блока на карту
+class AddCommand : public QUndoCommand	//add block on map
 {
 public:
   AddCommand(osg::ref_ptr<Block> block, TexType type, FillType fType, QUndoCommand* parent = 0);
@@ -23,7 +23,7 @@ private:
   FillType _fType;
 };
 
-class ReplaceCommand : public QUndoCommand	//команда замены существующего блока
+class ReplaceCommand : public QUndoCommand	//replace existing block on map
 {
 public:
   ReplaceCommand(osg::ref_ptr<Block> block, TexType type, FillType fType, QUndoCommand* parent = 0);
@@ -40,7 +40,7 @@ private:
   FillType _fTypeOld;
 };
 
-class RemoveCommand : public QUndoCommand	//команда удаления блока с карты
+class RemoveCommand : public QUndoCommand	//remove block from map
 {
 public:
   RemoveCommand(osg::ref_ptr<Block> block, QUndoCommand* parent = 0);
@@ -55,7 +55,7 @@ private:
   FillType _fType;
 };
 
-class ChangeSizeCommand : public QUndoCommand	//команда смены размера карты
+class ChangeSizeCommand : public QUndoCommand	//change map size
 {
 public:
   ChangeSizeCommand(osg::ref_ptr<Map> map, int mapSizeX, int mapSizeZ, QUndoCommand* parent = 0);

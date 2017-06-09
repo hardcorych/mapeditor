@@ -28,6 +28,7 @@ private:
   std::thread _renderThread;
   QMenu* _fileMenu;
   QMenu* _editMenu;
+
   QAction* _newAct;
   QAction* _loadAct;
   QAction* _saveAsAct;
@@ -56,6 +57,7 @@ private:
   //bool isFoundCoordsErrors(int coord, QString coordType);		//функция проверки ошибок
 
   public slots:
+  //???
   void onClickedBushes();
   void onClickedWater();
   void onClickedIce();
@@ -84,7 +86,7 @@ private:
 
   void onClickedChangeSize();
 
-  void Undo();
+  void Undo();    //????
 
   std::mutex& GetMutex()	{ return _mutex; }
 

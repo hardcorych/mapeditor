@@ -3,16 +3,15 @@
 #include <qaction.h>
 #include <qundostack.h>
 
-//абстрактный класс
+//abstract class
 class Editor
 {
 public:
-  Editor();
-  ~Editor();
+  Editor() = default;
+  virtual ~Editor() = default;
 
 protected:
   QUndoStack* _undoStack;
   QAction* _undoAct;
   QAction* _redoAct;
 };
-
