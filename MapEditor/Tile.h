@@ -4,7 +4,7 @@
 #include <osgDB/ReadFile>
 #include <qstring.h>
 
-enum class TexType
+enum class TexType    //???
 {
   BORDER,		//граница игровой области
   BRICK,		//кирпич
@@ -15,7 +15,7 @@ enum class TexType
   EMPTY		//свободный тайл
 };
 
-enum class EmptyTile
+enum class EmptyTile    //???
 {
   LEFT_BOTTOM,
   LEFT_TOP,

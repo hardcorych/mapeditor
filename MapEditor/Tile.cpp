@@ -126,7 +126,7 @@ void Tile::setTexture()
   }
 
   image = osgDB::readImageFile(texFilename);
-
+  image->s();
   if (!image)
   {
     // ошибка

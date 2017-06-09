@@ -72,7 +72,7 @@ public:
     {
         if (MapEditorClass->objectName().isEmpty())
             MapEditorClass->setObjectName(QStringLiteral("MapEditorClass"));
-        MapEditorClass->resize(972, 537);
+        MapEditorClass->resize(980, 511);
         centralWidget = new QWidget(MapEditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         labelMessage = new QLabel(centralWidget);
@@ -226,7 +226,7 @@ public:
         MapEditorClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MapEditorClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 972, 21));
+        menuBar->setGeometry(QRect(0, 0, 980, 21));
         MapEditorClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MapEditorClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));

@@ -13,9 +13,9 @@ _fType(fillType)
 {
   int tileSize = Tile::Size();
 
-  createBlock(type, fillType);
+  createFromTiles(type, fillType);
 
-  if (_leftBottom != nullptr)	addChild(_leftBottom);
+  if (_leftBottom != nullptr) addChild(_leftBottom);
   if (_leftTop != nullptr) addChild(_leftTop);
   if (_rightTop != nullptr) addChild(_rightTop);
   if (_rightBottom != nullptr) addChild(_rightBottom);
@@ -25,7 +25,7 @@ Block::~Block()
 {
 }
 
-void Block::createBlock(TexType texType, FillType fillType)
+void Block::createFromTiles(TexType texType, FillType fillType)
 {
   int tileSize = Tile::Size();
 
@@ -77,9 +77,9 @@ void Block::createBlock(TexType texType, FillType fillType)
   }
 }
 
-void Block::SetBlock(TexType texType, FillType fillType)
+void Block::SetType(TexType texType, FillType fillType)
 {
-  if ((_type != texType) || (_fType != fillType))		//если блок точно такой же, ничего не меняется
+  if ((_type != texType) || (_fType != fillType))	//если блок точно такой же, ничего не меняется
   {													//иначе происходит замена
     osg::ref_ptr<Tile> oldLB = _leftBottom;
     osg::ref_ptr<Tile> oldLT = _leftTop;
@@ -88,7 +88,7 @@ void Block::SetBlock(TexType texType, FillType fillType)
 
     //замена блока
 
-    createBlock(texType, fillType);
+    createFromTiles(texType, fillType);
 
     replaceChild(oldLB, _leftBottom);
     replaceChild(oldLT, _leftTop);

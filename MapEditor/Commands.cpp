@@ -19,13 +19,13 @@ AddCommand::~AddCommand()
 void AddCommand::undo()
 {
   //remove
-  _block->SetBlock(TexType::EMPTY, FillType::FULL);
+  _block->SetType(TexType::EMPTY, FillType::FULL);
 }
 
 void AddCommand::redo()
 {
   //add
-  _block->SetBlock(_type, _fType);
+  _block->SetType(_type, _fType);
 }
 
 //ReplaceCommand
@@ -47,13 +47,13 @@ ReplaceCommand::~ReplaceCommand()
 void ReplaceCommand::undo()
 {
   //replace with old
-  _block->SetBlock(_typeOld, _fTypeOld);
+  _block->SetType(_typeOld, _fTypeOld);
 }
 
 void ReplaceCommand::redo()
 {
   //replace with new
-  _block->SetBlock(_type, _fType);
+  _block->SetType(_type, _fType);
 }
 
 //RemoveCommand
@@ -73,13 +73,13 @@ RemoveCommand::~RemoveCommand()
 void RemoveCommand::undo()
 {
   //add
-  _block->SetBlock(_type, _fType);
+  _block->SetType(_type, _fType);
 }
 
 void RemoveCommand::redo()
 {
   //remove
-  _block->SetBlock(TexType::EMPTY, FillType::FULL);
+  _block->SetType(TexType::EMPTY, FillType::FULL);
 }
 
 //ChangeSizeCommand

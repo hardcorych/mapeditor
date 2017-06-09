@@ -111,6 +111,9 @@
     <CustomBuild Include="KeyboardMouseHandler.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="BlockEditor.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_MapEditor.h">
@@ -129,9 +132,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BlockEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h">

@@ -33,7 +33,10 @@ public:
   QString GetX_str()	{ return QString::number(_x + 16); }	//+16 для согласования
   QString GetZ_str()	{ return QString::number(_z + 16); }
 
-  void SetBlock(TexType texType, FillType fillType);
+  void SetType(TexType texType, FillType fillType);
+
+  void SetPassability(bool isPassable)  { _isPassable = isPassable; }
+  void SetDrawingUnderTank(bool isUnderTank)  { _isUnderTank = isUnderTank; }
 
 private:
   int _x;
@@ -48,9 +51,9 @@ private:
   TexType _type;
   FillType _fType;
 
-  bool isUnderTank;	//рисуется под танком
-  bool isPassable;	//является препятствием
+  bool _isUnderTank = true;	//рисуется под танком
+  bool _isPassable = true;	//является препятствием
 
-  void createBlock(TexType texType, FillType fillType);
+  void createFromTiles(TexType texType, FillType fillType);
 };
 

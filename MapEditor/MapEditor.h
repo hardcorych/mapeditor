@@ -10,6 +10,7 @@
 #include <qundoview.h>
 
 #include <Block.h>
+#include <BlockEditor.h>
 #include <Editor.h>
 #include <Map.h>
 #include <NewMapDialog.h>
@@ -25,6 +26,7 @@ public:
 
 private:
   Ui::MapEditorClass ui;
+
   std::thread _renderThread;
   QMenu* _fileMenu;
   QMenu* _editMenu;
@@ -47,6 +49,9 @@ private:
   std::mutex _mutex;
 
   QString _filename;
+
+  BlockEditor _blockEditor;
+  std::vector<BlockType> _blockTypes;
 
   //методы
 

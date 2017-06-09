@@ -130,7 +130,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
-    <ClInclude Include="BlockEditor.h" />
+    <CustomBuild Include="BlockEditor.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Command>
+    </CustomBuild>
     <ClInclude Include="Commands.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="GeneratedFiles\ui_MapEditor.h" />
