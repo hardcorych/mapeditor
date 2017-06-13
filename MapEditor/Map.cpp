@@ -16,6 +16,15 @@ _step(16)
 {
   //указанный размер карты
   //размер задается в количестве блоков игровой области
+
+  //определение типов блоков
+  _blockTypes["BORDER"] = "Resources/tiles/BORDER.png";
+  _blockTypes["ARMOR"] = "Resources/tiles/ARMOR.png";
+  _blockTypes["BRICK"] = "Resources/tiles/BRICK.png";
+  _blockTypes["BUSHES"] = "Resources/tiles/BUSHES.png";
+  _blockTypes["ICE"] = "Resources/tiles/ICE.png";
+  _blockTypes["WATER"] = "Resources/tiles/WATER.png";
+
   //формирование границ
   setBorder();
   setGameArea();
@@ -112,6 +121,11 @@ void Map::RemoveBlock(int x, int z)
       replaceChild(block, new Block(x, z, TexType::EMPTY, FillType::FULL));
     }
   }
+}
+
+void Map::AddBlockType(std::string texType, std::string texPath)
+{
+  _blockTypes[texType] = texPath;
 }
 
 std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,

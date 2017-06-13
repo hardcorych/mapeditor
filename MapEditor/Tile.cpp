@@ -9,6 +9,7 @@ _type(TexType::BORDER)
 {
 }
 
+/*
 Tile::Tile(unsigned int x, unsigned int z, TexType type) :
 _x(x), _z(z),
 _type(type)
@@ -38,7 +39,39 @@ _type(type)
 
   setTexture();
 }
+*/
 
+Tile::Tile(unsigned int x, unsigned int z, std::string texType) :
+_x(x), _z(z),
+_texType(texType)
+{
+  //polygon drawing
+  _vertices->push_back(osg::Vec3(_x, 0., _z));
+  _vertices->push_back(osg::Vec3(_x, 0., _z + _size));
+  _vertices->push_back(osg::Vec3(_x + _size, 0., _z));
+  _vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
+
+  setVertexArray(_vertices);
+  addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,
+    0, _vertices->size()));
+
+  //normals
+  _normals->setBinding(osg::Array::BIND_PER_VERTEX);
+
+  calculateNormals(osg::Vec3(_x, 0., _z),
+    osg::Vec3(_x + _size, 0., _z),
+    osg::Vec3(_x, 0., _z + _size));
+
+  calculateNormals(osg::Vec3(_x, 0., _z + _size),
+    osg::Vec3(_x + _size, 0., _z),
+    osg::Vec3(_x + _size, 0., _z + _size));
+
+  setNormalArray(_normals);
+
+  setTexture(_texType);
+}
+
+//!!!!!!!!!!!!!!!!!!!! _type
 Tile::Tile(unsigned int x, unsigned int z, TexType type, EmptyTile empty) :
 _x(x), _z(z),
 _type(type)
@@ -84,7 +117,8 @@ void Tile::calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3)
   _normals->push_back(crossResult);
 }
 
-void Tile::setTexture()   //передавать название текстуры как параметр
+//void Tile::setTexture()   //передавать название текстуры как параметр
+void Tile::setTexture(std::string texType)
 {
   //натягивание текстуры на тайл
   osg::ref_ptr<osg::Vec2Array> texcoords = new osg::Vec2Array;
@@ -98,6 +132,7 @@ void Tile::setTexture()   //передавать название текстуры как параметр
 
   osg::ref_ptr<osg::Image> image;
 
+  /*
   std::string texFilename = "Resources/tiles/";
 
   switch (_type)
@@ -124,13 +159,14 @@ void Tile::setTexture()   //передавать название текстуры как параметр
 
     break;
   }
-  
+  */
 
-  image = osgDB::readImageFile(texFilename);
+  //image = osgDB::readImageFile(texFilename);
   //image->s();   //_s,_t атрибуты размера изображения
+  image = osgDB::readImageFile(texType);
   if (!image)
   {
-    // ошибка
+    // error handling?
   }
 
   texture->setImage(image);
@@ -142,13 +178,13 @@ void Tile::setTexture()   //передавать название текстуры как параметр
 
 void Tile::setEmptyTexture(EmptyTile empty)
 {
-  //натягивание текстуры на тайл
-  osg::ref_ptr<osg::Vec2Array> texcoords = new osg::Vec2Array;
-  texcoords->push_back(osg::Vec2(0.0f, 0.0f));
-  texcoords->push_back(osg::Vec2(0.0f, 1.0f));
-  texcoords->push_back(osg::Vec2(1.0f, 0.0f));
-  texcoords->push_back(osg::Vec2(1.0f, 1.0f));
-  setTexCoordArray(0, texcoords);
+  //put texture on tile
+  osg::ref_ptr<osg::Vec2Array> texCoords = new osg::Vec2Array;
+  texCoords->push_back(osg::Vec2(0.0f, 0.0f));
+  texCoords->push_back(osg::Vec2(0.0f, 1.0f));
+  texCoords->push_back(osg::Vec2(1.0f, 0.0f));
+  texCoords->push_back(osg::Vec2(1.0f, 1.0f));
+  setTexCoordArray(0, texCoords);
 
   osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
 
@@ -190,6 +226,7 @@ void Tile::setEmptyTexture(EmptyTile empty)
 
 QString Tile::GetType_str()
 {
+  /*
   QString texType;
 
   switch (_type)
@@ -217,6 +254,6 @@ QString Tile::GetType_str()
     texType = "ICE";
     break;
   }
-
-  return texType;
+  */
+  return QString::fromStdString(_texType);
 }

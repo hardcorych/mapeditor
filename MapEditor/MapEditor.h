@@ -54,7 +54,6 @@ private:
   QString _filename;
 
   BlockEditor _blockEditor;
-  std::map<std::string, std::string> _blockTypes;
 
   int _minMapSize;
   int _maxMapSize;

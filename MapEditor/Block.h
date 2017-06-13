@@ -18,7 +18,8 @@ class Block : public osg::Group		//block consists 4 tiles, block size 16x16
 {
 public:
   Block();
-  Block(int x, int z, TexType type, FillType fillType);
+  //Block(int x, int z, TexType type, FillType fillType);
+  Block(int x, int z, std::string texType, FillType fillType);
   ~Block();
 
   TexType GetType() { return _type; }
@@ -48,12 +49,14 @@ private:
   osg::ref_ptr<Tile> _rightTop = nullptr;
   osg::ref_ptr<Tile> _rightBottom = nullptr;
 
-  TexType _type;
+  TexType _type;  //old
+
+  std::string _texType;
   FillType _fType;
 
   bool _isUnderTank = true;	//drawing under tank
   bool _isPassable = true;	//obstacle or not
 
-  void createFromTiles(TexType texType, FillType fillType);
+  void createFromTiles(std::string texType, FillType fillType);
 };
 

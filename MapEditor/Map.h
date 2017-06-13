@@ -13,7 +13,7 @@
 
 class Map : public osg::Group
 {
- public:
+public:
   Map();
   Map(unsigned int sizeX, unsigned int sizeZ);
   ~Map();
@@ -26,8 +26,12 @@ class Map : public osg::Group
 
   void Set(int sizeX, int sizeZ);
   void Remove();
+
   void AddBlock(osg::ref_ptr<Block> block, int x, int z);
   void RemoveBlock(int x, int z);
+
+  void AddBlockType(std::string texType, std::string texPath)
+  { _blockTypes[texType] = texPath; };
 
   //resizing
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize
@@ -36,10 +40,12 @@ class Map : public osg::Group
 
   std::mutex& GetMutex() { return std::ref(_mutex); }
 
- private:
+private:
   int _sizeX;
   int _sizeZ;
   int _step;		//step equals block size
+
+  std::map<std::string, std::string> _blockTypes;
 
   std::mutex _mutex;
 
