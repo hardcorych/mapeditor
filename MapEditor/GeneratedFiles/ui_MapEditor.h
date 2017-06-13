@@ -22,7 +22,6 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
-#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -49,12 +48,6 @@ public:
     QRadioButton *radioBtnBrickLeft;
     QRadioButton *radioBtnBrickRight;
     QRadioButton *radioBtnBrickBottom;
-    QGroupBox *groupBoxMapSize;
-    QSpinBox *spnBoxSizeX;
-    QSpinBox *spnBoxSizeZ;
-    QLabel *labelSizeX;
-    QLabel *labelSizeZ;
-    QPushButton *pBtnChangeSize;
     QGroupBox *groupBox;
     QLineEdit *lineEditBlockName;
     QLabel *labelBlockName;
@@ -72,7 +65,7 @@ public:
     {
         if (MapEditorClass->objectName().isEmpty())
             MapEditorClass->setObjectName(QStringLiteral("MapEditorClass"));
-        MapEditorClass->resize(975, 490);
+        MapEditorClass->resize(856, 490);
         centralWidget = new QWidget(MapEditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         labelMessage = new QLabel(centralWidget);
@@ -80,7 +73,7 @@ public:
         labelMessage->setGeometry(QRect(10, 420, 191, 16));
         groupBoxMapEditor = new QGroupBox(centralWidget);
         groupBoxMapEditor->setObjectName(QStringLiteral("groupBoxMapEditor"));
-        groupBoxMapEditor->setGeometry(QRect(10, 10, 651, 401));
+        groupBoxMapEditor->setGeometry(QRect(10, 10, 531, 401));
         groupBoxBlocks = new QGroupBox(groupBoxMapEditor);
         groupBoxBlocks->setObjectName(QStringLiteral("groupBoxBlocks"));
         groupBoxBlocks->setGeometry(QRect(10, 20, 511, 371));
@@ -176,29 +169,9 @@ public:
         icon12.addFile(QStringLiteral("Resources/blocks/brick_bottom.png"), QSize(), QIcon::Normal, QIcon::Off);
         radioBtnBrickBottom->setIcon(icon12);
         radioBtnBrickBottom->setIconSize(QSize(64, 64));
-        groupBoxMapSize = new QGroupBox(groupBoxMapEditor);
-        groupBoxMapSize->setObjectName(QStringLiteral("groupBoxMapSize"));
-        groupBoxMapSize->setGeometry(QRect(520, 20, 120, 101));
-        spnBoxSizeX = new QSpinBox(groupBoxMapSize);
-        spnBoxSizeX->setObjectName(QStringLiteral("spnBoxSizeX"));
-        spnBoxSizeX->setGeometry(QRect(10, 40, 42, 22));
-        spnBoxSizeZ = new QSpinBox(groupBoxMapSize);
-        spnBoxSizeZ->setObjectName(QStringLiteral("spnBoxSizeZ"));
-        spnBoxSizeZ->setGeometry(QRect(70, 40, 42, 22));
-        labelSizeX = new QLabel(groupBoxMapSize);
-        labelSizeX->setObjectName(QStringLiteral("labelSizeX"));
-        labelSizeX->setGeometry(QRect(10, 20, 41, 16));
-        labelSizeX->setAlignment(Qt::AlignCenter);
-        labelSizeZ = new QLabel(groupBoxMapSize);
-        labelSizeZ->setObjectName(QStringLiteral("labelSizeZ"));
-        labelSizeZ->setGeometry(QRect(70, 20, 41, 16));
-        labelSizeZ->setAlignment(Qt::AlignCenter);
-        pBtnChangeSize = new QPushButton(groupBoxMapSize);
-        pBtnChangeSize->setObjectName(QStringLiteral("pBtnChangeSize"));
-        pBtnChangeSize->setGeometry(QRect(10, 70, 101, 23));
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(670, 140, 291, 161));
+        groupBox->setGeometry(QRect(550, 10, 291, 161));
         lineEditBlockName = new QLineEdit(groupBox);
         lineEditBlockName->setObjectName(QStringLiteral("lineEditBlockName"));
         lineEditBlockName->setGeometry(QRect(90, 20, 113, 20));
@@ -226,7 +199,7 @@ public:
         MapEditorClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MapEditorClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 975, 21));
+        menuBar->setGeometry(QRect(0, 0, 856, 21));
         MapEditorClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MapEditorClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -260,10 +233,6 @@ public:
         radioBtnBrickLeft->setText(QString());
         radioBtnBrickRight->setText(QString());
         radioBtnBrickBottom->setText(QString());
-        groupBoxMapSize->setTitle(QApplication::translate("MapEditorClass", "Map size", Q_NULLPTR));
-        labelSizeX->setText(QApplication::translate("MapEditorClass", "X", Q_NULLPTR));
-        labelSizeZ->setText(QApplication::translate("MapEditorClass", "Z", Q_NULLPTR));
-        pBtnChangeSize->setText(QApplication::translate("MapEditorClass", "Change Size", Q_NULLPTR));
         groupBox->setTitle(QApplication::translate("MapEditorClass", "Block editor", Q_NULLPTR));
         labelBlockName->setText(QApplication::translate("MapEditorClass", "Block name", Q_NULLPTR));
         labelBlockPath->setText(QApplication::translate("MapEditorClass", "Texture path", Q_NULLPTR));

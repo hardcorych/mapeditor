@@ -15,15 +15,11 @@
 #include <Viewer.h>
 
 MapEditor::MapEditor(QWidget *parent)
-  : QMainWindow(parent)
+  : QMainWindow(parent),
+  _minMapSize(5),
+  _maxMapSize(30)
 {
   ui.setupUi(this);
-
-  ui.spnBoxSizeX->setMinimum(5);
-  ui.spnBoxSizeX->setMaximum(30);
-
-  ui.spnBoxSizeZ->setMinimum(5);
-  ui.spnBoxSizeZ->setMaximum(30);
 
   _fileMenu = new QMenu(this);
   _editMenu = new QMenu(this);
@@ -103,9 +99,6 @@ MapEditor::MapEditor(QWidget *parent)
   connect(ui.radioBtnBrickTop, &QRadioButton::clicked,
     this, &MapEditor::onClickedBrickTop);
 
-  //connect(ui.pBtnChangeSize, &QPushButton::clicked,
-    //this, &MapEditor::onClickedChangeSize);
-
   _renderThread = std::thread(&MapEditor::renderScene, this);
 }
 
@@ -126,13 +119,13 @@ void MapEditor::readTextures()
 void MapEditor::NewMap()
 {
   //создание новой карты через модальный диалог
-  NewMapDialog newMapDialog(this);
+  MapSizeDialog mapSizeDialog(this);
 
-  if (newMapDialog.exec() == QDialog::Accepted)
+  if (mapSizeDialog.exec() == QDialog::Accepted)
   {
-    _mapSizeX = newMapDialog.GetSizeX();
-    _mapSizeZ = newMapDialog.GetSizeZ();
-    createMap(_mapSizeX, _mapSizeZ);
+    int mapSizeX = mapSizeDialog.GetSizeX();
+    int mapSizeZ = mapSizeDialog.GetSizeZ();
+    createMap(mapSizeX, mapSizeZ);
     if (!_undoStack->isClean()) _undoStack->clear();
   }
 }
@@ -173,8 +166,8 @@ void MapEditor::LoadXMLFile()
     bool isWrongType = false;
     bool isWrongFill = false;
 
-    _mapSizeX = 0;
-    _mapSizeZ = 0;
+    int mapSizeX = 0;
+    int mapSizeZ = 0;
 
     while (!xmlReader.atEnd())
     {
@@ -183,62 +176,62 @@ void MapEditor::LoadXMLFile()
         QString element = xmlReader.name().toString();
         if (element == "sizeX")
         {
-          _mapSizeX = xmlReader.readElementText().toInt();
-          if (_mapSizeX < 0)
+          mapSizeX = xmlReader.readElementText().toInt();
+          if (mapSizeX < 0)
           {
             isError = true;
             errorText = "Negative map size X";
             break;
           }
-          if (_mapSizeX % 16 != 0)
+          if (mapSizeX % 16 != 0)
           {
             isError = true;
             errorText = "Incorrect map size X: it's not multiple of 16";
             break;
           }
-          if (_mapSizeX < ui.spnBoxSizeX->minimum() * 16 ||
-            _mapSizeX > ui.spnBoxSizeX->maximum() * 16)
+          if (mapSizeX < _minMapSize * 16 ||
+            mapSizeX > _maxMapSize * 16)
           {
             isError = true;
             errorText = "Map size may be in range from "
-              + QString::number(ui.spnBoxSizeX->minimum()) +
-              "to " + QString::number(ui.spnBoxSizeX->maximum()) + " blocks";
+              + QString::number(_minMapSize) +
+              "to " + QString::number(_maxMapSize) + " blocks";
             break;
           }
           //get size in blocks
-          _mapSizeX /= 16;
+          mapSizeX /= 16;
         }
         else if (element == "sizeZ")
         {
-          _mapSizeZ = xmlReader.readElementText().toInt();
-          if (_mapSizeZ < 0)
+          mapSizeZ = xmlReader.readElementText().toInt();
+          if (mapSizeZ < 0)
           {
             isError = true;
             errorText = "Negative map size Z";
             break;
           }
-          if (_mapSizeZ % 16 != 0)
+          if (mapSizeZ % 16 != 0)
           {
             isError = true;
             errorText = "Incorrect map size Z: it's not multiple of 16";
             break;
           }
-          if (_mapSizeZ < ui.spnBoxSizeZ->minimum() * 16 ||
-            _mapSizeZ > ui.spnBoxSizeZ->maximum() * 16)
+          if (mapSizeZ < _minMapSize * 16 ||
+            mapSizeZ > _maxMapSize * 16)
           {
             isError = true;
             errorText = "Map size may be in range from " 
-              + QString::number(ui.spnBoxSizeZ->minimum()) +
-              "to " + QString::number(ui.spnBoxSizeZ->maximum()) + " blocks";
+              + QString::number(_minMapSize) +
+              "to " + QString::number(_maxMapSize) + " blocks";
             break;
           }
           //получаем размер в блоках
-          _mapSizeZ /= 16;
-          createMap(_mapSizeX, _mapSizeZ);
+          mapSizeZ /= 16;
+          createMap(mapSizeX, mapSizeZ);
         }
         else if (element == "block")
         {
-          if (_mapSizeX == 0 || _mapSizeZ == 0)
+          if (mapSizeX == 0 || mapSizeZ == 0)
           {
             isError = true;
             errorText = "There is no map size";
@@ -321,11 +314,11 @@ void MapEditor::LoadXMLFile()
               errorText = "X block coordinate is not multiple of 16";
               break;
             }
-            if (x > ui.spnBoxSizeX->maximum() * 16)
+            if (x > _maxMapSize * 16)
             {
               isError = true;
               errorText = "X coord may be in range of "
-                + QString::number(ui.spnBoxSizeX->maximum()) + " blocks";
+                + QString::number(_maxMapSize) + " blocks";
               break;
             }
             x -= 16;		//-16 for matching
@@ -350,11 +343,11 @@ void MapEditor::LoadXMLFile()
               errorText = "Z block coordinate is not multiple of 16";
               break;
             }
-            if (z > ui.spnBoxSizeZ->maximum() * 16)
+            if (z > _maxMapSize * 16)
             {
               isError = true;
               errorText = "Z coord may be in range of "
-                + QString::number(ui.spnBoxSizeZ->maximum()) + " blocks";
+                + QString::number(_maxMapSize) + " blocks";
               break;
             }
             z -= 16;		//-16 for matching
@@ -628,25 +621,17 @@ void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, TexType type, FillType f
   _undoStack->push(replaceCommand);
 }
 
-//void MapEditor::onClickedChangeSize()
 void MapEditor::changeMapSize()
 {
   //resize map
-  //создание новой карты через модальный диалог
-  NewMapDialog newMapDialog(this);
+  MapSizeDialog mapSizeDialog(this);
 
-  if (newMapDialog.exec() == QDialog::Accepted)
+  if (mapSizeDialog.exec() == QDialog::Accepted)
   {
-    int mapSizeX = newMapDialog.GetSizeX();
-    int mapSizeZ = newMapDialog.GetSizeZ();
-    //createMap(_mapSizeX, _mapSizeZ);
-    //if (!_undoStack->isClean()) _undoStack->clear();
-    //int mapSizeX = ui.spnBoxSizeX->value();
-    //int mapSizeZ = ui.spnBoxSizeZ->value();
-    _mapSizeX = mapSizeX;
-    _mapSizeZ = mapSizeZ;
+    int mapSizeX = mapSizeDialog.GetSizeX();
+    int mapSizeZ = mapSizeDialog.GetSizeZ();
 
-    if (!(_mapSizeX == _map->GetSizeX() / 16 && _mapSizeZ == _map->GetSizeZ() / 16))
+    if (!(mapSizeX == _map->GetSizeX() / 16 && mapSizeZ == _map->GetSizeZ() / 16))
     {
       //push undoStack
       QUndoCommand* changeSizeCommand = new ChangeSizeCommand(_map,

@@ -67,15 +67,6 @@
     <ClCompile Include="Block.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NewMapDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_NewMapDialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_NewMapDialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -94,6 +85,15 @@
     <ClCompile Include="Editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MapSizeDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MapSizeDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MapSizeDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MapEditor.h">
@@ -105,13 +105,13 @@
     <CustomBuild Include="MapEditor.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="NewMapDialog.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="KeyboardMouseHandler.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="BlockEditor.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapSizeDialog.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

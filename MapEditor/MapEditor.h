@@ -13,7 +13,7 @@
 #include <BlockEditor.h>
 #include <Editor.h>
 #include <Map.h>
-#include <NewMapDialog.h>
+#include <MapSizeDialog.h>
 
 class MapEditor : public QMainWindow,
   public Editor
@@ -47,8 +47,6 @@ private:
   QUndoView* _undoView;
 
   osg::ref_ptr<Map> _map = new Map(10, 10);
-  int _mapSizeX;
-  int _mapSizeZ;
 
   //QString _errorText;
   std::mutex _mutex;
@@ -57,6 +55,9 @@ private:
 
   BlockEditor _blockEditor;
   std::map<std::string, std::string> _blockTypes;
+
+  int _minMapSize;
+  int _maxMapSize;
 
   //методы
 
@@ -97,8 +98,6 @@ private:
   void AddBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
   void RemoveBlock(osg::ref_ptr<Block> block);
   void ReplaceBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
-
-  //void onClickedChangeSize();
 
   void Undo();    //????
 
