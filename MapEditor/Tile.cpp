@@ -13,7 +13,7 @@ Tile::Tile(unsigned int x, unsigned int z, TexType type) :
 _x(x), _z(z),
 _type(type)
 {
-  //построение полигона
+  //polygon drawing
   _vertices->push_back(osg::Vec3(_x, 0., _z));
   _vertices->push_back(osg::Vec3(_x, 0., _z + _size));
   _vertices->push_back(osg::Vec3(_x + _size, 0., _z));
@@ -23,7 +23,7 @@ _type(type)
   addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,
     0, _vertices->size()));
 
-  //нормали
+  //normals
   _normals->setBinding(osg::Array::BIND_PER_VERTEX);
 
   calculateNormals(osg::Vec3(_x, 0., _z),
@@ -43,7 +43,7 @@ Tile::Tile(unsigned int x, unsigned int z, TexType type, EmptyTile empty) :
 _x(x), _z(z),
 _type(type)
 {
-  //построение полигона
+  //polygon drawing
   _vertices->push_back(osg::Vec3(_x, 0., _z));
   _vertices->push_back(osg::Vec3(_x, 0., _z + _size));
   _vertices->push_back(osg::Vec3(_x + _size, 0., _z));
@@ -53,7 +53,7 @@ _type(type)
   addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,
     0, _vertices->size()));
 
-  //нормали
+  //normals
   _normals->setBinding(osg::Array::BIND_PER_VERTEX);
 
   calculateNormals(osg::Vec3(_x, 0., _z),
@@ -84,7 +84,7 @@ void Tile::calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3)
   _normals->push_back(crossResult);
 }
 
-void Tile::setTexture()
+void Tile::setTexture()   //передавать название текстуры как параметр
 {
   //натягивание текстуры на тайл
   osg::ref_ptr<osg::Vec2Array> texcoords = new osg::Vec2Array;
@@ -124,9 +124,10 @@ void Tile::setTexture()
 
     break;
   }
+  
 
   image = osgDB::readImageFile(texFilename);
-  image->s();
+  //image->s();   //_s,_t атрибуты размера изображения
   if (!image)
   {
     // ошибка

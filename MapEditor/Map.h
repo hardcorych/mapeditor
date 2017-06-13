@@ -9,7 +9,7 @@
 #include <Block.h>
 
 
-//вывод в XML-файл по тайлам
+//XML output by tiles
 
 class Map : public osg::Group
 {
@@ -21,7 +21,7 @@ class Map : public osg::Group
   const int GetSizeX()	{ return _sizeX; }
   const int GetSizeZ()	{ return _sizeZ; }
 
-  QString GetSizeX_str()	{ return QString::number(_sizeX); }	//размер в блоках
+  QString GetSizeX_str()	{ return QString::number(_sizeX); }	//size in blocks
   QString GetSizeZ_str()	{ return QString::number(_sizeZ); }
 
   void Set(int sizeX, int sizeZ);
@@ -39,7 +39,7 @@ class Map : public osg::Group
  private:
   int _sizeX;
   int _sizeZ;
-  int _step;		//шаг равный размеру одного блока/тайла
+  int _step;		//step equals block size
 
   std::mutex _mutex;
 

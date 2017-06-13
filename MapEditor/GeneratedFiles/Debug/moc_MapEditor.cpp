@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
     QByteArrayData data[36];
-    char stringdata0[468];
+    char stringdata0[462];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -54,19 +54,19 @@ QT_MOC_LITERAL(19, 259, 19), // "onClickedBrickRight"
 QT_MOC_LITERAL(20, 279, 17), // "onClickedBrickTop"
 QT_MOC_LITERAL(21, 297, 20), // "onClickedBrickBottom"
 QT_MOC_LITERAL(22, 318, 6), // "NewMap"
-QT_MOC_LITERAL(23, 325, 11), // "LoadXMLFile"
-QT_MOC_LITERAL(24, 337, 11), // "SaveXMLFile"
-QT_MOC_LITERAL(25, 349, 13), // "SaveAsXMLFile"
-QT_MOC_LITERAL(26, 363, 8), // "AddBlock"
-QT_MOC_LITERAL(27, 372, 19), // "osg::ref_ptr<Block>"
-QT_MOC_LITERAL(28, 392, 5), // "block"
-QT_MOC_LITERAL(29, 398, 4), // "type"
-QT_MOC_LITERAL(30, 403, 5), // "fType"
-QT_MOC_LITERAL(31, 409, 11), // "RemoveBlock"
-QT_MOC_LITERAL(32, 421, 12), // "ReplaceBlock"
-QT_MOC_LITERAL(33, 434, 19), // "onClickedChangeSize"
-QT_MOC_LITERAL(34, 454, 4), // "Undo"
-QT_MOC_LITERAL(35, 459, 8) // "GetMutex"
+QT_MOC_LITERAL(23, 325, 13), // "changeMapSize"
+QT_MOC_LITERAL(24, 339, 11), // "LoadXMLFile"
+QT_MOC_LITERAL(25, 351, 11), // "SaveXMLFile"
+QT_MOC_LITERAL(26, 363, 13), // "SaveAsXMLFile"
+QT_MOC_LITERAL(27, 377, 8), // "AddBlock"
+QT_MOC_LITERAL(28, 386, 19), // "osg::ref_ptr<Block>"
+QT_MOC_LITERAL(29, 406, 5), // "block"
+QT_MOC_LITERAL(30, 412, 4), // "type"
+QT_MOC_LITERAL(31, 417, 5), // "fType"
+QT_MOC_LITERAL(32, 423, 11), // "RemoveBlock"
+QT_MOC_LITERAL(33, 435, 12), // "ReplaceBlock"
+QT_MOC_LITERAL(34, 448, 4), // "Undo"
+QT_MOC_LITERAL(35, 453, 8) // "GetMutex"
 
     },
     "MapEditor\0QuitViewer\0\0QuitAppToMain\0"
@@ -77,10 +77,10 @@ QT_MOC_LITERAL(35, 459, 8) // "GetMutex"
     "onClickedArmorTop\0onClickedArmorBottom\0"
     "onClickedBrickFull\0onClickedBrickLeft\0"
     "onClickedBrickRight\0onClickedBrickTop\0"
-    "onClickedBrickBottom\0NewMap\0LoadXMLFile\0"
-    "SaveXMLFile\0SaveAsXMLFile\0AddBlock\0"
-    "osg::ref_ptr<Block>\0block\0type\0fType\0"
-    "RemoveBlock\0ReplaceBlock\0onClickedChangeSize\0"
+    "onClickedBrickBottom\0NewMap\0changeMapSize\0"
+    "LoadXMLFile\0SaveXMLFile\0SaveAsXMLFile\0"
+    "AddBlock\0osg::ref_ptr<Block>\0block\0"
+    "type\0fType\0RemoveBlock\0ReplaceBlock\0"
     "Undo\0GetMutex"
 };
 #undef QT_MOC_LITERAL
@@ -121,10 +121,10 @@ static const uint qt_meta_data_MapEditor[] = {
       23,    0,  165,    2, 0x0a /* Public */,
       24,    0,  166,    2, 0x0a /* Public */,
       25,    0,  167,    2, 0x0a /* Public */,
-      26,    3,  168,    2, 0x0a /* Public */,
-      31,    1,  175,    2, 0x0a /* Public */,
-      32,    3,  178,    2, 0x0a /* Public */,
-      33,    0,  185,    2, 0x0a /* Public */,
+      26,    0,  168,    2, 0x0a /* Public */,
+      27,    3,  169,    2, 0x0a /* Public */,
+      32,    1,  176,    2, 0x0a /* Public */,
+      33,    3,  179,    2, 0x0a /* Public */,
       34,    0,  186,    2, 0x0a /* Public */,
       35,    0,  187,    2, 0x0a /* Public */,
 
@@ -151,10 +151,10 @@ static const uint qt_meta_data_MapEditor[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 27, 0x80000000 | 5, 0x80000000 | 7,   28,   29,   30,
-    QMetaType::Void, 0x80000000 | 27,   28,
-    QMetaType::Void, 0x80000000 | 27, 0x80000000 | 5, 0x80000000 | 7,   28,   29,   30,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 28, 0x80000000 | 5, 0x80000000 | 7,   29,   30,   31,
+    QMetaType::Void, 0x80000000 | 28,   29,
+    QMetaType::Void, 0x80000000 | 28, 0x80000000 | 5, 0x80000000 | 7,   29,   30,   31,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -184,13 +184,13 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 14: _t->onClickedBrickTop(); break;
         case 15: _t->onClickedBrickBottom(); break;
         case 16: _t->NewMap(); break;
-        case 17: _t->LoadXMLFile(); break;
-        case 18: _t->SaveXMLFile(); break;
-        case 19: _t->SaveAsXMLFile(); break;
-        case 20: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
-        case 21: _t->RemoveBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1]))); break;
-        case 22: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
-        case 23: _t->onClickedChangeSize(); break;
+        case 17: _t->changeMapSize(); break;
+        case 18: _t->LoadXMLFile(); break;
+        case 19: _t->SaveXMLFile(); break;
+        case 20: _t->SaveAsXMLFile(); break;
+        case 21: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
+        case 22: _t->RemoveBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1]))); break;
+        case 23: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
         case 24: _t->Undo(); break;
         case 25: _t->GetMutex(); break;
         default: ;

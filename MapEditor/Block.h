@@ -5,16 +5,16 @@
 
 #include <Tile.h>
 
-enum class FillType		//заполненность блока
+enum class FillType		//block filling
 {
-  FULL,		//4 тайла
-  RIGHT,		//по 2 тайла
+  FULL,		//4 tiles
+  RIGHT,	//2 tiles
   BOTTOM,
   LEFT,
   TOP
 };
 
-class Block : public osg::Group		//блока из 4 тайлов, общим размером 16х16
+class Block : public osg::Group		//block consists 4 tiles, block size 16x16
 {
 public:
   Block();
@@ -30,7 +30,7 @@ public:
   int GetZ()	{ return _z; }
 
   //для записи в файл
-  QString GetX_str()	{ return QString::number(_x + 16); }	//+16 для согласования
+  QString GetX_str()	{ return QString::number(_x + 16); }	//+16 for matching with file
   QString GetZ_str()	{ return QString::number(_z + 16); }
 
   void SetType(TexType texType, FillType fillType);
@@ -51,8 +51,8 @@ private:
   TexType _type;
   FillType _fType;
 
-  bool _isUnderTank = true;	//рисуется под танком
-  bool _isPassable = true;	//является препятствием
+  bool _isUnderTank = true;	//drawing under tank
+  bool _isPassable = true;	//obstacle or not
 
   void createFromTiles(TexType texType, FillType fillType);
 };

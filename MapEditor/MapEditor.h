@@ -30,11 +30,16 @@ private:
   std::thread _renderThread;
   QMenu* _fileMenu;
   QMenu* _editMenu;
+  QMenu* _settingsMenu;
 
   QAction* _newAct;
   QAction* _loadAct;
   QAction* _saveAsAct;
   QAction* _saveAct;
+
+  QAction* _resizeMapAct;
+  QAction* _blockEditAct;
+
   //QAction* _undoAct;
   //QAction* _redoAct;
 
@@ -51,9 +56,11 @@ private:
   QString _filename;
 
   BlockEditor _blockEditor;
-  std::vector<BlockType> _blockTypes;
+  std::map<std::string, std::string> _blockTypes;
 
   //методы
+
+  void readTextures();
 
   void renderScene();
   void createMap(int sizeX, int sizeZ);
@@ -80,7 +87,9 @@ private:
   void onClickedBrickBottom();
 
   void NewMap();
-  //операции с файлами
+  void changeMapSize();
+
+  //operations with files
   void LoadXMLFile();
   void SaveXMLFile();
   void SaveAsXMLFile();
@@ -89,7 +98,7 @@ private:
   void RemoveBlock(osg::ref_ptr<Block> block);
   void ReplaceBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
 
-  void onClickedChangeSize();
+  //void onClickedChangeSize();
 
   void Undo();    //????
 

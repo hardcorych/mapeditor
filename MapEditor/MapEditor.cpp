@@ -27,14 +27,19 @@ MapEditor::MapEditor(QWidget *parent)
 
   _fileMenu = new QMenu(this);
   _editMenu = new QMenu(this);
+  _settingsMenu = new QMenu(this);
 
   _fileMenu->setTitle("&File");
   _editMenu->setTitle("&Edit");
+  _settingsMenu->setTitle("&Settings");
 
   _newAct = new QAction(tr("&New"), this);
   _loadAct = new QAction(tr("&Load"), this);
   _saveAct = new QAction(tr("&Save"), this);
   _saveAsAct = new QAction(tr("&Save As"), this);
+
+  _resizeMapAct = new QAction(tr("&Resize Map"), this);
+  _blockEditAct = new QAction(tr("&Block Editor"), this);
 
   _undoStack = new QUndoStack(this);
 
@@ -46,6 +51,10 @@ MapEditor::MapEditor(QWidget *parent)
   connect(_saveAct, &QAction::triggered, this, &MapEditor::SaveXMLFile);
   connect(_saveAsAct, &QAction::triggered, this, &MapEditor::SaveAsXMLFile);
 
+  //!!!
+  connect(_resizeMapAct, &QAction::triggered, this, &MapEditor::changeMapSize);
+  //connect(_blockEditAct)
+
   _fileMenu->addAction(_newAct);
   _fileMenu->addAction(_loadAct);
   _fileMenu->addAction(_saveAct);
@@ -55,10 +64,16 @@ MapEditor::MapEditor(QWidget *parent)
   _editMenu->addAction(_undoAct);
   _editMenu->addAction(_redoAct);
 
+  _settingsMenu->addAction(_resizeMapAct);
+  _settingsMenu->addAction(_blockEditAct);
+
   ui.menuBar->addMenu(_fileMenu);
   ui.menuBar->addMenu(_editMenu);
+  ui.menuBar->addMenu(_settingsMenu);
+
   ui.labelMessage->setText("Information label");
 
+  //??????
   connect(ui.radioBtnBushes, &QRadioButton::clicked, 
     this, &MapEditor::onClickedBushes);
   connect(ui.radioBtnWater, &QRadioButton::clicked,
@@ -88,8 +103,8 @@ MapEditor::MapEditor(QWidget *parent)
   connect(ui.radioBtnBrickTop, &QRadioButton::clicked,
     this, &MapEditor::onClickedBrickTop);
 
-  connect(ui.pBtnChangeSize, &QPushButton::clicked,
-    this, &MapEditor::onClickedChangeSize);
+  //connect(ui.pBtnChangeSize, &QPushButton::clicked,
+    //this, &MapEditor::onClickedChangeSize);
 
   _renderThread = std::thread(&MapEditor::renderScene, this);
 }
@@ -101,6 +116,11 @@ MapEditor::~MapEditor()
     emit QuitViewer();
     _renderThread.join();
   }
+}
+
+void MapEditor::readTextures()
+{
+
 }
 
 void MapEditor::NewMap()
@@ -246,6 +266,7 @@ void MapEditor::LoadXMLFile()
             {
               numAttributes++;
               QString attrValue = attr.value().toString();
+              //!!!
               if (attrValue == "BORDER") texType = TexType::BORDER;
               else if (attrValue == "BRICK") texType = TexType::BRICK;
               else if (attrValue == "ARMOR") texType = TexType::ARMOR;
@@ -263,6 +284,7 @@ void MapEditor::LoadXMLFile()
             {
               numAttributes++;
               QString attrValue = attr.value().toString();
+              //!!!
               if (attrValue == "BOTTOM") fillType = FillType::BOTTOM;
               else if (attrValue == "FULL") fillType = FillType::FULL;
               else if (attrValue == "LEFT") fillType = FillType::LEFT;
@@ -306,7 +328,7 @@ void MapEditor::LoadXMLFile()
                 + QString::number(ui.spnBoxSizeX->maximum()) + " blocks";
               break;
             }
-            x -= 16;		//-16 для согласования
+            x -= 16;		//-16 for matching
           }
 
           xmlReader.readNextStartElement();
@@ -335,7 +357,7 @@ void MapEditor::LoadXMLFile()
                 + QString::number(ui.spnBoxSizeZ->maximum()) + " blocks";
               break;
             }
-            z -= 16;		//-16 для согласования
+            z -= 16;		//-16 for matching
           }
 
 
@@ -606,19 +628,33 @@ void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, TexType type, FillType f
   _undoStack->push(replaceCommand);
 }
 
-void MapEditor::onClickedChangeSize()
+//void MapEditor::onClickedChangeSize()
+void MapEditor::changeMapSize()
 {
   //resize map
-  //if (!_undoStack->isClean()) _undoStack->clear();
-  int mapSizeX = ui.spnBoxSizeX->value();
-  int mapSizeZ = ui.spnBoxSizeZ->value();
-  if (!(mapSizeX == _map->GetSizeX() / 16 && mapSizeZ == _map->GetSizeZ() / 16))
+  //создание новой карты через модальный диалог
+  NewMapDialog newMapDialog(this);
+
+  if (newMapDialog.exec() == QDialog::Accepted)
   {
-    //push undoStack
-    QUndoCommand* changeSizeCommand = new ChangeSizeCommand(_map,
-      ui.spnBoxSizeX->value(), ui.spnBoxSizeZ->value());
-    _undoStack->push(changeSizeCommand);
+    int mapSizeX = newMapDialog.GetSizeX();
+    int mapSizeZ = newMapDialog.GetSizeZ();
+    //createMap(_mapSizeX, _mapSizeZ);
+    //if (!_undoStack->isClean()) _undoStack->clear();
+    //int mapSizeX = ui.spnBoxSizeX->value();
+    //int mapSizeZ = ui.spnBoxSizeZ->value();
+    _mapSizeX = mapSizeX;
+    _mapSizeZ = mapSizeZ;
+
+    if (!(_mapSizeX == _map->GetSizeX() / 16 && _mapSizeZ == _map->GetSizeZ() / 16))
+    {
+      //push undoStack
+      QUndoCommand* changeSizeCommand = new ChangeSizeCommand(_map,
+        mapSizeX, mapSizeZ);
+      _undoStack->push(changeSizeCommand);
+    }
   }
+
 }
 
 void MapEditor::Undo()

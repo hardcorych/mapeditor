@@ -170,11 +170,13 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
             addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
           }
         }
-        for (int z = oldSizeZ - _step; z >= 0; z -= _step) {
+        //!!!
+        //for (int z = oldSizeZ - _step; z >= 0; z -= _step) {
+        for (int z = _sizeZ - _step; z >= 0; z -= _step) {
           for (int x = oldSizeX; x < _sizeX; x += _step) {
             addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
           }
-        }
+        }        
       }
     }
 

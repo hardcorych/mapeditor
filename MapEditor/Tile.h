@@ -48,6 +48,9 @@ private:
   osg::ref_ptr<osg::Vec3Array> _vertices = new osg::Vec3Array;
   osg::ref_ptr<osg::Vec3Array> _normals = new osg::Vec3Array;
 
+  static std::map<std::string, std::string> _textures;    //name-path
+  static bool _isFilled;
+
   void calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3);
   void setTexture();
   void setEmptyTexture(EmptyTile empty);
