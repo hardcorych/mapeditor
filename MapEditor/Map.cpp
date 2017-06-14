@@ -18,12 +18,14 @@ _step(16)
   //размер задается в количестве блоков игровой области
 
   //определение типов блоков
-  _blockTypes["BORDER"] = "Resources/tiles/BORDER.png";
-  _blockTypes["ARMOR"] = "Resources/tiles/ARMOR.png";
-  _blockTypes["BRICK"] = "Resources/tiles/BRICK.png";
-  _blockTypes["BUSHES"] = "Resources/tiles/BUSHES.png";
-  _blockTypes["ICE"] = "Resources/tiles/ICE.png";
-  _blockTypes["WATER"] = "Resources/tiles/WATER.png";
+  _texPaths["BORDER"] = "Resources/tiles/BORDER.png";
+  _texPaths["ARMOR"] = "Resources/tiles/ARMOR.png";
+  _texPaths["BRICK"] = "Resources/tiles/BRICK.png";
+  _texPaths["BUSHES"] = "Resources/tiles/BUSHES.png";
+  _texPaths["ICE"] = "Resources/tiles/ICE.png";
+  _texPaths["WATER"] = "Resources/tiles/WATER.png";
+
+  //_blockTypes.push_back();
 
   //формирование границ
   setBorder();
@@ -55,21 +57,21 @@ void Map::setBorder()
   //int startBorder = -1 * _step;
 
   for (int x = -_step; x < _sizeX - _step; x += _step) {
-    addChild(new Block(x, -_step, TexType::BORDER, FillType::FULL));
+    addChild(new Block(x, -_step, "BORDER", _texPaths["BORDER"], FillType::FULL));
   }
   //правая граница
   for (int z = 0; z < _sizeZ - _step; z += _step) {
     for (int x = _sizeX - 3 * _step; x < _sizeX - _step; x += _step) {
-      addChild(new Block(x, z, TexType::BORDER, FillType::FULL));
+      addChild(new Block(x, z, "BORDER", _texPaths["BORDER"], FillType::FULL));
     }
   }
   //верхняя граница
   for (int x = _sizeX - 4 * _step; x >= -_step; x -= _step) {
-    addChild(new Block(x, _sizeZ - 2 * _step, TexType::BORDER, FillType::FULL));
+    addChild(new Block(x, _sizeZ - 2 * _step, "BORDER", _texPaths["BORDER"], FillType::FULL));
   }
   //левая граница
   for (int z = _sizeZ - 3 * _step; z > -_step; z -= _step) {
-    addChild(new Block(-_step, z, TexType::BORDER, FillType::FULL));
+    addChild(new Block(-_step, z, "BORDER", _texPaths["BORDER"], FillType::FULL));
   }
 
   _sizeX -= 3 * _step;	//обратное преобразование к размеру игровой области
@@ -81,7 +83,7 @@ void Map::setGameArea()
   for (int z = 0; z < _sizeZ; z += _step) {
     for (int x = 0; x < _sizeX; x += _step) {
       //заполнение свободной области пустыми блоками
-      addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
+      addChild(new Block(x, z, "EMPTY", "", FillType::FULL));
     }
   }
 }
@@ -118,14 +120,9 @@ void Map::RemoveBlock(int x, int z)
     block = dynamic_cast<Block*>(getChild(i));
 
     if (block->GetX() == x && block->GetZ() == z) {
-      replaceChild(block, new Block(x, z, TexType::EMPTY, FillType::FULL));
+      replaceChild(block, new Block(x, z, "EMPTY", "", FillType::FULL));
     }
   }
-}
-
-void Map::AddBlockType(std::string texType, std::string texPath)
-{
-  _blockTypes[texType] = texPath;
 }
 
 std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
@@ -152,7 +149,7 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
       block = dynamic_cast<Block*>(getChild(i));
 
       isBlockCoordsMoreThanSize = (block->GetX() >= sizeX || block->GetZ() >= sizeZ);
-      isBorderBlock = (block->GetType() == TexType::BORDER);
+      isBorderBlock = (block->GetType() == "BORDER");
 
       if (isBlockCoordsMoreThanSize || isBorderBlock) {
         //удаление блоков вне игровой области и рамки
@@ -181,14 +178,14 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
       else {
         for (int z = oldSizeZ; z < _sizeZ; z += _step) {
           for (int x = 0; x < _sizeX; x += _step) {
-            addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
+            addChild(new Block(x, z, "EMPTY", "", FillType::FULL));
           }
         }
         //!!!
         //for (int z = oldSizeZ - _step; z >= 0; z -= _step) {
         for (int z = _sizeZ - _step; z >= 0; z -= _step) {
           for (int x = oldSizeX; x < _sizeX; x += _step) {
-            addChild(new Block(x, z, TexType::EMPTY, FillType::FULL));
+            addChild(new Block(x, z, "EMPTY", "", FillType::FULL));
           }
         }        
       }
@@ -200,4 +197,14 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
     setBorder();
   }
   return deletedBlocks;
+}
+
+std::string Map::GetTexPath(std::string type)
+{
+  return _texPaths[type];
+}
+
+bool Map::isFoundTexPath(std::string type)
+{ 
+  return (_texPaths.find(type) != _texPaths.end());
 }

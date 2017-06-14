@@ -22,19 +22,20 @@ public:
 protected:
   double _mouseX, _mouseY;	//mouse coords
 
-  TexType _type;
+  //TexType _type;
+  std::string _type;
   FillType _fType;
 
   std::pair<bool, osg::ref_ptr<Block>> findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);
 
 signals:
-  void AddableBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
+  void AddableBlock(osg::ref_ptr<Block> block, std::string type, FillType fType);
   void RemovableBlock(osg::ref_ptr<Block> block);
-  void ReplaceableBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
+  void ReplaceableBlock(osg::ref_ptr<Block> block, std::string type, FillType fType);
   void Undo();
   void Redo();
 
   public slots:
-  void ReceiveBlock(TexType type, FillType fillType);
+  void ReceiveBlock(std::string type, FillType fillType);
 };
 

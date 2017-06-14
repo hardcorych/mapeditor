@@ -57,6 +57,11 @@ public:
     QCheckBox *checkBoxUnderTank;
     QPushButton *pushButtonPath;
     QPushButton *pushButtonCreateBlock;
+    QRadioButton *radioButton;
+    QRadioButton *radioButton_2;
+    QRadioButton *radioButton_3;
+    QRadioButton *radioButton_4;
+    QRadioButton *radioButton_5;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -171,7 +176,7 @@ public:
         radioBtnBrickBottom->setIconSize(QSize(64, 64));
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(550, 10, 291, 161));
+        groupBox->setGeometry(QRect(550, 10, 291, 211));
         lineEditBlockName = new QLineEdit(groupBox);
         lineEditBlockName->setObjectName(QStringLiteral("lineEditBlockName"));
         lineEditBlockName->setGeometry(QRect(90, 20, 113, 20));
@@ -186,16 +191,31 @@ public:
         labelBlockPath->setGeometry(QRect(10, 50, 71, 21));
         checkBoxPassability = new QCheckBox(groupBox);
         checkBoxPassability->setObjectName(QStringLiteral("checkBoxPassability"));
-        checkBoxPassability->setGeometry(QRect(90, 80, 81, 17));
+        checkBoxPassability->setGeometry(QRect(200, 110, 81, 17));
         checkBoxUnderTank = new QCheckBox(groupBox);
         checkBoxUnderTank->setObjectName(QStringLiteral("checkBoxUnderTank"));
-        checkBoxUnderTank->setGeometry(QRect(90, 100, 91, 17));
+        checkBoxUnderTank->setGeometry(QRect(200, 130, 91, 17));
         pushButtonPath = new QPushButton(groupBox);
         pushButtonPath->setObjectName(QStringLiteral("pushButtonPath"));
         pushButtonPath->setGeometry(QRect(210, 50, 75, 21));
         pushButtonCreateBlock = new QPushButton(groupBox);
         pushButtonCreateBlock->setObjectName(QStringLiteral("pushButtonCreateBlock"));
-        pushButtonCreateBlock->setGeometry(QRect(90, 120, 111, 23));
+        pushButtonCreateBlock->setGeometry(QRect(90, 170, 111, 23));
+        radioButton = new QRadioButton(groupBox);
+        radioButton->setObjectName(QStringLiteral("radioButton"));
+        radioButton->setGeometry(QRect(10, 90, 82, 17));
+        radioButton_2 = new QRadioButton(groupBox);
+        radioButton_2->setObjectName(QStringLiteral("radioButton_2"));
+        radioButton_2->setGeometry(QRect(10, 110, 82, 17));
+        radioButton_3 = new QRadioButton(groupBox);
+        radioButton_3->setObjectName(QStringLiteral("radioButton_3"));
+        radioButton_3->setGeometry(QRect(10, 130, 82, 17));
+        radioButton_4 = new QRadioButton(groupBox);
+        radioButton_4->setObjectName(QStringLiteral("radioButton_4"));
+        radioButton_4->setGeometry(QRect(100, 110, 82, 17));
+        radioButton_5 = new QRadioButton(groupBox);
+        radioButton_5->setObjectName(QStringLiteral("radioButton_5"));
+        radioButton_5->setGeometry(QRect(100, 130, 82, 17));
         MapEditorClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MapEditorClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -240,6 +260,11 @@ public:
         checkBoxUnderTank->setText(QApplication::translate("MapEditorClass", "Is under tank", Q_NULLPTR));
         pushButtonPath->setText(QApplication::translate("MapEditorClass", "Set path", Q_NULLPTR));
         pushButtonCreateBlock->setText(QApplication::translate("MapEditorClass", "Create block", Q_NULLPTR));
+        radioButton->setText(QApplication::translate("MapEditorClass", "full", Q_NULLPTR));
+        radioButton_2->setText(QApplication::translate("MapEditorClass", "left", Q_NULLPTR));
+        radioButton_3->setText(QApplication::translate("MapEditorClass", "bottom", Q_NULLPTR));
+        radioButton_4->setText(QApplication::translate("MapEditorClass", "right", Q_NULLPTR));
+        radioButton_5->setText(QApplication::translate("MapEditorClass", "top", Q_NULLPTR));
     } // retranslateUi
 
 };

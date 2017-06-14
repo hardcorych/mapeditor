@@ -46,10 +46,10 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         if (isValid)
         {
           osg::ref_ptr<Block> block = std::get<1>(validBlock);
-          if (block->GetType() != TexType::BORDER)
+          if (block->GetType() != "BORDER")
           {
             //emit to add command
-            if (block->GetType() == TexType::EMPTY)
+            if (block->GetType() == "EMPTY")
             {
               emit AddableBlock(block, _type, _fType);
             }
@@ -74,9 +74,8 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         if (isValid)
         {
           osg::ref_ptr<Block> block = std::get<1>(validBlock);
-          TexType blockType = block->GetType();
-          if (blockType != TexType::BORDER &&
-            blockType != TexType::EMPTY)
+          std::string blockType = block->GetType();
+          if (blockType != "BORDER" && blockType != "EMPTY")
           {
             //emit to delete command
             emit RemovableBlock(block);
@@ -155,8 +154,8 @@ KeyboardMouseHandler::findBlockAndMap(const double x, const double y,
   return std::make_pair((selectedBlock.valid() && selectedMap.valid()), block);
 }
 
-void KeyboardMouseHandler::ReceiveBlock(TexType type, FillType fillType)
+void KeyboardMouseHandler::ReceiveBlock(std::string typeName, FillType fillType)
 {
-  _type = type;
+  _type = typeName;
   _fType = fillType;
 }

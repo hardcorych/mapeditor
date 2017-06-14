@@ -3,12 +3,6 @@
 #include <osg/Texture2D>
 #include <osgDB/ReadFile>
 
-Tile::Tile() :
-_x(0), _z(0),
-_type(TexType::BORDER)
-{
-}
-
 /*
 Tile::Tile(unsigned int x, unsigned int z, TexType type) :
 _x(x), _z(z),
@@ -41,9 +35,10 @@ _type(type)
 }
 */
 
-Tile::Tile(unsigned int x, unsigned int z, std::string texType) :
+Tile::Tile(unsigned int x, unsigned int z, std::string typeName, std::string texPath) :
 _x(x), _z(z),
-_texType(texType)
+_typeName(typeName),
+_texPath(texPath)
 {
   //polygon drawing
   _vertices->push_back(osg::Vec3(_x, 0., _z));
@@ -68,13 +63,13 @@ _texType(texType)
 
   setNormalArray(_normals);
 
-  setTexture(_texType);
+  setTexture(_texPath);
 }
 
 //!!!!!!!!!!!!!!!!!!!! _type
-Tile::Tile(unsigned int x, unsigned int z, TexType type, EmptyTile empty) :
+Tile::Tile(unsigned int x, unsigned int z, std::string typeName, EmptyTile empty) :
 _x(x), _z(z),
-_type(type)
+_typeName(typeName)
 {
   //polygon drawing
   _vertices->push_back(osg::Vec3(_x, 0., _z));
@@ -118,15 +113,15 @@ void Tile::calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3)
 }
 
 //void Tile::setTexture()   //передавать название текстуры как параметр
-void Tile::setTexture(std::string texType)
+void Tile::setTexture(std::string texPath)
 {
-  //натягивание текстуры на тайл
-  osg::ref_ptr<osg::Vec2Array> texcoords = new osg::Vec2Array;
-  texcoords->push_back(osg::Vec2(0.0f, 0.0f));
-  texcoords->push_back(osg::Vec2(0.0f, 1.0f));
-  texcoords->push_back(osg::Vec2(1.0f, 0.0f));
-  texcoords->push_back(osg::Vec2(1.0f, 1.0f));
-  setTexCoordArray(0, texcoords);
+  //putting texture on tile
+  osg::ref_ptr<osg::Vec2Array> texCoords = new osg::Vec2Array;
+  texCoords->push_back(osg::Vec2(0.0f, 0.0f));
+  texCoords->push_back(osg::Vec2(0.0f, 1.0f));
+  texCoords->push_back(osg::Vec2(1.0f, 0.0f));
+  texCoords->push_back(osg::Vec2(1.0f, 1.0f));
+  setTexCoordArray(0, texCoords);
 
   osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
 
@@ -163,7 +158,7 @@ void Tile::setTexture(std::string texType)
 
   //image = osgDB::readImageFile(texFilename);
   //image->s();   //_s,_t атрибуты размера изображения
-  image = osgDB::readImageFile(texType);
+  image = osgDB::readImageFile(texPath);
   if (!image)
   {
     // error handling?
@@ -255,5 +250,6 @@ QString Tile::GetType_str()
     break;
   }
   */
-  return QString::fromStdString(_texType);
+
+  return QString::fromStdString(_typeName);
 }

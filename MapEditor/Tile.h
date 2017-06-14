@@ -4,6 +4,7 @@
 #include <osgDB/ReadFile>
 #include <qstring.h>
 
+/*
 enum class TexType    //???
 {
   BORDER,		//граница игровой области
@@ -14,6 +15,7 @@ enum class TexType    //???
   ICE,		//лед
   EMPTY		//свободный тайл
 };
+*/
 
 enum class EmptyTile    //???
 {
@@ -26,11 +28,11 @@ enum class EmptyTile    //???
 class Tile : public osg::Geometry
 {
 public:
-  Tile();
+  Tile() = default;
   //Tile(unsigned int x, unsigned int z, TexType type);
   //string textype
-  Tile(unsigned int x, unsigned int z, std::string texType);
-  Tile(unsigned int x, unsigned int z, TexType type, EmptyTile empty);	//для пустых тайлов
+  Tile(unsigned int x, unsigned int z, std::string typeName, std::string texPath);
+  Tile(unsigned int x, unsigned int z, std::string typeName, EmptyTile empty);	//для пустых тайлов
   ~Tile();
 
   //для записи в файл
@@ -45,18 +47,20 @@ private:
   int _x;		//координаты тайла
   int _z;
   static const int _size = 8;		//размер тайла 8х8
-  TexType _type;
-  std::string _texType;
+  //TexType _type;    //old
+
+  std::string _typeName;
+  std::string _texPath;
 
   osg::ref_ptr<osg::Vec3Array> _vertices = new osg::Vec3Array;
   osg::ref_ptr<osg::Vec3Array> _normals = new osg::Vec3Array;
 
-  static std::map<std::string, std::string> _textures;    //name-path
-  static bool _isFilled;
+  //static std::map<std::string, std::string> _textures;    //name-path
+  //static bool _isFilled;
 
   void calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3);
   //void setTexture();
-  void Tile::setTexture(std::string texType);
+  void Tile::setTexture(std::string texPath);
   void setEmptyTexture(EmptyTile empty);
 };
 

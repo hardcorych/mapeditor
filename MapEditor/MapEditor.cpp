@@ -139,7 +139,7 @@ void MapEditor::createMap(int sizeX, int sizeZ)
 void MapEditor::LoadXMLFile()
 {
   //СДЕЛАТЬ ОБРАБОТКУ ОШИБОК
-
+  /*
   _filename = QFileDialog::getOpenFileName(
     this, tr("Open XML"), ".",
     tr("XML files (*.xml)"));
@@ -240,7 +240,9 @@ void MapEditor::LoadXMLFile()
           //чтение блока
           //чтение типа блока
           int x, z;
-          TexType texType;
+          //TexType texType;
+          std::string typeName;
+          std::string texPath;
           FillType fillType;
 
           int numAttributes = 0;
@@ -258,14 +260,20 @@ void MapEditor::LoadXMLFile()
             if (attrStr == "texType")
             {
               numAttributes++;
-              QString attrValue = attr.value().toString();
+              std::string attrValue = attr.value().toString().toStdString();
               //!!!
+              /*
               if (attrValue == "BORDER") texType = TexType::BORDER;
               else if (attrValue == "BRICK") texType = TexType::BRICK;
               else if (attrValue == "ARMOR") texType = TexType::ARMOR;
               else if (attrValue == "BUSHES") texType = TexType::BUSHES;
               else if (attrValue == "ICE") texType = TexType::ICE;
               else if (attrValue == "WATER") texType = TexType::WATER;
+///////////////////////////////////////////////////////////////////////////////////
+              if (_map->isFoundTexPath(attrValue))
+              {
+                texPath = attrValue;
+              }
               else
               {
                 isError = true;
@@ -380,10 +388,12 @@ void MapEditor::LoadXMLFile()
       ui.labelMessage->setText("File was loaded successful.");
     }
   }
+  */
 }
 
 void MapEditor::SaveXMLFile()
 {
+  /*
   if (_filename != "")
   {
     //сохранение файла по заданному пути
@@ -447,6 +457,7 @@ void MapEditor::SaveXMLFile()
 
     ui.labelMessage->setText("File was saved succesful.");
   }
+  */
 }
 
 void MapEditor::SaveAsXMLFile()
@@ -465,67 +476,67 @@ void MapEditor::SaveAsXMLFile()
 
 void MapEditor::onClickedBushes()
 {
-  emit SendBlock(TexType::BUSHES, FillType::FULL);
+  emit SendBlock("BUSHES", FillType::FULL);
 }
 
 void MapEditor::onClickedWater()
 {
-  emit SendBlock(TexType::WATER, FillType::FULL);
+  emit SendBlock("WATER", FillType::FULL);
 }
 
 void MapEditor::onClickedIce()
 {
-  emit SendBlock(TexType::ICE, FillType::FULL);
+  emit SendBlock("ICE", FillType::FULL);
 }
 
 void MapEditor::onClickedArmorFull()
 {
-  emit SendBlock(TexType::ARMOR, FillType::FULL);
+  emit SendBlock("ARMOR", FillType::FULL);
 }
 
 void MapEditor::onClickedArmorLeft()
 {
-  emit SendBlock(TexType::ARMOR, FillType::LEFT);
+  emit SendBlock("ARMOR", FillType::LEFT);
 }
 
 void MapEditor::onClickedArmorRight()
 {
-  emit SendBlock(TexType::ARMOR, FillType::RIGHT);
+  emit SendBlock("ARMOR", FillType::RIGHT);
 }
 
 void MapEditor::onClickedArmorBottom()
 {
-  emit SendBlock(TexType::ARMOR, FillType::BOTTOM);
+  emit SendBlock("ARMOR", FillType::BOTTOM);
 }
 
 void MapEditor::onClickedArmorTop()
 {
-  emit SendBlock(TexType::ARMOR, FillType::TOP);
+  emit SendBlock("ARMOR", FillType::TOP);
 }
 
 void MapEditor::onClickedBrickFull()
 {
-  emit SendBlock(TexType::BRICK, FillType::FULL);
+  emit SendBlock("BRICK", FillType::FULL);
 }
 
 void MapEditor::onClickedBrickLeft()
 {
-  emit SendBlock(TexType::BRICK, FillType::LEFT);
+  emit SendBlock("BRICK", FillType::LEFT);
 }
 
 void MapEditor::onClickedBrickRight()
 {
-  emit SendBlock(TexType::BRICK, FillType::RIGHT);
+  emit SendBlock("BRICK", FillType::RIGHT);
 }
 
 void MapEditor::onClickedBrickBottom()
 {
-  emit SendBlock(TexType::BRICK, FillType::BOTTOM);
+  emit SendBlock("BRICK", FillType::BOTTOM);
 }
 
 void MapEditor::onClickedBrickTop()
 {
-  emit SendBlock(TexType::BRICK, FillType::TOP);
+  emit SendBlock("BRICK", FillType::TOP);
 }
 
 void MapEditor::renderScene()
@@ -603,9 +614,9 @@ void MapEditor::createUndoRedoActions()
   _redoAct->setShortcuts(QKeySequence::Redo);
 }
 
-void MapEditor::AddBlock(osg::ref_ptr<Block> block, TexType type, FillType fType)
+void MapEditor::AddBlock(osg::ref_ptr<Block> block, std::string type, FillType fType)
 {
-  QUndoCommand* addCommand = new AddCommand(block, type, fType);
+  QUndoCommand* addCommand = new AddCommand(_map, block, type, fType);
   _undoStack->push(addCommand);
 }
 
@@ -615,9 +626,9 @@ void MapEditor::RemoveBlock(osg::ref_ptr<Block> block)
   _undoStack->push(removeCommand);
 }
 
-void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, TexType type, FillType fType)
+void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, std::string type, FillType fType)
 {
-  QUndoCommand* replaceCommand = new ReplaceCommand(block, type, fType);
+  QUndoCommand* replaceCommand = new ReplaceCommand(_map, block, type, fType);
   _undoStack->push(replaceCommand);
 }
 

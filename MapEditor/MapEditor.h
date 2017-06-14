@@ -94,9 +94,9 @@ private:
   void SaveXMLFile();
   void SaveAsXMLFile();
 
-  void AddBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
+  void AddBlock(osg::ref_ptr<Block> block, std::string type, FillType fType);
   void RemoveBlock(osg::ref_ptr<Block> block);
-  void ReplaceBlock(osg::ref_ptr<Block> block, TexType type, FillType fType);
+  void ReplaceBlock(osg::ref_ptr<Block> block, std::string type, FillType fType);
 
   void Undo();    //????
 
@@ -105,5 +105,5 @@ private:
 signals:
   void QuitViewer();
   void QuitAppToMain();
-  void SendBlock(TexType texType, FillType fillType);
+  void SendBlock(std::string texType, FillType fillType);
 };

@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
     QByteArrayData data[36];
-    char stringdata0[462];
+    char stringdata0[466];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,41 +36,41 @@ QT_MOC_LITERAL(1, 10, 10), // "QuitViewer"
 QT_MOC_LITERAL(2, 21, 0), // ""
 QT_MOC_LITERAL(3, 22, 13), // "QuitAppToMain"
 QT_MOC_LITERAL(4, 36, 9), // "SendBlock"
-QT_MOC_LITERAL(5, 46, 7), // "TexType"
-QT_MOC_LITERAL(6, 54, 7), // "texType"
-QT_MOC_LITERAL(7, 62, 8), // "FillType"
-QT_MOC_LITERAL(8, 71, 8), // "fillType"
-QT_MOC_LITERAL(9, 80, 15), // "onClickedBushes"
-QT_MOC_LITERAL(10, 96, 14), // "onClickedWater"
-QT_MOC_LITERAL(11, 111, 12), // "onClickedIce"
-QT_MOC_LITERAL(12, 124, 18), // "onClickedArmorFull"
-QT_MOC_LITERAL(13, 143, 18), // "onClickedArmorLeft"
-QT_MOC_LITERAL(14, 162, 19), // "onClickedArmorRight"
-QT_MOC_LITERAL(15, 182, 17), // "onClickedArmorTop"
-QT_MOC_LITERAL(16, 200, 20), // "onClickedArmorBottom"
-QT_MOC_LITERAL(17, 221, 18), // "onClickedBrickFull"
-QT_MOC_LITERAL(18, 240, 18), // "onClickedBrickLeft"
-QT_MOC_LITERAL(19, 259, 19), // "onClickedBrickRight"
-QT_MOC_LITERAL(20, 279, 17), // "onClickedBrickTop"
-QT_MOC_LITERAL(21, 297, 20), // "onClickedBrickBottom"
-QT_MOC_LITERAL(22, 318, 6), // "NewMap"
-QT_MOC_LITERAL(23, 325, 13), // "changeMapSize"
-QT_MOC_LITERAL(24, 339, 11), // "LoadXMLFile"
-QT_MOC_LITERAL(25, 351, 11), // "SaveXMLFile"
-QT_MOC_LITERAL(26, 363, 13), // "SaveAsXMLFile"
-QT_MOC_LITERAL(27, 377, 8), // "AddBlock"
-QT_MOC_LITERAL(28, 386, 19), // "osg::ref_ptr<Block>"
-QT_MOC_LITERAL(29, 406, 5), // "block"
-QT_MOC_LITERAL(30, 412, 4), // "type"
-QT_MOC_LITERAL(31, 417, 5), // "fType"
-QT_MOC_LITERAL(32, 423, 11), // "RemoveBlock"
-QT_MOC_LITERAL(33, 435, 12), // "ReplaceBlock"
-QT_MOC_LITERAL(34, 448, 4), // "Undo"
-QT_MOC_LITERAL(35, 453, 8) // "GetMutex"
+QT_MOC_LITERAL(5, 46, 11), // "std::string"
+QT_MOC_LITERAL(6, 58, 7), // "texType"
+QT_MOC_LITERAL(7, 66, 8), // "FillType"
+QT_MOC_LITERAL(8, 75, 8), // "fillType"
+QT_MOC_LITERAL(9, 84, 15), // "onClickedBushes"
+QT_MOC_LITERAL(10, 100, 14), // "onClickedWater"
+QT_MOC_LITERAL(11, 115, 12), // "onClickedIce"
+QT_MOC_LITERAL(12, 128, 18), // "onClickedArmorFull"
+QT_MOC_LITERAL(13, 147, 18), // "onClickedArmorLeft"
+QT_MOC_LITERAL(14, 166, 19), // "onClickedArmorRight"
+QT_MOC_LITERAL(15, 186, 17), // "onClickedArmorTop"
+QT_MOC_LITERAL(16, 204, 20), // "onClickedArmorBottom"
+QT_MOC_LITERAL(17, 225, 18), // "onClickedBrickFull"
+QT_MOC_LITERAL(18, 244, 18), // "onClickedBrickLeft"
+QT_MOC_LITERAL(19, 263, 19), // "onClickedBrickRight"
+QT_MOC_LITERAL(20, 283, 17), // "onClickedBrickTop"
+QT_MOC_LITERAL(21, 301, 20), // "onClickedBrickBottom"
+QT_MOC_LITERAL(22, 322, 6), // "NewMap"
+QT_MOC_LITERAL(23, 329, 13), // "changeMapSize"
+QT_MOC_LITERAL(24, 343, 11), // "LoadXMLFile"
+QT_MOC_LITERAL(25, 355, 11), // "SaveXMLFile"
+QT_MOC_LITERAL(26, 367, 13), // "SaveAsXMLFile"
+QT_MOC_LITERAL(27, 381, 8), // "AddBlock"
+QT_MOC_LITERAL(28, 390, 19), // "osg::ref_ptr<Block>"
+QT_MOC_LITERAL(29, 410, 5), // "block"
+QT_MOC_LITERAL(30, 416, 4), // "type"
+QT_MOC_LITERAL(31, 421, 5), // "fType"
+QT_MOC_LITERAL(32, 427, 11), // "RemoveBlock"
+QT_MOC_LITERAL(33, 439, 12), // "ReplaceBlock"
+QT_MOC_LITERAL(34, 452, 4), // "Undo"
+QT_MOC_LITERAL(35, 457, 8) // "GetMutex"
 
     },
     "MapEditor\0QuitViewer\0\0QuitAppToMain\0"
-    "SendBlock\0TexType\0texType\0FillType\0"
+    "SendBlock\0std::string\0texType\0FillType\0"
     "fillType\0onClickedBushes\0onClickedWater\0"
     "onClickedIce\0onClickedArmorFull\0"
     "onClickedArmorLeft\0onClickedArmorRight\0"
@@ -169,7 +169,7 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         switch (_id) {
         case 0: _t->QuitViewer(); break;
         case 1: _t->QuitAppToMain(); break;
-        case 2: _t->SendBlock((*reinterpret_cast< TexType(*)>(_a[1])),(*reinterpret_cast< FillType(*)>(_a[2]))); break;
+        case 2: _t->SendBlock((*reinterpret_cast< std::string(*)>(_a[1])),(*reinterpret_cast< FillType(*)>(_a[2]))); break;
         case 3: _t->onClickedBushes(); break;
         case 4: _t->onClickedWater(); break;
         case 5: _t->onClickedIce(); break;
@@ -188,9 +188,9 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 18: _t->LoadXMLFile(); break;
         case 19: _t->SaveXMLFile(); break;
         case 20: _t->SaveAsXMLFile(); break;
-        case 21: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
+        case 21: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< std::string(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
         case 22: _t->RemoveBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1]))); break;
-        case 23: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< TexType(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
+        case 23: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< std::string(*)>(_a[2])),(*reinterpret_cast< FillType(*)>(_a[3]))); break;
         case 24: _t->Undo(); break;
         case 25: _t->GetMutex(); break;
         default: ;
@@ -213,7 +213,7 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
             }
         }
         {
-            typedef void (MapEditor::*_t)(TexType , FillType );
+            typedef void (MapEditor::*_t)(std::string , FillType );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MapEditor::SendBlock)) {
                 *result = 2;
                 return;
@@ -273,7 +273,7 @@ void MapEditor::QuitAppToMain()
 }
 
 // SIGNAL 2
-void MapEditor::SendBlock(TexType _t1, FillType _t2)
+void MapEditor::SendBlock(std::string _t1, FillType _t2)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);

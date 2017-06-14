@@ -5,6 +5,7 @@
 #include <Block.h>
 #include <Editor.h>
 
+/*
 struct BlockType
 {
   QString leftBottomTexture;
@@ -15,6 +16,7 @@ struct BlockType
   bool isPassable;
   bool isUnderTank;
 };
+*/
 
 class BlockEditor : public Editor
 {

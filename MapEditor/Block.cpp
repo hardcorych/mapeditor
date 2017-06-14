@@ -7,15 +7,16 @@ Block::Block()
 
 //принимает координаты, тип блока
 //Block::Block(int x, int z, TexType type, FillType fillType) :
-Block::Block(int x, int z, std::string texType, FillType fillType) :
+Block::Block(int x, int z, std::string typeName, std::string texPath, FillType fillType) :
 _x(x), _z(z),
-_texType(texType),
+_typeName(typeName),
+_texPath(texPath),
 _fType(fillType)
 {
   int tileSize = Tile::Size();
 
   //createFromTiles(type, fillType);
-  createFromTiles(_texType, fillType);
+  createFromTiles(_typeName, _texPath, _fType);
 
   if (_leftBottom != nullptr) addChild(_leftBottom);
   if (_leftTop != nullptr) addChild(_leftTop);
@@ -27,74 +28,69 @@ Block::~Block()
 {
 }
 
-void Block::createFromTiles(std::string texType, FillType fillType)
+void Block::createFromTiles(std::string typeName, std::string texPath, FillType fillType)
 {
   int tileSize = Tile::Size();
 
   //_type = texType;
-  _texType = texType;
-  _fType = fillType;
+  //_texPath = texPath;
+  //_fType = fillType;
 
   //if (texType == TexType::EMPTY)
-  if (texType == "EMPTY")
+  if (typeName == "EMPTY")
   {
-    _leftBottom = new Tile(_x, _z, 
-      TexType::EMPTY, EmptyTile::LEFT_BOTTOM);
-    _leftTop = new Tile(_x, _z + tileSize, 
-      TexType::EMPTY, EmptyTile::LEFT_TOP);
-    _rightTop = new Tile(_x + tileSize, _z + tileSize, 
-      TexType::EMPTY, EmptyTile::RIGHT_TOP);
-    _rightBottom = new Tile(_x + tileSize, _z, 
-      TexType::EMPTY, EmptyTile::RIGHT_BOTTOM);
+    _leftBottom = new Tile(_x, _z, typeName, EmptyTile::LEFT_BOTTOM);
+    _leftTop = new Tile(_x, _z + tileSize, typeName, EmptyTile::LEFT_TOP);
+    _rightTop = new Tile(_x + tileSize, _z + tileSize,
+      typeName, EmptyTile::RIGHT_TOP);
+    _rightBottom = new Tile(_x + tileSize, _z, typeName, EmptyTile::RIGHT_BOTTOM);
   }
   else
   {
     switch (fillType)
     {
     case FillType::FULL:
-      _leftBottom = new Tile(_x, _z, texType);
-      _leftTop = new Tile(_x, _z + tileSize, texType);
-      _rightTop = new Tile(_x + tileSize, _z + tileSize, texType);
-      _rightBottom = new Tile(_x + tileSize, _z, texType);
+      _leftBottom = new Tile(_x, _z, typeName, texPath);
+      _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);
+      _rightTop = new Tile(_x + tileSize, _z + tileSize, typeName, texPath);
+      _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
       break;
     case FillType::BOTTOM:
-      _leftBottom = new Tile(_x, _z, texType);
-      _leftTop = new Tile(_x, _z + tileSize, 
-        TexType::EMPTY, EmptyTile::LEFT_TOP);
+      _leftBottom = new Tile(_x, _z, typeName, texPath);
+      _leftTop = new Tile(_x, _z + tileSize, "EMPTY", EmptyTile::LEFT_TOP);
+      _rightTop = new Tile(_x + tileSize, _z + tileSize, 
+      "EMPTY", EmptyTile::RIGHT_TOP);
 
-      _rightTop = new Tile(_x + tileSize, _z + tileSize,
-        TexType::EMPTY, EmptyTile::RIGHT_TOP);
-
-      _rightBottom = new Tile(_x + tileSize, _z, texType);
+      _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
       break;
     case FillType::LEFT:
-      _leftBottom = new Tile(_x, _z, texType);
-      _leftTop = new Tile(_x, _z + tileSize, texType);
-      _rightTop = new Tile(_x + tileSize, _z + tileSize, 
-        TexType::EMPTY, EmptyTile::RIGHT_TOP);
+      _leftBottom = new Tile(_x, _z, typeName, texPath);
+      _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);
+      _rightTop = new Tile(_x + tileSize, _z + tileSize,
+        "EMPTY", EmptyTile::RIGHT_TOP);
       _rightBottom = new Tile(_x + tileSize, _z, 
-        TexType::EMPTY, EmptyTile::RIGHT_BOTTOM);
+        "EMPTY", EmptyTile::RIGHT_BOTTOM);
       break;
     case FillType::RIGHT:
-      _leftBottom = new Tile(_x, _z, TexType::EMPTY, EmptyTile::LEFT_BOTTOM);
-      _leftTop = new Tile(_x, _z + tileSize, TexType::EMPTY, EmptyTile::LEFT_TOP);
-      _rightTop = new Tile(_x + tileSize, _z + tileSize, texType);
-      _rightBottom = new Tile(_x + tileSize, _z, texType);
+      _leftBottom = new Tile(_x, _z, "EMPTY", EmptyTile::LEFT_BOTTOM);
+      _leftTop = new Tile(_x, _z + tileSize, "EMPTY", EmptyTile::LEFT_TOP);
+      _rightTop = new Tile(_x + tileSize, _z + tileSize, typeName, texPath);
+      _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
       break;
     case FillType::TOP:
-      _leftBottom = new Tile(_x, _z, TexType::EMPTY, EmptyTile::LEFT_BOTTOM);
-      _leftTop = new Tile(_x, _z + tileSize, texType);
-      _rightTop = new Tile(_x + tileSize, _z + tileSize, texType);
+      _leftBottom = new Tile(_x, _z, "EMPTY", EmptyTile::LEFT_BOTTOM);
+      _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);
+      _rightTop = new Tile(_x + tileSize, _z + tileSize, typeName, texPath);
       _rightBottom = new Tile(_x + tileSize, _z, 
-        TexType::EMPTY, EmptyTile::RIGHT_BOTTOM);
+        "EMPTY", EmptyTile::RIGHT_BOTTOM);
       break;
     }
   }
 }
 
-void Block::SetType(TexType texType, FillType fillType)
+void Block::SetType(std::string typeName, std::string texPath, FillType fillType)
 {
-  if ((_type != texType) || (_fType != fillType))	//если блок точно такой же, ничего не меняется
+  if ((_typeName != typeName) || (_fType != fillType))	//если блок точно такой же, ничего не меняется
   {													//иначе происходит замена
     osg::ref_ptr<Tile> oldLB = _leftBottom;
     osg::ref_ptr<Tile> oldLT = _leftTop;
@@ -102,8 +98,11 @@ void Block::SetType(TexType texType, FillType fillType)
     osg::ref_ptr<Tile> oldRB = _rightBottom;
 
     //замена блока
+    _typeName = typeName;
+    _texPath = texPath;
+    _fType = fillType;
 
-    createFromTiles(texType, fillType);
+    createFromTiles(typeName, texPath, fillType);
 
     replaceChild(oldLB, _leftBottom);
     replaceChild(oldLT, _leftTop);
@@ -116,7 +115,9 @@ std::pair<QString, QString> Block::GetType_str()
 {
   QString texType;
   QString fillType;
-
+  
+  //проверка на empty?
+  /*
   switch (_type)
   {
   case TexType::ARMOR:
@@ -141,6 +142,7 @@ std::pair<QString, QString> Block::GetType_str()
     texType = "ICE";
     break;
   }
+  */
 
   switch (_fType)
   {
