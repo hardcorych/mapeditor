@@ -28,7 +28,8 @@ Block::~Block()
 {
 }
 
-void Block::createFromTiles(std::string typeName, std::string texPath, FillType fillType)
+void Block::createFromTiles(std::string typeName, std::string texPath, 
+  FillType fillType)
 {
   int tileSize = Tile::Size();
 

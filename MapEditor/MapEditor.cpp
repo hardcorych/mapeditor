@@ -645,8 +645,8 @@ void MapEditor::changeMapSize()
     if (!(mapSizeX == _map->GetSizeX() / 16 && mapSizeZ == _map->GetSizeZ() / 16))
     {
       //push undoStack
-      QUndoCommand* changeSizeCommand = new ChangeSizeCommand(_map,
-        mapSizeX, mapSizeZ);
+      QUndoCommand* changeSizeCommand = 
+        new ChangeSizeCommand(_map, mapSizeX, mapSizeZ);
       _undoStack->push(changeSizeCommand);
     }
   }

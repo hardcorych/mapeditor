@@ -94,6 +94,15 @@
     <ClCompile Include="MapSizeDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QBlockRadioButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QBlockRadioButton.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_QBlockRadioButton.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MapEditor.h">
@@ -112,6 +121,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="MapSizeDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QBlockRadioButton.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

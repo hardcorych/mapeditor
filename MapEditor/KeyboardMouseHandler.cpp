@@ -120,7 +120,8 @@ KeyboardMouseHandler::findBlockAndMap(const double x, const double y,
   if (!viewer->getSceneData())
     return std::make_pair(false, nullptr);	//nothing to pick
 
-  osg::ref_ptr<osgUtil::LineSegmentIntersector> picker = new osgUtil::LineSegmentIntersector(
+  osg::ref_ptr<osgUtil::LineSegmentIntersector> picker = 
+    new osgUtil::LineSegmentIntersector(
     osgUtil::Intersector::PROJECTION, x, y);
 
   osgUtil::IntersectionVisitor iv(picker);
