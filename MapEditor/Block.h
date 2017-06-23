@@ -3,32 +3,19 @@
 #include <osg/Group>
 #include <qstring.h>
 
+#include <BlockType.h>
 #include <Tile.h>
-
-enum class FillType		//block filling
-{
-  FULL,		//4 tiles
-  RIGHT,	//2 tiles
-  BOTTOM,
-  LEFT,
-  TOP
-};
 
 class Block : public osg::Group		//block consists 4 tiles, block size 16x16
 {
 public:
   Block();
-  //Block(int x, int z, TexType type, FillType fillType);
-  Block(int x, int z, std::string typeName, std::string texPath, 
-    FillType fillType);
+  Block(int x, int z, BlockType blockType);
   ~Block();
 
-  //TexType GetType() { return _type; }
-  std::string GetType() { return _typeName; }
-  std::string GetTexPath()  { return _texPath; }
-  FillType GetFillType()	{ return _fType; }
-
   std::pair<QString, QString> GetType_str();
+
+  BlockType GetType() const { return _blockType; }
 
   int GetX()	{ return _x; }
   int GetZ()	{ return _z; }
@@ -37,10 +24,7 @@ public:
   QString GetX_str()	{ return QString::number(_x + 16); }	//+16 for matching with file
   QString GetZ_str()	{ return QString::number(_z + 16); }
 
-  void SetType(std::string typeName, std::string texPath, FillType fillType);
-
-  void SetPassability(bool isPassable)  { _isPassable = isPassable; }
-  void SetDrawingUnderTank(bool isUnderTank)  { _isUnderTank = isUnderTank; }
+  void SetType(BlockType blockType);
 
 private:
   int _x;
@@ -52,15 +36,7 @@ private:
   osg::ref_ptr<Tile> _rightTop = nullptr;
   osg::ref_ptr<Tile> _rightBottom = nullptr;
 
-  //TexType _type;  //old
+  BlockType _blockType;
 
-  std::string _typeName;
-  std::string _texPath;
-  FillType _fType;
-
-  bool _isUnderTank = true;	//drawing under tank
-  bool _isPassable = true;	//obstacle or not
-
-  void createFromTiles(std::string typeName, std::string texType, FillType fillType);
+  void createFromTiles(BlockType blockType);
 };
-

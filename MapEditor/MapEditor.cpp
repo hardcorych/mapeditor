@@ -12,6 +12,7 @@
 
 #include <Commands.h>
 #include <KeyboardMouseHandler.h>
+#include <QBlockRadioButton.h>
 #include <Viewer.h>
 
 MapEditor::MapEditor(QWidget *parent)
@@ -69,6 +70,9 @@ MapEditor::MapEditor(QWidget *parent)
 
   ui.labelMessage->setText("Information label");
 
+  connect(ui.pushButtonCreateBlock, &QPushButton::clicked,
+    this, &MapEditor::onClickedCreateButton);
+
   //??????
   connect(ui.radioBtnBushes, &QRadioButton::clicked, 
     this, &MapEditor::onClickedBushes);
@@ -109,6 +113,23 @@ MapEditor::~MapEditor()
     emit QuitViewer();
     _renderThread.join();
   }
+}
+
+void MapEditor::onClickedCreateButton()
+{
+  QBlockRadioButton *rButton = new QBlockRadioButton(this);
+  rButton->setText("izi");
+  ui.gridLayout->addWidget(rButton, _row, _col++);
+  if (_col == 6)
+  {
+    _col = 0;
+    _row++;
+  }
+}
+
+void MapEditor::SelectBlock()
+{
+
 }
 
 void MapEditor::readTextures()
@@ -476,74 +497,88 @@ void MapEditor::SaveAsXMLFile()
 
 void MapEditor::onClickedBushes()
 {
-  emit SendBlock("BUSHES", FillType::FULL);
+  emit SendBlockType(BlockType("BUSHES", _map->GetTexPath("BUSHES"),
+    FillType::FULL, 1, 1));
 }
 
 void MapEditor::onClickedWater()
 {
-  emit SendBlock("WATER", FillType::FULL);
+  emit SendBlockType(BlockType("WATER", _map->GetTexPath("WATER"),
+    FillType::FULL, 1, 1));
 }
 
 void MapEditor::onClickedIce()
 {
-  emit SendBlock("ICE", FillType::FULL);
+  emit SendBlockType(BlockType("ICE", _map->GetTexPath("ICE"),
+    FillType::FULL, 1, 1));
 }
 
 void MapEditor::onClickedArmorFull()
 {
-  emit SendBlock("ARMOR", FillType::FULL);
+  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
+    FillType::FULL, 1, 1));
 }
 
 void MapEditor::onClickedArmorLeft()
 {
-  emit SendBlock("ARMOR", FillType::LEFT);
+  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
+    FillType::LEFT, 1, 1));
 }
 
 void MapEditor::onClickedArmorRight()
 {
-  emit SendBlock("ARMOR", FillType::RIGHT);
+  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
+    FillType::RIGHT, 1, 1));
 }
 
 void MapEditor::onClickedArmorBottom()
 {
-  emit SendBlock("ARMOR", FillType::BOTTOM);
+  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
+    FillType::BOTTOM, 1, 1));
 }
 
 void MapEditor::onClickedArmorTop()
 {
-  emit SendBlock("ARMOR", FillType::TOP);
+  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
+    FillType::TOP, 1, 1));
 }
 
 void MapEditor::onClickedBrickFull()
 {
-  emit SendBlock("BRICK", FillType::FULL);
+  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
+    FillType::FULL, 1, 1));
 }
 
 void MapEditor::onClickedBrickLeft()
 {
-  emit SendBlock("BRICK", FillType::LEFT);
+  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
+    FillType::LEFT, 1, 1));
 }
 
 void MapEditor::onClickedBrickRight()
 {
-  emit SendBlock("BRICK", FillType::RIGHT);
+  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
+    FillType::RIGHT, 1, 1));
 }
 
 void MapEditor::onClickedBrickBottom()
 {
-  emit SendBlock("BRICK", FillType::BOTTOM);
+  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
+    FillType::BOTTOM, 1, 1));
 }
 
 void MapEditor::onClickedBrickTop()
 {
-  emit SendBlock("BRICK", FillType::TOP);
+  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
+    FillType::TOP, 1, 1));
 }
 
 void MapEditor::renderScene()
 {
   Viewer viewer;
 
-  connect(this, &MapEditor::QuitViewer, &viewer, &Viewer::onQuitViewer, Qt::DirectConnection);
+  connect(this, &MapEditor::QuitViewer, 
+    &viewer, &Viewer::onQuitViewer, Qt::DirectConnection);
 
   //настройка окна
   int xViewer = 100;
@@ -555,11 +590,12 @@ void MapEditor::renderScene()
 
   viewer.realize();
 
-  osg::ref_ptr<KeyboardMouseHandler> keyboardMouseHandler = new KeyboardMouseHandler;
+  osg::ref_ptr<KeyboardMouseHandler> keyboardMouseHandler = 
+    new KeyboardMouseHandler;
   viewer.addEventHandler(keyboardMouseHandler);
   viewer.addEventHandler(new osgViewer::StatsHandler);
 
-  connect(this, &MapEditor::SendBlock, keyboardMouseHandler,
+  connect(this, &MapEditor::SendBlockType, keyboardMouseHandler,
     &KeyboardMouseHandler::ReceiveBlock, Qt::DirectConnection);
   connect(keyboardMouseHandler, &KeyboardMouseHandler::AddableBlock, 
     this, &MapEditor::AddBlock, Qt::DirectConnection);
@@ -589,7 +625,8 @@ void MapEditor::renderScene()
 
   while (!viewer.done())
   {
-    //std::lock_guard<std::mutex> lgMutex(_mutex);	//для избежания конфликта при создании новой карты
+    //std::lock_guard<std::mutex> lgMutex(_mutex);	
+    //для избежания конфликта при создании новой карты
     std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
     viewer.frame();
   }
@@ -614,9 +651,10 @@ void MapEditor::createUndoRedoActions()
   _redoAct->setShortcuts(QKeySequence::Redo);
 }
 
-void MapEditor::AddBlock(osg::ref_ptr<Block> block, std::string type, FillType fType)
+void MapEditor::AddBlock(osg::ref_ptr<Block> block, 
+  BlockType blockType)
 {
-  QUndoCommand* addCommand = new AddCommand(_map, block, type, fType);
+  QUndoCommand* addCommand = new AddCommand(block, blockType);
   _undoStack->push(addCommand);
 }
 
@@ -626,9 +664,10 @@ void MapEditor::RemoveBlock(osg::ref_ptr<Block> block)
   _undoStack->push(removeCommand);
 }
 
-void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, std::string type, FillType fType)
+void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, 
+  BlockType blockType)
 {
-  QUndoCommand* replaceCommand = new ReplaceCommand(_map, block, type, fType);
+  QUndoCommand* replaceCommand = new ReplaceCommand(block, blockType);
   _undoStack->push(replaceCommand);
 }
 
@@ -642,7 +681,8 @@ void MapEditor::changeMapSize()
     int mapSizeX = mapSizeDialog.GetSizeX();
     int mapSizeZ = mapSizeDialog.GetSizeZ();
 
-    if (!(mapSizeX == _map->GetSizeX() / 16 && mapSizeZ == _map->GetSizeZ() / 16))
+    if (!(mapSizeX == _map->GetSizeX() / 16 && 
+      mapSizeZ == _map->GetSizeZ() / 16))
     {
       //push undoStack
       QUndoCommand* changeSizeCommand = 

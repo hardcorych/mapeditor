@@ -57,6 +57,11 @@ private:
 
   int _minMapSize;
   int _maxMapSize;
+  int _row = 0;
+  int _col = 0;
+
+  //!!!
+  QButtonGroup* buttonGroupBlocks;
 
   //методы
 
@@ -69,6 +74,8 @@ private:
   //bool isFoundCoordsErrors(int coord, QString coordType);		//функция проверки ошибок
 
   public slots:
+  void onClickedCreateButton();
+  void SelectBlock();
   //???
   void onClickedBushes();
   void onClickedWater();
@@ -94,9 +101,9 @@ private:
   void SaveXMLFile();
   void SaveAsXMLFile();
 
-  void AddBlock(osg::ref_ptr<Block> block, std::string type, FillType fType);
+  void AddBlock(osg::ref_ptr<Block> block, BlockType blockType);
   void RemoveBlock(osg::ref_ptr<Block> block);
-  void ReplaceBlock(osg::ref_ptr<Block> block, std::string type, FillType fType);
+  void ReplaceBlock(osg::ref_ptr<Block> block, BlockType blockType);
 
   void Undo();    //????
 
@@ -105,5 +112,5 @@ private:
 signals:
   void QuitViewer();
   void QuitAppToMain();
-  void SendBlock(std::string texType, FillType fillType);
+  void SendBlockType(BlockType blockType);
 };

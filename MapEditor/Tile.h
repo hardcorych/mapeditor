@@ -4,19 +4,6 @@
 #include <osgDB/ReadFile>
 #include <qstring.h>
 
-/*
-enum class TexType    //???
-{
-  BORDER,		//граница игровой области
-  BRICK,		//кирпич
-  ARMOR,		//брон€
-  WATER,		//вода
-  BUSHES,		//зелень
-  ICE,		//лед
-  EMPTY		//свободный тайл
-};
-*/
-
 enum class EmptyTile    //???
 {
   LEFT_BOTTOM,
@@ -47,7 +34,6 @@ private:
   int _x;		//координаты тайла
   int _z;
   static const int _size = 8;		//размер тайла 8х8
-  //TexType _type;    //old
 
   std::string _typeName;    //отсекать регул€ркой, начина€ с _
   std::string _texPath;
@@ -55,12 +41,7 @@ private:
   osg::ref_ptr<osg::Vec3Array> _vertices = new osg::Vec3Array;
   osg::ref_ptr<osg::Vec3Array> _normals = new osg::Vec3Array;
 
-  //static std::map<std::string, std::string> _textures;    //name-path
-  //static bool _isFilled;
-
   void calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3);
-  //void setTexture();
   void setTexture(std::string texPath);
   void setEmptyTexture(EmptyTile empty);
 };
-

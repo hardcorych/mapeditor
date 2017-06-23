@@ -8,13 +8,6 @@
 
 #include <Block.h>
 
-struct BlockType
-{
-  std::string name;
-  std::string texPath;
-  FillType fillType;
-};
-
 class Map : public osg::Group
 {
 public:
@@ -35,7 +28,7 @@ public:
   void RemoveBlock(int x, int z);
 
   void AddBlockType(std::string typeName, std::string texPath)
-  { _texPaths[typeName] = texPath; };
+  { _texPaths[typeName] = texPath; }
 
   //resizing
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize
@@ -54,6 +47,8 @@ private:
 
   std::map<std::string, std::string> _texPaths;
   //std::vector<BlockType> _blockTypes;
+
+  std::map<std::string, BlockType> _blockTypes;
   
   std::mutex _mutex;
 

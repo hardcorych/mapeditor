@@ -70,6 +70,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockEditor.cpp" />
+    <ClCompile Include="BlockType.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_KeyboardMouseHandler.cpp">
@@ -151,6 +152,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </Command>
     </CustomBuild>
+    <ClInclude Include="BlockType.h" />
     <ClInclude Include="Commands.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="GeneratedFiles\ui_MapEditor.h" />

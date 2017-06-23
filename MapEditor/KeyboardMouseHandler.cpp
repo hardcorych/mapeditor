@@ -46,16 +46,16 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         if (isValid)
         {
           osg::ref_ptr<Block> block = std::get<1>(validBlock);
-          if (block->GetType() != "BORDER")
+          //!!!!!!!!!!!!!!!!
+          if (block->GetType().GetTypeName() != "BORDER")
           {
-            //emit to add command
-            if (block->GetType() == "EMPTY")
+            if (block->GetType().GetTypeName() == "EMPTY")
             {
-              emit AddableBlock(block, _type, _fType);
+              emit AddableBlock(block, _blockType);
             }
-            else if (!(block->GetType() == _type && block->GetFillType() == _fType))
+            else if (block->GetType() != _blockType)
             {
-              emit ReplaceableBlock(block, _type, _fType);
+              emit ReplaceableBlock(block, _blockType);
             }
           }
           return true;	//TRUE to process an event
@@ -69,13 +69,15 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         _mouseX = ea.getXnormalized();
         _mouseY = ea.getYnormalized();
 
-        std::pair<bool, osg::ref_ptr<Block>> validBlock = findBlockAndMap(_mouseX, _mouseY, viewer);
+        std::pair<bool, osg::ref_ptr<Block>> validBlock =
+          findBlockAndMap(_mouseX, _mouseY, viewer);
         bool isValid = std::get<0>(validBlock);
         if (isValid)
         {
           osg::ref_ptr<Block> block = std::get<1>(validBlock);
-          std::string blockType = block->GetType();
-          if (blockType != "BORDER" && blockType != "EMPTY")
+          BlockType blockType = block->GetType();
+          if (blockType.GetTypeName() != "BORDER" && 
+            blockType.GetTypeName() != "EMPTY")
           {
             //emit to delete command
             emit RemovableBlock(block);
@@ -155,8 +157,7 @@ KeyboardMouseHandler::findBlockAndMap(const double x, const double y,
   return std::make_pair((selectedBlock.valid() && selectedMap.valid()), block);
 }
 
-void KeyboardMouseHandler::ReceiveBlock(std::string typeName, FillType fillType)
+void KeyboardMouseHandler::ReceiveBlock(BlockType blockType)
 {
-  _type = typeName;
-  _fType = fillType;
+  _blockType = blockType;
 }

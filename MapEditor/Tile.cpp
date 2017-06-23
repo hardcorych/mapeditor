@@ -66,7 +66,7 @@ _texPath(texPath)
   setTexture(_texPath);
 }
 
-//!!!!!!!!!!!!!!!!!!!! _type
+
 Tile::Tile(unsigned int x, unsigned int z, std::string typeName, EmptyTile empty) :
 _x(x), _z(z),
 _typeName(typeName)
@@ -112,7 +112,6 @@ void Tile::calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3)
   _normals->push_back(crossResult);
 }
 
-//void Tile::setTexture()   //передавать название текстуры как параметр
 void Tile::setTexture(std::string texPath)
 {
   //putting texture on tile

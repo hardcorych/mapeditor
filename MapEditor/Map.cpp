@@ -25,7 +25,34 @@ _step(16)
   _texPaths["ICE"] = "Resources/tiles/ICE.png";
   _texPaths["WATER"] = "Resources/tiles/WATER.png";
 
-  //_blockTypes.push_back();
+  _blockTypes["BUSHES_FULL"] = BlockType("BUSHES", _texPaths["BUSHES"],
+    FillType::FULL, 0, 0);
+  _blockTypes["WATER_FULL"] = BlockType("WATER", _texPaths["WATER"],
+    FillType::FULL, 0, 0);
+  _blockTypes["ICE_FULL"] = BlockType("ICE", _texPaths["ICE"],
+    FillType::FULL, 0, 0);
+
+  _blockTypes["ARMOR_FULL"] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::FULL, 0, 0);
+  _blockTypes["ARMOR_LEFT"] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::LEFT, 0, 0);
+  _blockTypes["ARMOR_RIGHT"] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::RIGHT, 0, 0);
+  _blockTypes["ARMOR_TOP"] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::TOP, 0, 0);
+  _blockTypes["ARMOR_BOTTOM"] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::BOTTOM, 0, 0);
+
+  _blockTypes["BRICK_FULL"] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::FULL, 0, 0);
+  _blockTypes["BRICK_LEFT"] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::LEFT, 0, 0);
+  _blockTypes["BRICK_RIGHT"] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::RIGHT, 0, 0);
+  _blockTypes["BRICK_TOP"] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::TOP, 0, 0);
+  _blockTypes["BRICK_BOTTOM"] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::BOTTOM, 0, 0);
 
   //формирование границ
   setBorder();
@@ -55,23 +82,25 @@ void Map::setBorder()
   //заполнение против часовой стрелки, начиная с нижней границы
   //нижняя граница
   //int startBorder = -1 * _step;
+  BlockType borderBlock("BORDER", _texPaths["BORDER"], FillType::FULL,
+    0, 0);
 
   for (int x = -_step; x < _sizeX - _step; x += _step) {
-    addChild(new Block(x, -_step, "BORDER", _texPaths["BORDER"], FillType::FULL));
+    addChild(new Block(x, -_step, borderBlock));
   }
   //правая граница
   for (int z = 0; z < _sizeZ - _step; z += _step) {
     for (int x = _sizeX - 3 * _step; x < _sizeX - _step; x += _step) {
-      addChild(new Block(x, z, "BORDER", _texPaths["BORDER"], FillType::FULL));
+      addChild(new Block(x, z, borderBlock));
     }
   }
   //верхняя граница
   for (int x = _sizeX - 4 * _step; x >= -_step; x -= _step) {
-    addChild(new Block(x, _sizeZ - 2 * _step, "BORDER", _texPaths["BORDER"], FillType::FULL));
+    addChild(new Block(x, _sizeZ - 2 * _step, borderBlock));
   }
   //левая граница
   for (int z = _sizeZ - 3 * _step; z > -_step; z -= _step) {
-    addChild(new Block(-_step, z, "BORDER", _texPaths["BORDER"], FillType::FULL));
+    addChild(new Block(-_step, z, borderBlock));
   }
 
   _sizeX -= 3 * _step;	//обратное преобразование к размеру игровой области
@@ -80,10 +109,11 @@ void Map::setBorder()
 
 void Map::setGameArea()
 {
+  BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
   for (int z = 0; z < _sizeZ; z += _step) {
     for (int x = 0; x < _sizeX; x += _step) {
       //заполнение свободной области пустыми блоками
-      addChild(new Block(x, z, "EMPTY", "", FillType::FULL));
+      addChild(new Block(x, z, emptyBlock));
     }
   }
 }
@@ -116,16 +146,19 @@ void Map::RemoveBlock(int x, int z)
 
   osg::ref_ptr<Block> block = nullptr;
 
+  BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+
   for (int i = 0; i < getNumChildren(); i++) {
     block = dynamic_cast<Block*>(getChild(i));
 
     if (block->GetX() == x && block->GetZ() == z) {
-      replaceChild(block, new Block(x, z, "EMPTY", "", FillType::FULL));
+      replaceChild(block, new Block(x, z, emptyBlock));
     }
   }
 }
 
-std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
+std::map<std::pair<int, int>, osg::ref_ptr<Block>> 
+Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
   int sizeX, int sizeZ)
 {
   std::lock_guard<std::mutex> lgMutex(_mutex);
@@ -139,7 +172,6 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks;
 
   if (!isNewSizeSame) {
-    //Block* block = nullptr;
     osg::ref_ptr<Block> block = nullptr;
 
     bool isBlockCoordsMoreThanSize;
@@ -148,8 +180,10 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
     for (int i = 0; i < getNumChildren(); i++) {
       block = dynamic_cast<Block*>(getChild(i));
 
-      isBlockCoordsMoreThanSize = (block->GetX() >= sizeX || block->GetZ() >= sizeZ);
-      isBorderBlock = (block->GetType() == "BORDER");
+      isBlockCoordsMoreThanSize = 
+        (block->GetX() >= sizeX || block->GetZ() >= sizeZ);
+
+      isBorderBlock = (block->GetType().GetTypeName() == "BORDER");
 
       if (isBlockCoordsMoreThanSize || isBorderBlock) {
         //удаление блоков вне игровой области и рамки
@@ -176,16 +210,17 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>> Map::Resize(std::map<std::pai
         }
       }
       else {
+        BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+
         for (int z = oldSizeZ; z < _sizeZ; z += _step) {
           for (int x = 0; x < _sizeX; x += _step) {
-            addChild(new Block(x, z, "EMPTY", "", FillType::FULL));
+            addChild(new Block(x, z, emptyBlock));
           }
         }
-        //!!!
-        //for (int z = oldSizeZ - _step; z >= 0; z -= _step) {
+
         for (int z = _sizeZ - _step; z >= 0; z -= _step) {
           for (int x = oldSizeX; x < _sizeX; x += _step) {
-            addChild(new Block(x, z, "EMPTY", "", FillType::FULL));
+            addChild(new Block(x, z, emptyBlock));
           }
         }        
       }

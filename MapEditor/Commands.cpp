@@ -4,14 +4,12 @@
 
 //AddCommand
 
-AddCommand::AddCommand(osg::ref_ptr<Map> map, osg::ref_ptr<Block> block, std::string type,
-  FillType fType, QUndoCommand* parent) :
-QUndoCommand(parent)
+AddCommand::AddCommand(osg::ref_ptr<Block> block, 
+  BlockType blockType, QUndoCommand* parent) :
+QUndoCommand(parent),
+_block(block),
+_blockType(blockType)
 {
-  _block = block;
-  _type = type;
-  _texPath = map->GetTexPath(type);
-  _fType = fType;
 }
 
 AddCommand::~AddCommand()
@@ -21,28 +19,25 @@ AddCommand::~AddCommand()
 void AddCommand::undo()
 {
   //remove
-  _block->SetType("EMPTY", "", FillType::FULL);
+  BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+  _block->SetType(emptyBlock);
 }
 
 void AddCommand::redo()
 {
   //add
-  _block->SetType(_type, _texPath, _fType);
+  _block->SetType(_blockType);
 }
 
 //ReplaceCommand
 
-ReplaceCommand::ReplaceCommand(osg::ref_ptr<Map> map, osg::ref_ptr<Block> block,
-  std::string type, FillType fType, QUndoCommand* parent) :
-QUndoCommand(parent)
+ReplaceCommand::ReplaceCommand(osg::ref_ptr<Block> block,
+  BlockType blockType, QUndoCommand* parent) :
+QUndoCommand(parent),
+_block(block),
+_blockType(blockType)
 {
-  _block = block;
-  _type = type;
-  _fType = fType;
-  _texPath = map->GetTexPath(type);
-  _texPathOld = block->GetTexPath();
-  _typeOld = block->GetType();
-  _fTypeOld = block->GetFillType();
+  _blockTypeOld = block->GetType();
 }
 
 ReplaceCommand::~ReplaceCommand()
@@ -52,24 +47,22 @@ ReplaceCommand::~ReplaceCommand()
 void ReplaceCommand::undo()
 {
   //replace with old
-  _block->SetType(_typeOld, _texPathOld, _fTypeOld);
+  _block->SetType(_blockTypeOld);
 }
 
 void ReplaceCommand::redo()
 {
   //replace with new
-  _block->SetType(_type, _texPath, _fType);
+  _block->SetType(_blockType);
 }
 
 //RemoveCommand
 
 RemoveCommand::RemoveCommand(osg::ref_ptr<Block> block, QUndoCommand* parent) :
-QUndoCommand(parent)
+QUndoCommand(parent),
+_block(block)
 {
-  _block = block;
-  _type = _block->GetType();
-  _texPath = _block->GetTexPath();
-  _fType = _block->GetFillType();
+  _blockType = block->GetType();
 }
 
 RemoveCommand::~RemoveCommand()
@@ -79,13 +72,14 @@ RemoveCommand::~RemoveCommand()
 void RemoveCommand::undo()
 {
   //add
-  _block->SetType(_type, _texPath, _fType);
+  _block->SetType(_blockType);
 }
 
 void RemoveCommand::redo()
 {
   //remove
-  _block->SetType("EMPTY", "", FillType::FULL);
+  BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+  _block->SetType(emptyBlock);
 }
 
 //ChangeSizeCommand

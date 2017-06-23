@@ -6,17 +6,13 @@ Block::Block()
 }
 
 //принимает координаты, тип блока
-//Block::Block(int x, int z, TexType type, FillType fillType) :
-Block::Block(int x, int z, std::string typeName, std::string texPath, FillType fillType) :
+Block::Block(int x, int z, BlockType blockType) :
 _x(x), _z(z),
-_typeName(typeName),
-_texPath(texPath),
-_fType(fillType)
+_blockType(blockType)
 {
   int tileSize = Tile::Size();
 
-  //createFromTiles(type, fillType);
-  createFromTiles(_typeName, _texPath, _fType);
+  createFromTiles(_blockType);
 
   if (_leftBottom != nullptr) addChild(_leftBottom);
   if (_leftTop != nullptr) addChild(_leftTop);
@@ -28,16 +24,16 @@ Block::~Block()
 {
 }
 
-void Block::createFromTiles(std::string typeName, std::string texPath, 
-  FillType fillType)
+void Block::createFromTiles(BlockType blockType)
 {
   int tileSize = Tile::Size();
 
-  //_type = texType;
-  //_texPath = texPath;
-  //_fType = fillType;
+  //blocktype parsing is here
+  std::string typeName = blockType.GetTypeName();
+  std::string texPath = blockType.GetTexPath();
+  FillType fillType = blockType.GetFillType();
 
-  //if (texType == TexType::EMPTY)
+
   if (typeName == "EMPTY")
   {
     _leftBottom = new Tile(_x, _z, typeName, EmptyTile::LEFT_BOTTOM);
@@ -48,6 +44,7 @@ void Block::createFromTiles(std::string typeName, std::string texPath,
   }
   else
   {
+    //!!!!!!!!!! FillType -> string ?
     switch (fillType)
     {
     case FillType::FULL:
@@ -89,9 +86,13 @@ void Block::createFromTiles(std::string typeName, std::string texPath,
   }
 }
 
-void Block::SetType(std::string typeName, std::string texPath, FillType fillType)
+void Block::SetType(BlockType blockType)
 {
-  if ((_typeName != typeName) || (_fType != fillType))	//если блок точно такой же, ничего не меняется
+  std::string typeName = blockType.GetTypeName();
+  std::string texPath = blockType.GetTexPath();
+  FillType fillType = blockType.GetFillType();
+
+  if (_blockType != blockType)        //если блок точно такой же, ничего не меняется
   {													//иначе происходит замена
     osg::ref_ptr<Tile> oldLB = _leftBottom;
     osg::ref_ptr<Tile> oldLT = _leftTop;
@@ -99,11 +100,9 @@ void Block::SetType(std::string typeName, std::string texPath, FillType fillType
     osg::ref_ptr<Tile> oldRB = _rightBottom;
 
     //замена блока
-    _typeName = typeName;
-    _texPath = texPath;
-    _fType = fillType;
+    _blockType = blockType;
 
-    createFromTiles(typeName, texPath, fillType);
+    createFromTiles(_blockType);
 
     replaceChild(oldLB, _leftBottom);
     replaceChild(oldLT, _leftTop);
@@ -112,9 +111,10 @@ void Block::SetType(std::string typeName, std::string texPath, FillType fillType
   }
 }
 
+//переделать тип возвращаемой функции
 std::pair<QString, QString> Block::GetType_str()
 {
-  QString texType;
+  //QString texType;
   QString fillType;
   
   //проверка на empty?
@@ -145,7 +145,7 @@ std::pair<QString, QString> Block::GetType_str()
   }
   */
 
-  switch (_fType)
+  switch (_blockType.GetFillType())
   {
   case FillType::BOTTOM:
     fillType = "BOTTOM";
@@ -164,5 +164,6 @@ std::pair<QString, QString> Block::GetType_str()
     break;
   }
 
-  return std::make_pair(texType, fillType);
+  //return std::make_pair(texType, fillType);
+  return std::make_pair("izi", fillType);
 }

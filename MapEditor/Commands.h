@@ -6,13 +6,12 @@
 
 #include <Block.h>
 #include <Map.h>
-#include <MapEditor.h>
 
 class AddCommand : public QUndoCommand	//add block on map
 {
 public:
-  AddCommand(osg::ref_ptr<Map> map, osg::ref_ptr<Block> block, std::string type, 
-    FillType fType, QUndoCommand* parent = 0);
+  AddCommand(osg::ref_ptr<Block> block, BlockType blockType,
+    QUndoCommand* parent = 0);
   ~AddCommand();
 
   void undo() override;
@@ -20,17 +19,14 @@ public:
 
 private:
   osg::ref_ptr<Block> _block = nullptr;
-  //TexType _type;
-  std::string _type;
-  std::string _texPath;
-  FillType _fType;
+  BlockType _blockType;
 };
 
 class ReplaceCommand : public QUndoCommand	//replace existing block on map
 {
 public:
-  ReplaceCommand(osg::ref_ptr<Map> map, osg::ref_ptr<Block> block,
-    std::string type, FillType fType, QUndoCommand* parent = 0);
+  ReplaceCommand(osg::ref_ptr<Block> block,
+   BlockType blockType, QUndoCommand* parent = 0);
   ~ReplaceCommand();
 
   void undo() override;
@@ -38,14 +34,8 @@ public:
 
 private:
   osg::ref_ptr<Block> _block = nullptr;
-  //TexType _type;
-  //TexType _typeOld;
-  std::string _type;
-  std::string _typeOld;
-  std::string _texPath;
-  std::string _texPathOld;
-  FillType _fType;
-  FillType _fTypeOld;
+  BlockType _blockType;
+  BlockType _blockTypeOld;
 };
 
 class RemoveCommand : public QUndoCommand	//remove block from map
@@ -59,17 +49,14 @@ public:
 
 private:
   osg::ref_ptr<Block> _block = nullptr;
-  //TexType _type;
-  std::string _type;
-  std::string _texPath;
-  FillType _fType;
+  BlockType _blockType;
 };
 
 class ChangeSizeCommand : public QUndoCommand	//change map size
 {
 public:
-  ChangeSizeCommand(osg::ref_ptr<Map> map,
-    int mapSizeX, int mapSizeZ, QUndoCommand* parent = 0);
+  ChangeSizeCommand(osg::ref_ptr<Map> map, int mapSizeX, int mapSizeZ,
+    QUndoCommand* parent = 0);
   ~ChangeSizeCommand();
 
   void undo() override;
