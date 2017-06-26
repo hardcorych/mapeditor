@@ -24,6 +24,26 @@ BlockType::~BlockType()
 {
 }
 
+QString BlockType::GetFillType_str() const 
+{
+  switch (_fillType)
+  {
+  case FillType::FULL:
+    return "FULL";
+  case FillType::LEFT:
+    return "LEFT";
+  case FillType::RIGHT:
+    return "RIGHT";
+  case FillType::TOP:
+    return "TOP";
+  case FillType::BOTTOM:
+    return "BOTTOM";
+  default:
+    break;
+  }
+  return "";
+}
+
 bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight)
 {
   if (blockTypeLeft._typeName != blockTypeRight._typeName)

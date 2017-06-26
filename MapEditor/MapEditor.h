@@ -10,13 +10,9 @@
 #include <qundoview.h>
 
 #include <Block.h>
-#include <BlockEditor.h>
-#include <Editor.h>
 #include <Map.h>
-#include <MapSizeDialog.h>
 
-class MapEditor : public QMainWindow,
-  public Editor
+class MapEditor : public QMainWindow
 {
   Q_OBJECT
 
@@ -40,10 +36,10 @@ private:
   QAction* _resizeMapAct;
   QAction* _blockEditAct;
 
-  //QAction* _undoAct;
-  //QAction* _redoAct;
+  QAction* _undoAct;
+  QAction* _redoAct;
 
-  //QUndoStack* _undoStack;
+  QUndoStack* _undoStack;
   QUndoView* _undoView;
 
   osg::ref_ptr<Map> _map = new Map(10, 10);
@@ -53,15 +49,15 @@ private:
 
   QString _filename;
 
-  BlockEditor _blockEditor;
-
   int _minMapSize;
   int _maxMapSize;
   int _row = 0;
   int _col = 0;
 
   //!!!
-  QButtonGroup* buttonGroupBlocks;
+  QButtonGroup* _btnGroupBlocks;
+  std::map<std::string, std::string> _texPaths;
+  std::map<int, BlockType> _blockTypes;
 
   //методы
 
@@ -75,23 +71,7 @@ private:
 
   public slots:
   void onClickedCreateButton();
-  void SelectBlock();
-  //???
-  void onClickedBushes();
-  void onClickedWater();
-  void onClickedIce();
-
-  void onClickedArmorFull();
-  void onClickedArmorLeft();
-  void onClickedArmorRight();
-  void onClickedArmorTop();
-  void onClickedArmorBottom();
-
-  void onClickedBrickFull();
-  void onClickedBrickLeft();
-  void onClickedBrickRight();
-  void onClickedBrickTop();
-  void onClickedBrickBottom();
+  void onClickedDeleteButton();
 
   void NewMap();
   void changeMapSize();

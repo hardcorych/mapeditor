@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include <qstring.h>
+
 enum class FillType		//block filling
 {
   FULL,		//4 tiles
@@ -22,6 +24,7 @@ public:
   std::string GetTypeName() const { return _typeName; }
   std::string GetTexPath() const { return _texPath; }
   FillType GetFillType() const { return _fillType; }
+  QString GetFillType_str() const;
   bool GetPassability() const { return _isPassable; }
   bool GetUnderTank() const { return _isUnderTank; }
 

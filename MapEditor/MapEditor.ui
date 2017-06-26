@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1007</width>
-    <height>681</height>
+    <width>858</width>
+    <height>492</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -151,7 +151,7 @@
     <widget class="QPushButton" name="pushButtonCreateBlock">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>20</x>
        <y>170</y>
        <width>111</width>
        <height>23</height>
@@ -226,311 +226,19 @@
       <string>top</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnWater">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>260</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/water.png</normaloff>Resources/blocks/water.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnArmorLeft">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>440</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/armor_left.png</normaloff>Resources/blocks/armor_left.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnBushes">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>260</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/bushes.png</normaloff>Resources/blocks/bushes.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-    <property name="shortcut">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnArmorFull">
-    <property name="geometry">
-     <rect>
-      <x>850</x>
-      <y>360</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/armor_full.png</normaloff>Resources/blocks/armor_full.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnArmorTop">
-    <property name="geometry">
-     <rect>
-      <x>910</x>
-      <y>520</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/armor_top.png</normaloff>Resources/blocks/armor_top.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnArmorRight">
-    <property name="geometry">
-     <rect>
-      <x>910</x>
-      <y>440</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/armor_right.png</normaloff>Resources/blocks/armor_right.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnIce">
-    <property name="geometry">
-     <rect>
-      <x>910</x>
-      <y>260</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/ice.png</normaloff>Resources/blocks/ice.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnBrickRight">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>440</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/brick_right.png</normaloff>Resources/blocks/brick_right.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnBrickTop">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>520</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/brick_top.png</normaloff>Resources/blocks/brick_top.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnBrickLeft">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>440</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/brick_left.png</normaloff>Resources/blocks/brick_left.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnBrickFull">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>360</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/brick_full.png</normaloff>Resources/blocks/brick_full.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnBrickBottom">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>520</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/brick_bottom.png</normaloff>Resources/blocks/brick_bottom.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioBtnArmorBottom">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>520</y>
-      <width>91</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/blocks/armor_bottom.png</normaloff>Resources/blocks/armor_bottom.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
+    <widget class="QPushButton" name="pushButtonDeleteBlock">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>170</y>
+       <width>111</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete block</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -538,7 +246,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1007</width>
+     <width>858</width>
      <height>21</height>
     </rect>
    </property>

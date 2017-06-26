@@ -25,35 +25,6 @@ _step(16)
   _texPaths["ICE"] = "Resources/tiles/ICE.png";
   _texPaths["WATER"] = "Resources/tiles/WATER.png";
 
-  _blockTypes["BUSHES_FULL"] = BlockType("BUSHES", _texPaths["BUSHES"],
-    FillType::FULL, 0, 0);
-  _blockTypes["WATER_FULL"] = BlockType("WATER", _texPaths["WATER"],
-    FillType::FULL, 0, 0);
-  _blockTypes["ICE_FULL"] = BlockType("ICE", _texPaths["ICE"],
-    FillType::FULL, 0, 0);
-
-  _blockTypes["ARMOR_FULL"] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::FULL, 0, 0);
-  _blockTypes["ARMOR_LEFT"] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::LEFT, 0, 0);
-  _blockTypes["ARMOR_RIGHT"] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::RIGHT, 0, 0);
-  _blockTypes["ARMOR_TOP"] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::TOP, 0, 0);
-  _blockTypes["ARMOR_BOTTOM"] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::BOTTOM, 0, 0);
-
-  _blockTypes["BRICK_FULL"] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::FULL, 0, 0);
-  _blockTypes["BRICK_LEFT"] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::LEFT, 0, 0);
-  _blockTypes["BRICK_RIGHT"] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::RIGHT, 0, 0);
-  _blockTypes["BRICK_TOP"] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::TOP, 0, 0);
-  _blockTypes["BRICK_BOTTOM"] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::BOTTOM, 0, 0);
-
   //формирование границ
   setBorder();
   setGameArea();

@@ -10,9 +10,10 @@
 #include <qmessagebox.h>
 #include <qxmlstream.h>
 
+#include <BlockEditDialog.h>
 #include <Commands.h>
 #include <KeyboardMouseHandler.h>
-#include <QBlockRadioButton.h>
+#include <MapSizeDialog.h>
 #include <Viewer.h>
 
 MapEditor::MapEditor(QWidget *parent)
@@ -21,6 +22,8 @@ MapEditor::MapEditor(QWidget *parent)
   _maxMapSize(30)
 {
   ui.setupUi(this);
+
+  _btnGroupBlocks = new QButtonGroup(this);
 
   _fileMenu = new QMenu(this);
   _editMenu = new QMenu(this);
@@ -72,38 +75,69 @@ MapEditor::MapEditor(QWidget *parent)
 
   connect(ui.pushButtonCreateBlock, &QPushButton::clicked,
     this, &MapEditor::onClickedCreateButton);
+  connect(ui.pushButtonDeleteBlock, &QPushButton::clicked,
+    this, &MapEditor::onClickedDeleteButton);
 
-  //??????
-  connect(ui.radioBtnBushes, &QRadioButton::clicked, 
-    this, &MapEditor::onClickedBushes);
-  connect(ui.radioBtnWater, &QRadioButton::clicked,
-    this, &MapEditor::onClickedWater);
-  connect(ui.radioBtnIce, &QRadioButton::clicked,
-    this, &MapEditor::onClickedIce);
-
-  connect(ui.radioBtnArmorFull, &QRadioButton::clicked,
-    this, &MapEditor::onClickedArmorFull);
-  connect(ui.radioBtnArmorLeft, &QRadioButton::clicked,
-    this, &MapEditor::onClickedArmorLeft);
-  connect(ui.radioBtnArmorRight, &QRadioButton::clicked, 
-    this, &MapEditor::onClickedArmorRight);
-  connect(ui.radioBtnArmorBottom, &QRadioButton::clicked,
-    this, &MapEditor::onClickedArmorBottom);
-  connect(ui.radioBtnArmorTop, &QRadioButton::clicked,
-    this, &MapEditor::onClickedArmorTop);
-
-  connect(ui.radioBtnBrickFull, &QRadioButton::clicked,
-    this, &MapEditor::onClickedBrickFull);
-  connect(ui.radioBtnBrickLeft, &QRadioButton::clicked,
-    this, &MapEditor::onClickedBrickLeft);
-  connect(ui.radioBtnBrickRight, &QRadioButton::clicked,
-    this, &MapEditor::onClickedBrickRight);
-  connect(ui.radioBtnBrickBottom, &QRadioButton::clicked,
-    this, &MapEditor::onClickedBrickBottom);
-  connect(ui.radioBtnBrickTop, &QRadioButton::clicked,
-    this, &MapEditor::onClickedBrickTop);
+  connect(_btnGroupBlocks,
+    static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked),
+    [=](int id)
+  {
+    emit SendBlockType(_blockTypes[id]);
+  });
 
   _renderThread = std::thread(&MapEditor::renderScene, this);
+  
+  _texPaths["BORDER"] = "Resources/tiles/BORDER.png";
+  _texPaths["ARMOR"] = "Resources/tiles/ARMOR.png";
+  _texPaths["BRICK"] = "Resources/tiles/BRICK.png";
+  _texPaths["BUSHES"] = "Resources/tiles/BUSHES.png";
+  _texPaths["ICE"] = "Resources/tiles/ICE.png";
+  _texPaths["WATER"] = "Resources/tiles/WATER.png";
+
+  _blockTypes[-2] = BlockType("BUSHES", _texPaths["BUSHES"],
+    FillType::FULL, 0, 0);
+  _blockTypes[-3] = BlockType("WATER", _texPaths["WATER"],
+    FillType::FULL, 0, 0);
+  _blockTypes[-4] = BlockType("ICE", _texPaths["ICE"],
+    FillType::FULL, 0, 0);
+
+  _blockTypes[-5] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::FULL, 0, 0);
+  _blockTypes[-6] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::LEFT, 0, 0);
+  _blockTypes[-7] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::RIGHT, 0, 0);
+  _blockTypes[-8] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::TOP, 0, 0);
+  _blockTypes[-9] = BlockType("ARMOR", _texPaths["ARMOR"],
+    FillType::BOTTOM, 0, 0);
+
+  _blockTypes[-10] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::FULL, 0, 0);
+  _blockTypes[-11] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::LEFT, 0, 0);
+  _blockTypes[-12] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::RIGHT, 0, 0);
+  _blockTypes[-13] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::TOP, 0, 0);
+  _blockTypes[-14] = BlockType("BRICK", _texPaths["BRICK"],
+    FillType::BOTTOM, 0, 0);
+
+  for (std::map<int, BlockType>::iterator it = _blockTypes.begin();
+    it != _blockTypes.end(); ++it)
+  {
+    QRadioButton *rButton = new QRadioButton(this);
+    _btnGroupBlocks->addButton(rButton);
+    int btnId = _btnGroupBlocks->id(rButton);   //-2, -3, etc...
+    rButton->setText(QString::fromStdString(_blockTypes[btnId].GetTypeName()) 
+      + _blockTypes[btnId].GetFillType_str());
+    ui.gridLayout->addWidget(rButton, _row, _col++);
+    if (_col == 5)
+    {
+      _col = 0;
+      _row++;
+    }
+  }
 }
 
 MapEditor::~MapEditor()
@@ -117,19 +151,41 @@ MapEditor::~MapEditor()
 
 void MapEditor::onClickedCreateButton()
 {
-  QBlockRadioButton *rButton = new QBlockRadioButton(this);
-  rButton->setText("izi");
+  //BlockEdit dialog calling
+  /*
+  BlockEditDialog blockEditDialog(this);
+
+  if (blockEditDialog.exec() == QDialog::Accepted)
+  {
+
+  }
+  */
+
+  QRadioButton *rButton = new QRadioButton(this);
+  rButton->setText("izi"+QString::number(_row*6+_col));
+  _btnGroupBlocks->addButton(rButton);
+  int btnId = _btnGroupBlocks->id(rButton);   //-2, -3, etc...
   ui.gridLayout->addWidget(rButton, _row, _col++);
-  if (_col == 6)
+  if (_col == 5)
   {
     _col = 0;
     _row++;
   }
 }
 
-void MapEditor::SelectBlock()
+void MapEditor::onClickedDeleteButton()
 {
+  //id при удалении из группы остается неизменным
+  QRadioButton* rButton = 
+    qobject_cast<QRadioButton*>(_btnGroupBlocks->checkedButton());
+  _btnGroupBlocks->setExclusive(false);
+  rButton->setChecked(false);
+  _btnGroupBlocks->setExclusive(true);
 
+  rButton->hide();
+  ui.gridLayout->removeWidget(rButton);
+  _btnGroupBlocks->removeButton(rButton);
+  delete rButton;
 }
 
 void MapEditor::readTextures()
@@ -495,83 +551,6 @@ void MapEditor::SaveAsXMLFile()
   }
 }
 
-void MapEditor::onClickedBushes()
-{
-  emit SendBlockType(BlockType("BUSHES", _map->GetTexPath("BUSHES"),
-    FillType::FULL, 1, 1));
-}
-
-void MapEditor::onClickedWater()
-{
-  emit SendBlockType(BlockType("WATER", _map->GetTexPath("WATER"),
-    FillType::FULL, 1, 1));
-}
-
-void MapEditor::onClickedIce()
-{
-  emit SendBlockType(BlockType("ICE", _map->GetTexPath("ICE"),
-    FillType::FULL, 1, 1));
-}
-
-void MapEditor::onClickedArmorFull()
-{
-  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
-    FillType::FULL, 1, 1));
-}
-
-void MapEditor::onClickedArmorLeft()
-{
-  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
-    FillType::LEFT, 1, 1));
-}
-
-void MapEditor::onClickedArmorRight()
-{
-  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
-    FillType::RIGHT, 1, 1));
-}
-
-void MapEditor::onClickedArmorBottom()
-{
-  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
-    FillType::BOTTOM, 1, 1));
-}
-
-void MapEditor::onClickedArmorTop()
-{
-  emit SendBlockType(BlockType("ARMOR", _map->GetTexPath("ARMOR"),
-    FillType::TOP, 1, 1));
-}
-
-void MapEditor::onClickedBrickFull()
-{
-  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
-    FillType::FULL, 1, 1));
-}
-
-void MapEditor::onClickedBrickLeft()
-{
-  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
-    FillType::LEFT, 1, 1));
-}
-
-void MapEditor::onClickedBrickRight()
-{
-  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
-    FillType::RIGHT, 1, 1));
-}
-
-void MapEditor::onClickedBrickBottom()
-{
-  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
-    FillType::BOTTOM, 1, 1));
-}
-
-void MapEditor::onClickedBrickTop()
-{
-  emit SendBlockType(BlockType("BRICK", _map->GetTexPath("BRICK"),
-    FillType::TOP, 1, 1));
-}
 
 void MapEditor::renderScene()
 {
@@ -607,9 +586,6 @@ void MapEditor::renderScene()
     _undoStack, &QUndoStack::undo);
   connect(keyboardMouseHandler, &KeyboardMouseHandler::Redo,
     _undoStack, &QUndoStack::redo);
-
-  ui.radioBtnBushes->setChecked(true);
-  ui.radioBtnBushes->clicked();
 
   //установка объектов на сцену
   //osg::ref_ptr<Map> map = new Map(10,10);

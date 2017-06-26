@@ -48,8 +48,9 @@ private:
   std::map<std::string, std::string> _texPaths;
   //std::vector<BlockType> _blockTypes;
 
-  std::map<std::string, BlockType> _blockTypes;
-  
+  //std::map<std::string, BlockType> _blockTypes;
+  //std::map<int, BlockType> _blockTypes;
+
   std::mutex _mutex;
 
   void setBorder();
