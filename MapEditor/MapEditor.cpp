@@ -53,7 +53,7 @@ MapEditor::MapEditor(QWidget *parent)
 
   //!!!
   connect(_resizeMapAct, &QAction::triggered, this, &MapEditor::changeMapSize);
-  //connect(_blockEditAct)
+  connect(_blockEditAct, &QAction::triggered, this, &MapEditor::blockEdit);
 
   _fileMenu->addAction(_newAct);
   _fileMenu->addAction(_loadAct);
@@ -72,11 +72,6 @@ MapEditor::MapEditor(QWidget *parent)
   ui.menuBar->addMenu(_settingsMenu);
 
   ui.labelMessage->setText("Information label");
-
-  connect(ui.pushButtonCreateBlock, &QPushButton::clicked,
-    this, &MapEditor::onClickedCreateButton);
-  connect(ui.pushButtonDeleteBlock, &QPushButton::clicked,
-    this, &MapEditor::onClickedDeleteButton);
 
   connect(_btnGroupBlocks,
     static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked),
@@ -146,6 +141,24 @@ MapEditor::~MapEditor()
   {
     emit QuitViewer();
     _renderThread.join();
+  }
+}
+
+void MapEditor::blockEdit()
+{
+  BlockType blockType = _blockTypes[_btnGroupBlocks->checkedId()];
+  BlockEditDialog blockEditDialog(this, blockType);
+
+  switch (blockEditDialog.exec())
+  {
+  case (int)BlockEditAction::CREATE:
+    //QMessageBox::warning(this, "title", "tekst", QMessageBox::Ok);
+    break;
+  case (int)BlockEditAction::CHANGE:
+    _blockTypes[_btnGroupBlocks->checkedId()] = blockEditDialog.GetBlockType();
+    break;
+  case (int)BlockEditAction::DELETE:
+    break;
   }
 }
 

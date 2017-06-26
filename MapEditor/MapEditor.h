@@ -76,6 +76,8 @@ private:
   void NewMap();
   void changeMapSize();
 
+  void blockEdit();
+
   //operations with files
   void LoadXMLFile();
   void SaveXMLFile();

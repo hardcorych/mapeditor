@@ -1,21 +1,35 @@
+#include <qfiledialog.h>
+#include <qgridlayout.h>
+
 #include "BlockEditDialog.h"
 
 
-BlockEditDialog::BlockEditDialog(QWidget* parent):
-QDialog(parent)
+BlockEditDialog::BlockEditDialog(QWidget* parent, 
+  BlockType blockType):
+QDialog(parent),
+_blockType(blockType)
 {
+  setWindowTitle("BlockEditor");
+
   _lblBlockName = new QLabel(this);
   _lblTexPath = new QLabel(this);
-
+  
   _lblBlockName->setText("Block name");
   _lblTexPath->setText("Texture path");
 
   _lineEditBlockName = new QLineEdit(this);
   _lineEditTexPath = new QLineEdit(this);
 
+  _lineEditBlockName->
+    setText(QString::fromStdString(_blockType.GetTypeName()));
+
   _lineEditTexPath->setReadOnly(true);
+  _lineEditTexPath->
+    setText(QString::fromStdString(_blockType.GetTexPath()));
 
   _pBtnSetTexPath = new QPushButton(this);
+
+  _pBtnSetTexPath->setText("Set path");
   
   _rBtnFillFull = new QRadioButton(this);
   _rBtnFillLeft = new QRadioButton(this);
@@ -29,14 +43,125 @@ QDialog(parent)
   _rBtnFillBottom->setText("BOTTOM");
   _rBtnFillTop->setText("TOP");
 
+  switch (_blockType.GetFillType())
+  {
+  case FillType::FULL:
+    _rBtnFillFull->setChecked(true);
+    break;
+  case FillType::LEFT:
+    _rBtnFillLeft->setChecked(true);
+    break;
+  case FillType::RIGHT:
+    _rBtnFillRight->setChecked(true);
+    break;
+  case FillType::BOTTOM:
+    _rBtnFillBottom->setChecked(true);
+    break;
+  case FillType::TOP:
+    _rBtnFillTop->setChecked(true);
+    break;
+  }
+
   _chkBoxPassability = new QCheckBox(this);
   _chkBoxUnderTank = new QCheckBox(this);
 
-  _pBtnCreateBlock = new QPushButton(this);
-  _pBtnDeleteBlock = new QPushButton(this);
-}
+  _chkBoxPassability->setText("Is passable");
+  _chkBoxUnderTank->setText("Is under tank");
 
+  _chkBoxPassability->setChecked(_blockType.GetPassability());
+  _chkBoxUnderTank->setChecked(_blockType.GetUnderTank());
+
+  _pBtnCreateBlockType = new QPushButton(this);
+  _pBtnChangeBlockType = new QPushButton(this);
+  _pBtnDeleteBlockType = new QPushButton(this);
+  _pBtnCancel = new QPushButton(this);
+
+  _pBtnCreateBlockType->setText("Create block");
+  _pBtnChangeBlockType->setText("Change block");
+  _pBtnDeleteBlockType->setText("Delete block");
+  _pBtnCancel->setText("Cancel");
+
+  QGridLayout* layout = new QGridLayout(this);
+
+  layout->addWidget(_lblBlockName, 0, 0);
+  layout->addWidget(_lineEditBlockName, 0, 1);
+
+  layout->addWidget(_lblTexPath, 1, 0);
+  layout->addWidget(_lineEditTexPath, 1, 1);
+  layout->addWidget(_pBtnSetTexPath, 1, 2);
+
+  _groupBoxFill = new QGroupBox(this);
+  QHBoxLayout *groupBoxLayout = new QHBoxLayout(this);
+
+  _groupBoxFill->setLayout(groupBoxLayout);
+  _groupBoxFill->setTitle("Fill");
+  
+  groupBoxLayout->addWidget(_rBtnFillFull);
+  groupBoxLayout->addWidget(_rBtnFillLeft);
+  groupBoxLayout->addWidget(_rBtnFillRight);
+  groupBoxLayout->addWidget(_rBtnFillBottom);
+  groupBoxLayout->addWidget(_rBtnFillTop);
+
+  layout->addWidget(_groupBoxFill, 2, 1);
+
+  layout->addWidget(_chkBoxPassability, 3, 1);
+  layout->addWidget(_chkBoxUnderTank, 3, 2);
+
+  layout->addWidget(_pBtnCreateBlockType, 4, 0);
+  layout->addWidget(_pBtnChangeBlockType, 4, 1);
+  layout->addWidget(_pBtnDeleteBlockType, 4, 2);
+  layout->addWidget(_pBtnCancel, 4, 3);
+
+  connect(_pBtnSetTexPath, &QPushButton::clicked,
+    this, &BlockEditDialog::setTexPath);
+  connect(_pBtnCreateBlockType, &QPushButton::clicked,
+    this, [=]
+  {
+    emit QDialog::done((int)BlockEditAction::CREATE);
+  });
+  connect(_pBtnChangeBlockType, &QPushButton::clicked,
+    this, [=]
+  {
+    emit QDialog::done((int)BlockEditAction::CHANGE);
+  });
+  connect(_pBtnDeleteBlockType, &QPushButton::clicked,
+    this, [=]
+  {
+    emit QDialog::done((int)BlockEditAction::DELETE);
+  });
+
+  connect(_pBtnCancel, &QPushButton::clicked,
+    this, &QDialog::reject);
+
+  /*
+  connect(_pBtnChangeBlockType, &QPushButton::clicked,
+    this, &QDialog::accept);
+  connect(_pBtnCreateBlockType, &QPushButton::clicked,
+    this, &QDialog::accept);
+  connect(_pBtnDeleteBlockType, &QPushButton::clicked,
+    this, &QDialog::accept);
+    */
+}
 
 BlockEditDialog::~BlockEditDialog()
 {
+}
+
+void BlockEditDialog::setTexPath()
+{
+  QString filename = QFileDialog::getOpenFileName(
+    this, tr("Open texture"), ".",
+    tr("PNG files (*.png)"));
+
+  QFile file(filename);
+
+  if (!file.open(QIODevice::ReadOnly | QFile::Text))
+  {
+    //error
+    //QMessageBox::warning(this, "file error", "file can't be opened", QMessageBox::Ok);
+  }
+  else
+  {
+    _lineEditTexPath->setText(filename);
+  }
 }

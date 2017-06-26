@@ -28,6 +28,12 @@ public:
   bool GetPassability() const { return _isPassable; }
   bool GetUnderTank() const { return _isUnderTank; }
 
+  void SetTypeName(std::string typeName) { _typeName = typeName; }
+  void SetTexPath(std::string texPath) { _texPath = texPath; }
+  void SetFillType(FillType fillType) { _fillType = fillType; }
+  void SetPassability(bool isPassable) { _isPassable = isPassable; }
+  void SetUnderTank(bool isUnderTank) { _isUnderTank = isUnderTank; }
+
   void GetBlockType(std::string& typeName, std::string& texPath,
     int& fillType, bool& isPassable, bool& isUnderTank) const;
 
