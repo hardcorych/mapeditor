@@ -53,7 +53,7 @@ void Map::setBorder()
   //заполнение против часовой стрелки, начиная с нижней границы
   //нижняя граница
   //int startBorder = -1 * _step;
-  BlockType borderBlock("BORDER", _texPaths["BORDER"], FillType::FULL,
+  BlockType borderBlock("BORDER", _texPaths["BORDER"], "FULL",
     0, 0);
 
   for (int x = -_step; x < _sizeX - _step; x += _step) {
@@ -80,7 +80,7 @@ void Map::setBorder()
 
 void Map::setGameArea()
 {
-  BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+  BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
   for (int z = 0; z < _sizeZ; z += _step) {
     for (int x = 0; x < _sizeX; x += _step) {
       //заполнение свободной области пустыми блоками
@@ -117,7 +117,7 @@ void Map::RemoveBlock(int x, int z)
 
   osg::ref_ptr<Block> block = nullptr;
 
-  BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+  BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
 
   for (int i = 0; i < getNumChildren(); i++) {
     block = dynamic_cast<Block*>(getChild(i));
@@ -181,7 +181,7 @@ Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
         }
       }
       else {
-        BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+        BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
 
         for (int z = oldSizeZ; z < _sizeZ; z += _step) {
           for (int x = 0; x < _sizeX; x += _step) {

@@ -31,8 +31,7 @@ void Block::createFromTiles(BlockType blockType)
   //blocktype parsing is here
   std::string typeName = blockType.GetTypeName();
   std::string texPath = blockType.GetTexPath();
-  FillType fillType = blockType.GetFillType();
-
+  std::string fillType = blockType.GetFillType();
 
   if (typeName == "EMPTY")
   {
@@ -44,44 +43,44 @@ void Block::createFromTiles(BlockType blockType)
   }
   else
   {
-    //!!!!!!!!!! FillType -> string ?
-    switch (fillType)
+    if (fillType == "FULL")
     {
-    case FillType::FULL:
       _leftBottom = new Tile(_x, _z, typeName, texPath);
       _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);
       _rightTop = new Tile(_x + tileSize, _z + tileSize, typeName, texPath);
       _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
-      break;
-    case FillType::BOTTOM:
+    }
+    else if (fillType == "BOTTOM")
+    {
       _leftBottom = new Tile(_x, _z, typeName, texPath);
       _leftTop = new Tile(_x, _z + tileSize, "EMPTY", EmptyTile::LEFT_TOP);
-      _rightTop = new Tile(_x + tileSize, _z + tileSize, 
-      "EMPTY", EmptyTile::RIGHT_TOP);
-
+      _rightTop = new Tile(_x + tileSize, _z + tileSize,
+        "EMPTY", EmptyTile::RIGHT_TOP);
       _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
-      break;
-    case FillType::LEFT:
+    }
+    else if (fillType == "LEFT")
+    {
       _leftBottom = new Tile(_x, _z, typeName, texPath);
       _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);
       _rightTop = new Tile(_x + tileSize, _z + tileSize,
         "EMPTY", EmptyTile::RIGHT_TOP);
-      _rightBottom = new Tile(_x + tileSize, _z, 
+      _rightBottom = new Tile(_x + tileSize, _z,
         "EMPTY", EmptyTile::RIGHT_BOTTOM);
-      break;
-    case FillType::RIGHT:
+    }
+    else if (fillType == "RIGHT")
+    {
       _leftBottom = new Tile(_x, _z, "EMPTY", EmptyTile::LEFT_BOTTOM);
       _leftTop = new Tile(_x, _z + tileSize, "EMPTY", EmptyTile::LEFT_TOP);
       _rightTop = new Tile(_x + tileSize, _z + tileSize, typeName, texPath);
       _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
-      break;
-    case FillType::TOP:
+    }
+    else if (fillType == "TOP")
+    {
       _leftBottom = new Tile(_x, _z, "EMPTY", EmptyTile::LEFT_BOTTOM);
       _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);
       _rightTop = new Tile(_x + tileSize, _z + tileSize, typeName, texPath);
-      _rightBottom = new Tile(_x + tileSize, _z, 
+      _rightBottom = new Tile(_x + tileSize, _z,
         "EMPTY", EmptyTile::RIGHT_BOTTOM);
-      break;
     }
   }
 }
@@ -90,24 +89,25 @@ void Block::SetType(BlockType blockType)
 {
   std::string typeName = blockType.GetTypeName();
   std::string texPath = blockType.GetTexPath();
-  FillType fillType = blockType.GetFillType();
+  //FillType fillType = blockType.GetFillType();
+  std::string fillType = blockType.GetFillType();
 
   if (_blockType != blockType)        //если блок точно такой же, ничего не меняется
   {													//иначе происходит замена
-    osg::ref_ptr<Tile> oldLB = _leftBottom;
-    osg::ref_ptr<Tile> oldLT = _leftTop;
-    osg::ref_ptr<Tile> oldRT = _rightTop;
-    osg::ref_ptr<Tile> oldRB = _rightBottom;
+    osg::ref_ptr<Tile> oldLeftBottom = _leftBottom;
+    osg::ref_ptr<Tile> oldLeftTop = _leftTop;
+    osg::ref_ptr<Tile> oldRightTop = _rightTop;
+    osg::ref_ptr<Tile> oldRightBottom = _rightBottom;
 
     //замена блока
     _blockType = blockType;
 
     createFromTiles(_blockType);
 
-    replaceChild(oldLB, _leftBottom);
-    replaceChild(oldLT, _leftTop);
-    replaceChild(oldRT, _rightTop);
-    replaceChild(oldRB, _rightBottom);
+    replaceChild(oldLeftBottom, _leftBottom);
+    replaceChild(oldLeftTop, _leftTop);
+    replaceChild(oldRightTop, _rightTop);
+    replaceChild(oldRightBottom, _rightBottom);
   }
 }
 
@@ -115,7 +115,7 @@ void Block::SetType(BlockType blockType)
 std::pair<QString, QString> Block::GetType_str()
 {
   //QString texType;
-  QString fillType;
+  QString fillType = QString::fromStdString(_blockType.GetFillType());
   
   //проверка на empty?
   /*
@@ -144,7 +144,7 @@ std::pair<QString, QString> Block::GetType_str()
     break;
   }
   */
-
+  /*
   switch (_blockType.GetFillType())
   {
   case FillType::BOTTOM:
@@ -163,7 +163,7 @@ std::pair<QString, QString> Block::GetType_str()
     fillType = "TOP";
     break;
   }
-
+  */
   //return std::make_pair(texType, fillType);
   return std::make_pair("izi", fillType);
 }

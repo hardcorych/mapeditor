@@ -90,33 +90,33 @@ MapEditor::MapEditor(QWidget *parent)
   _texPaths["WATER"] = "Resources/tiles/WATER.png";
 
   _blockTypes[-2] = BlockType("BUSHES", _texPaths["BUSHES"],
-    FillType::FULL, 0, 0);
+    "FULL", 0, 0);
   _blockTypes[-3] = BlockType("WATER", _texPaths["WATER"],
-    FillType::FULL, 0, 0);
+    "FULL", 0, 0);
   _blockTypes[-4] = BlockType("ICE", _texPaths["ICE"],
-    FillType::FULL, 0, 0);
+    "FULL", 0, 0);
 
   _blockTypes[-5] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::FULL, 0, 0);
+    "FULL", 0, 0);
   _blockTypes[-6] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::LEFT, 0, 0);
+    "LEFT", 0, 0);
   _blockTypes[-7] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::RIGHT, 0, 0);
+    "RIGHT", 0, 0);
   _blockTypes[-8] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::TOP, 0, 0);
+    "TOP", 0, 0);
   _blockTypes[-9] = BlockType("ARMOR", _texPaths["ARMOR"],
-    FillType::BOTTOM, 0, 0);
+    "BOTTOM", 0, 0);
 
   _blockTypes[-10] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::FULL, 0, 0);
+    "FULL", 0, 0);
   _blockTypes[-11] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::LEFT, 0, 0);
+    "LEFT", 0, 0);
   _blockTypes[-12] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::RIGHT, 0, 0);
+    "RIGHT", 0, 0);
   _blockTypes[-13] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::TOP, 0, 0);
+    "TOP", 0, 0);
   _blockTypes[-14] = BlockType("BRICK", _texPaths["BRICK"],
-    FillType::BOTTOM, 0, 0);
+    "BOTTOM", 0, 0);
 
   for (std::map<int, BlockType>::iterator it = _blockTypes.begin();
     it != _blockTypes.end(); ++it)
@@ -146,8 +146,11 @@ MapEditor::~MapEditor()
 
 void MapEditor::blockEdit()
 {
-  BlockType blockType = _blockTypes[_btnGroupBlocks->checkedId()];
+  int blockTypeId = _btnGroupBlocks->checkedId();
+  BlockType blockType = _blockTypes[blockTypeId];
   BlockEditDialog blockEditDialog(this, blockType);
+
+  QString newBlockName;
 
   switch (blockEditDialog.exec())
   {
@@ -155,7 +158,13 @@ void MapEditor::blockEdit()
     //QMessageBox::warning(this, "title", "tekst", QMessageBox::Ok);
     break;
   case (int)BlockEditAction::CHANGE:
-    _blockTypes[_btnGroupBlocks->checkedId()] = blockEditDialog.GetBlockType();
+    _blockTypes[blockTypeId] = blockEditDialog.GetBlockType();
+    newBlockName = QString::fromStdString(
+      _blockTypes[blockTypeId].GetTypeName()+
+      _blockTypes[blockTypeId].GetFillType());
+    _btnGroupBlocks->checkedButton()->
+      setText(newBlockName);
+    emit SendBlockType(_blockTypes[blockTypeId]);
     break;
   case (int)BlockEditAction::DELETE:
     break;

@@ -43,6 +43,28 @@ _blockType(blockType)
   _rBtnFillBottom->setText("BOTTOM");
   _rBtnFillTop->setText("TOP");
 
+  std::string fillType = _blockType.GetFillType();
+  if (fillType == "FULL")
+  {
+    _rBtnFillFull->setChecked(true);
+  }
+  else if (fillType == "LEFT")
+  {
+    _rBtnFillLeft->setChecked(true);
+  }
+  else if (fillType == "RIGHT")
+  {
+    _rBtnFillRight->setChecked(true);
+  }
+  else if (fillType == "BOTTOM")
+  {
+    _rBtnFillBottom->setChecked(true);
+  }
+  else if (fillType == "TOP")
+  {
+    _rBtnFillTop->setChecked(true);
+  }
+  /*
   switch (_blockType.GetFillType())
   {
   case FillType::FULL:
@@ -61,7 +83,7 @@ _blockType(blockType)
     _rBtnFillTop->setChecked(true);
     break;
   }
-
+  */
   _chkBoxPassability = new QCheckBox(this);
   _chkBoxUnderTank = new QCheckBox(this);
 
@@ -130,15 +152,6 @@ _blockType(blockType)
 
   connect(_pBtnCancel, &QPushButton::clicked,
     this, &QDialog::reject);
-
-  /*
-  connect(_pBtnChangeBlockType, &QPushButton::clicked,
-    this, &QDialog::accept);
-  connect(_pBtnCreateBlockType, &QPushButton::clicked,
-    this, &QDialog::accept);
-  connect(_pBtnDeleteBlockType, &QPushButton::clicked,
-    this, &QDialog::accept);
-    */
 }
 
 BlockEditDialog::~BlockEditDialog()
@@ -149,7 +162,7 @@ void BlockEditDialog::setTexPath()
 {
   QString filename = QFileDialog::getOpenFileName(
     this, tr("Open texture"), ".",
-    tr("PNG files (*.png)"));
+    tr("PNG and JPG files (*.png *.jpg)"));
 
   QFile file(filename);
 
@@ -173,7 +186,9 @@ void BlockEditDialog::changeBlockType()
 {
   _blockType.SetTypeName(_lineEditBlockName->text().toStdString());
   _blockType.SetTexPath(_lineEditTexPath->text().toStdString());
-  //_blockType.SetFillType(_btnGroupFill->checkedButton()->text());
+  _blockType.SetFillType(_btnGroupFill->checkedButton()->text().toStdString());
+  _blockType.SetPassability(_chkBoxPassability->isChecked());
+  _blockType.SetUnderTank(_chkBoxUnderTank->isChecked());
   emit QDialog::done((int)BlockEditAction::CHANGE);
 }
 

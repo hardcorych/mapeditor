@@ -19,7 +19,7 @@ AddCommand::~AddCommand()
 void AddCommand::undo()
 {
   //remove
-  BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+  BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
   _block->SetType(emptyBlock);
 }
 
@@ -78,7 +78,7 @@ void RemoveCommand::undo()
 void RemoveCommand::redo()
 {
   //remove
-  BlockType emptyBlock("EMPTY", "", FillType::FULL, 0, 0);
+  BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
   _block->SetType(emptyBlock);
 }
 

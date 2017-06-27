@@ -220,35 +220,5 @@ void Tile::setEmptyTexture(EmptyTile empty)
 
 QString Tile::GetType_str()
 {
-  /*
-  QString texType;
-
-  switch (_type)
-  {
-  case TexType::ARMOR:
-    texType = "ARMOR";
-    break;
-  case TexType::BORDER:
-    texType = "BORDER";
-    break;
-  case TexType::BRICK:
-    texType = "BRICK";
-    break;
-  case TexType::BUSHES:
-    texType = "BUSHES";
-    break;
-  case TexType::EMPTY:
-    //не писать в файл
-    texType = "EMPTY";
-    break;
-  case TexType::WATER:
-    texType = "WATER";
-    break;
-  case TexType::ICE:
-    texType = "ICE";
-    break;
-  }
-  */
-
   return QString::fromStdString(_typeName);
 }

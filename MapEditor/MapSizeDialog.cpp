@@ -6,7 +6,6 @@
 
 MapSizeDialog::MapSizeDialog(QWidget* parent) : QDialog(parent)
 {
-  //QBoxLayout* layout = new QHBoxLayout(this);
   QGridLayout* layout = new QGridLayout(this);
 
   QLabel* labelX = new QLabel(this);

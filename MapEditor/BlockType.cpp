@@ -1,7 +1,7 @@
 #include "BlockType.h"
 
 BlockType::BlockType(std::string typeName, std::string texPath,
-  FillType fillType, bool isPassable, bool isUnderTank):
+  std::string fillType, bool isPassable, bool isUnderTank):
   _typeName(typeName),
   _texPath(texPath),
   _fillType(fillType),
@@ -13,11 +13,13 @@ BlockType::BlockType(std::string typeName, std::string texPath,
 void BlockType::GetBlockType(std::string& typeName, std::string& texPath,
   int& fillType, bool& isPassable, bool& isUnderTank) const
 {
+  /*
   typeName = _typeName;
   texPath = _texPath;
   fillType = (int)_fillType;
   isPassable = _isPassable;
   isUnderTank = _isUnderTank;
+  */
 }
 
 BlockType::~BlockType()
@@ -26,22 +28,7 @@ BlockType::~BlockType()
 
 QString BlockType::GetFillType_str() const 
 {
-  switch (_fillType)
-  {
-  case FillType::FULL:
-    return "FULL";
-  case FillType::LEFT:
-    return "LEFT";
-  case FillType::RIGHT:
-    return "RIGHT";
-  case FillType::TOP:
-    return "TOP";
-  case FillType::BOTTOM:
-    return "BOTTOM";
-  default:
-    break;
-  }
-  return "";
+  return QString::fromStdString(_fillType);
 }
 
 bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight)
