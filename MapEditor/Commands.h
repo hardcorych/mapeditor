@@ -7,6 +7,7 @@
 #include <Block.h>
 #include <Map.h>
 
+//map editor
 class AddCommand : public QUndoCommand	//add block on map
 {
 public:
@@ -70,4 +71,44 @@ private:
   int _mapSizeXOld;
   int _mapSizeZOld;
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks;
+};
+
+//block editor
+class CreateBlockTypeCommand : public QUndoCommand	
+{
+public:
+  CreateBlockTypeCommand(BlockType blockType, QUndoCommand* parent = 0);
+  ~CreateBlockTypeCommand();
+
+  void undo() override;
+  void redo() override;
+
+private:
+  BlockType _blockType;
+};
+
+class ChangeBlockTypeCommand : public QUndoCommand	
+{
+public:
+  ChangeBlockTypeCommand(QUndoCommand* parent = 0);
+  ~ChangeBlockTypeCommand();
+
+  void undo() override;
+  void redo() override;
+
+private:
+
+};
+
+class DeleteBlockTypeCommand : public QUndoCommand	
+{
+public:
+  DeleteBlockTypeCommand(QUndoCommand* parent = 0);
+  ~DeleteBlockTypeCommand();
+
+  void undo() override;
+  void redo() override;
+
+private:
+
 };

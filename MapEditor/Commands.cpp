@@ -110,3 +110,24 @@ void ChangeSizeCommand::redo()
   //set new map size
   deletedBlocks = _map->Resize(deletedBlocks, _mapSizeX, _mapSizeZ);
 }
+
+//CreateBlockTypeCommand
+CreateBlockTypeCommand::CreateBlockTypeCommand(BlockType blockType,
+  QUndoCommand* parent)
+{
+
+}
+
+CreateBlockTypeCommand::~CreateBlockTypeCommand()
+{
+}
+
+void CreateBlockTypeCommand::undo()
+{
+
+}
+
+void CreateBlockTypeCommand::redo()
+{
+
+}

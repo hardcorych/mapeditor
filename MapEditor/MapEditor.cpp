@@ -119,6 +119,8 @@ MapEditor::MapEditor(QWidget *parent)
   _blockTypes[-14] = BlockType("BRICK", _defaultTexPaths["BRICK"],
     "BOTTOM", 0, 0);
 
+  
+
   for (std::map<int, BlockType>::iterator it = _blockTypes.begin();
     it != _blockTypes.end(); ++it)
   {
@@ -161,6 +163,7 @@ void MapEditor::blockEdit()
 
   QPixmap pixmap;
 
+  //processing of dialog action
   switch (blockEditDialog.exec())
   {
   case (int)BlockEditAction::CREATE:
@@ -199,6 +202,7 @@ void MapEditor::blockEdit()
 
     _btnGroupBlocks->checkedButton()->setIconSize(QSize(64, 64));
     _btnGroupBlocks->checkedButton()->setIcon(pixmap);
+
     emit SendBlockType(_blockTypes[blockTypeId]);
     break;
 
@@ -702,7 +706,7 @@ void MapEditor::createUndoRedoActions()
   _redoAct->setShortcuts(QKeySequence::Redo);
 }
 
-void MapEditor::AddBlock(osg::ref_ptr<Block> block, 
+void MapEditor::AddBlock(osg::ref_ptr<Block> block,
   BlockType blockType)
 {
   QUndoCommand* addCommand = new AddCommand(block, blockType);
