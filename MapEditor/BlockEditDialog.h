@@ -1,5 +1,6 @@
 #pragma once
 
+#include <qbuttongroup.h>
 #include <qcheckbox.h>
 #include <qdialog.h>
 #include <qgroupbox.h>
@@ -38,6 +39,7 @@ private:
   QPushButton* _pBtnSetTexPath;
 
   QGroupBox* _groupBoxFill;
+  QButtonGroup* _btnGroupFill;
   QRadioButton* _rBtnFillFull;
   QRadioButton* _rBtnFillLeft;
   QRadioButton* _rBtnFillRight;
@@ -54,5 +56,8 @@ private:
 
   private slots:
   void setTexPath();
+  void createBlockType();
+  void changeBlockType();
+  void deleteBlockType();
 };
 

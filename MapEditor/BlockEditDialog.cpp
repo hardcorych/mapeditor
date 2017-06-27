@@ -102,6 +102,13 @@ _blockType(blockType)
   groupBoxLayout->addWidget(_rBtnFillBottom);
   groupBoxLayout->addWidget(_rBtnFillTop);
 
+  _btnGroupFill = new QButtonGroup(this);
+  _btnGroupFill->addButton(_rBtnFillFull);
+  _btnGroupFill->addButton(_rBtnFillLeft);
+  _btnGroupFill->addButton(_rBtnFillRight);
+  _btnGroupFill->addButton(_rBtnFillBottom);
+  _btnGroupFill->addButton(_rBtnFillTop);
+
   layout->addWidget(_groupBoxFill, 2, 1);
 
   layout->addWidget(_chkBoxPassability, 3, 1);
@@ -115,20 +122,11 @@ _blockType(blockType)
   connect(_pBtnSetTexPath, &QPushButton::clicked,
     this, &BlockEditDialog::setTexPath);
   connect(_pBtnCreateBlockType, &QPushButton::clicked,
-    this, [=]
-  {
-    emit QDialog::done((int)BlockEditAction::CREATE);
-  });
+    this, &BlockEditDialog::createBlockType);
   connect(_pBtnChangeBlockType, &QPushButton::clicked,
-    this, [=]
-  {
-    emit QDialog::done((int)BlockEditAction::CHANGE);
-  });
+    this, &BlockEditDialog::changeBlockType);
   connect(_pBtnDeleteBlockType, &QPushButton::clicked,
-    this, [=]
-  {
-    emit QDialog::done((int)BlockEditAction::DELETE);
-  });
+    this, &BlockEditDialog::deleteBlockType);
 
   connect(_pBtnCancel, &QPushButton::clicked,
     this, &QDialog::reject);
@@ -164,4 +162,22 @@ void BlockEditDialog::setTexPath()
   {
     _lineEditTexPath->setText(filename);
   }
+}
+
+void BlockEditDialog::createBlockType()
+{
+  emit QDialog::done((int)BlockEditAction::CREATE);
+}
+
+void BlockEditDialog::changeBlockType()
+{
+  _blockType.SetTypeName(_lineEditBlockName->text().toStdString());
+  _blockType.SetTexPath(_lineEditTexPath->text().toStdString());
+  //_blockType.SetFillType(_btnGroupFill->checkedButton()->text());
+  emit QDialog::done((int)BlockEditAction::CHANGE);
+}
+
+void BlockEditDialog::deleteBlockType()
+{
+  emit QDialog::done((int)BlockEditAction::DELETE);
 }
