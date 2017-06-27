@@ -82,40 +82,40 @@ MapEditor::MapEditor(QWidget *parent)
 
   _renderThread = std::thread(&MapEditor::renderScene, this);
   
-  _texPaths["BORDER"] = "Resources/tiles/BORDER.png";
-  _texPaths["ARMOR"] = "Resources/tiles/ARMOR.png";
-  _texPaths["BRICK"] = "Resources/tiles/BRICK.png";
-  _texPaths["BUSHES"] = "Resources/tiles/BUSHES.png";
-  _texPaths["ICE"] = "Resources/tiles/ICE.png";
-  _texPaths["WATER"] = "Resources/tiles/WATER.png";
+  _defaultTexPaths["BORDER"] = "Resources/tiles/BORDER.png";
+  _defaultTexPaths["ARMOR"] = "Resources/tiles/ARMOR.png";
+  _defaultTexPaths["BRICK"] = "Resources/tiles/BRICK.png";
+  _defaultTexPaths["BUSHES"] = "Resources/tiles/BUSHES.png";
+  _defaultTexPaths["ICE"] = "Resources/tiles/ICE.png";
+  _defaultTexPaths["WATER"] = "Resources/tiles/WATER.png";
 
-  _blockTypes[-2] = BlockType("BUSHES", _texPaths["BUSHES"],
+  _blockTypes[-2] = BlockType("BUSHES", _defaultTexPaths["BUSHES"],
     "FULL", 0, 0);
-  _blockTypes[-3] = BlockType("WATER", _texPaths["WATER"],
+  _blockTypes[-3] = BlockType("WATER", _defaultTexPaths["WATER"],
     "FULL", 0, 0);
-  _blockTypes[-4] = BlockType("ICE", _texPaths["ICE"],
+  _blockTypes[-4] = BlockType("ICE", _defaultTexPaths["ICE"],
     "FULL", 0, 0);
 
-  _blockTypes[-5] = BlockType("ARMOR", _texPaths["ARMOR"],
+  _blockTypes[-5] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
     "FULL", 0, 0);
-  _blockTypes[-6] = BlockType("ARMOR", _texPaths["ARMOR"],
+  _blockTypes[-6] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
     "LEFT", 0, 0);
-  _blockTypes[-7] = BlockType("ARMOR", _texPaths["ARMOR"],
+  _blockTypes[-7] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
     "RIGHT", 0, 0);
-  _blockTypes[-8] = BlockType("ARMOR", _texPaths["ARMOR"],
+  _blockTypes[-8] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
     "TOP", 0, 0);
-  _blockTypes[-9] = BlockType("ARMOR", _texPaths["ARMOR"],
+  _blockTypes[-9] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
     "BOTTOM", 0, 0);
 
-  _blockTypes[-10] = BlockType("BRICK", _texPaths["BRICK"],
+  _blockTypes[-10] = BlockType("BRICK", _defaultTexPaths["BRICK"],
     "FULL", 0, 0);
-  _blockTypes[-11] = BlockType("BRICK", _texPaths["BRICK"],
+  _blockTypes[-11] = BlockType("BRICK", _defaultTexPaths["BRICK"],
     "LEFT", 0, 0);
-  _blockTypes[-12] = BlockType("BRICK", _texPaths["BRICK"],
+  _blockTypes[-12] = BlockType("BRICK", _defaultTexPaths["BRICK"],
     "RIGHT", 0, 0);
-  _blockTypes[-13] = BlockType("BRICK", _texPaths["BRICK"],
+  _blockTypes[-13] = BlockType("BRICK", _defaultTexPaths["BRICK"],
     "TOP", 0, 0);
-  _blockTypes[-14] = BlockType("BRICK", _texPaths["BRICK"],
+  _blockTypes[-14] = BlockType("BRICK", _defaultTexPaths["BRICK"],
     "BOTTOM", 0, 0);
 
   for (std::map<int, BlockType>::iterator it = _blockTypes.begin();
@@ -127,7 +127,7 @@ MapEditor::MapEditor(QWidget *parent)
     rButton->setText(QString::fromStdString(_blockTypes[btnId].GetTypeName()) 
       + _blockTypes[btnId].GetFillType_str());
     ui.gridLayout->addWidget(rButton, _row, _col++);
-    if (_col == 5)
+    if (_col == _maxColumnElements)
     {
       _col = 0;
       _row++;
@@ -149,65 +149,60 @@ void MapEditor::blockEdit()
   int blockTypeId = _btnGroupBlocks->checkedId();
   BlockType blockType = _blockTypes[blockTypeId];
   BlockEditDialog blockEditDialog(this, blockType);
+  BlockType newBlockType;
 
   QString newBlockName;
+
+  QRadioButton* rButton;
 
   switch (blockEditDialog.exec())
   {
   case (int)BlockEditAction::CREATE:
     //QMessageBox::warning(this, "title", "tekst", QMessageBox::Ok);
+    //сделать проверку на дублирование блоков?
+    newBlockType = blockEditDialog.GetBlockType();
+    newBlockName = QString::fromStdString(
+      newBlockType.GetTypeName() +
+      newBlockType.GetFillType());
+    rButton = new QRadioButton(this);
+    rButton->setText(newBlockName);
+    _btnGroupBlocks->addButton(rButton);
+    _blockTypes[_btnGroupBlocks->id(rButton)] = newBlockType;
+    ui.gridLayout->addWidget(rButton, _row, _col++);
+    if (_col == _maxColumnElements)
+    {
+      _col = 0;
+      _row++;
+    }
     break;
+
   case (int)BlockEditAction::CHANGE:
     _blockTypes[blockTypeId] = blockEditDialog.GetBlockType();
     newBlockName = QString::fromStdString(
       _blockTypes[blockTypeId].GetTypeName()+
       _blockTypes[blockTypeId].GetFillType());
-    _btnGroupBlocks->checkedButton()->
-      setText(newBlockName);
+    _btnGroupBlocks->checkedButton()->setText(newBlockName);
     emit SendBlockType(_blockTypes[blockTypeId]);
     break;
+
   case (int)BlockEditAction::DELETE:
+    rButton =
+      qobject_cast<QRadioButton*>(_btnGroupBlocks->checkedButton());
+    _blockTypes.erase(blockTypeId);
+    _btnGroupBlocks->setExclusive(false);
+    rButton->setChecked(false);
+    _btnGroupBlocks->setExclusive(true);
+
+    rButton->hide();
+    ui.gridLayout->removeWidget(rButton);
+    _btnGroupBlocks->removeButton(rButton);
+    delete rButton;
+
+    _btnGroupBlocks->buttons().back()->setChecked(true);
+
+    emit SendBlockType(_blockTypes[_btnGroupBlocks->checkedId()]);
     break;
   }
-}
-
-void MapEditor::onClickedCreateButton()
-{
-  //BlockEdit dialog calling
-  /*
-  BlockEditDialog blockEditDialog(this);
-
-  if (blockEditDialog.exec() == QDialog::Accepted)
-  {
-
-  }
-  */
-
-  QRadioButton *rButton = new QRadioButton(this);
-  rButton->setText("izi"+QString::number(_row*6+_col));
-  _btnGroupBlocks->addButton(rButton);
-  int btnId = _btnGroupBlocks->id(rButton);   //-2, -3, etc...
-  ui.gridLayout->addWidget(rButton, _row, _col++);
-  if (_col == 5)
-  {
-    _col = 0;
-    _row++;
-  }
-}
-
-void MapEditor::onClickedDeleteButton()
-{
-  //id при удалении из группы остается неизменным
-  QRadioButton* rButton = 
-    qobject_cast<QRadioButton*>(_btnGroupBlocks->checkedButton());
-  _btnGroupBlocks->setExclusive(false);
-  rButton->setChecked(false);
-  _btnGroupBlocks->setExclusive(true);
-
-  rButton->hide();
-  ui.gridLayout->removeWidget(rButton);
-  _btnGroupBlocks->removeButton(rButton);
-  delete rButton;
 }
 
 void MapEditor::readTextures()

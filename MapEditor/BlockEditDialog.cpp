@@ -1,5 +1,6 @@
 #include <qfiledialog.h>
 #include <qgridlayout.h>
+#include <qmessagebox.h>
 
 #include "BlockEditDialog.h"
 
@@ -44,6 +45,7 @@ _blockType(blockType)
   _rBtnFillTop->setText("TOP");
 
   std::string fillType = _blockType.GetFillType();
+
   if (fillType == "FULL")
   {
     _rBtnFillFull->setChecked(true);
@@ -64,26 +66,7 @@ _blockType(blockType)
   {
     _rBtnFillTop->setChecked(true);
   }
-  /*
-  switch (_blockType.GetFillType())
-  {
-  case FillType::FULL:
-    _rBtnFillFull->setChecked(true);
-    break;
-  case FillType::LEFT:
-    _rBtnFillLeft->setChecked(true);
-    break;
-  case FillType::RIGHT:
-    _rBtnFillRight->setChecked(true);
-    break;
-  case FillType::BOTTOM:
-    _rBtnFillBottom->setChecked(true);
-    break;
-  case FillType::TOP:
-    _rBtnFillTop->setChecked(true);
-    break;
-  }
-  */
+
   _chkBoxPassability = new QCheckBox(this);
   _chkBoxUnderTank = new QCheckBox(this);
 
@@ -179,17 +162,64 @@ void BlockEditDialog::setTexPath()
 
 void BlockEditDialog::createBlockType()
 {
-  emit QDialog::done((int)BlockEditAction::CREATE);
+  QString errorText;
+  if (_lineEditBlockName->text() == "")
+  {
+    errorText = "Empty name";
+  }
+  else if (_lineEditTexPath->text() == "")
+  {
+    errorText = "Empty texture path";
+  }
+  else if (_btnGroupFill->checkedButton() == 0)
+  {
+    errorText = "Fill type is not selected";
+  }
+
+  if (!errorText.isEmpty())
+  {
+    QMessageBox::critical(this, "Error", errorText, QMessageBox::Ok);
+  }
+  else 
+  {
+    _blockType.SetTypeName(_lineEditBlockName->text().toStdString());
+    _blockType.SetTexPath(_lineEditTexPath->text().toStdString());
+    _blockType.SetFillType(_btnGroupFill->checkedButton()->text().toStdString());
+    _blockType.SetPassability(_chkBoxPassability->isChecked());
+    _blockType.SetUnderTank(_chkBoxUnderTank->isChecked());
+    emit QDialog::done((int)BlockEditAction::CREATE);
+  }
 }
 
 void BlockEditDialog::changeBlockType()
 {
-  _blockType.SetTypeName(_lineEditBlockName->text().toStdString());
-  _blockType.SetTexPath(_lineEditTexPath->text().toStdString());
-  _blockType.SetFillType(_btnGroupFill->checkedButton()->text().toStdString());
-  _blockType.SetPassability(_chkBoxPassability->isChecked());
-  _blockType.SetUnderTank(_chkBoxUnderTank->isChecked());
-  emit QDialog::done((int)BlockEditAction::CHANGE);
+  QString errorText;
+  if (_lineEditBlockName->text() == "")
+  {
+    errorText = "Empty name";
+  }
+  else if (_lineEditTexPath->text() == "")
+  {
+    errorText = "Empty texture path";
+  }
+  else if (_btnGroupFill->checkedButton() == 0)
+  {
+    errorText = "Fill type is not selected";
+  }
+
+  if (!errorText.isEmpty())
+  {
+    QMessageBox::critical(this, "Error", errorText, QMessageBox::Ok);
+  }
+  else
+  {
+    _blockType.SetTypeName(_lineEditBlockName->text().toStdString());
+    _blockType.SetTexPath(_lineEditTexPath->text().toStdString());
+    _blockType.SetFillType(_btnGroupFill->checkedButton()->text().toStdString());
+    _blockType.SetPassability(_chkBoxPassability->isChecked());
+    _blockType.SetUnderTank(_chkBoxUnderTank->isChecked());
+    emit QDialog::done((int)BlockEditAction::CHANGE);
+  }
 }
 
 void BlockEditDialog::deleteBlockType()

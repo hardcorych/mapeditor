@@ -53,10 +53,11 @@ private:
   int _maxMapSize;
   int _row = 0;
   int _col = 0;
+  int _maxColumnElements = 5;
 
   //!!!
   QButtonGroup* _btnGroupBlocks;
-  std::map<std::string, std::string> _texPaths;
+  std::map<std::string, std::string> _defaultTexPaths;
   std::map<int, BlockType> _blockTypes;
 
   //методы
