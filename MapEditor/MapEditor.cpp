@@ -8,6 +8,7 @@
 #include <qdebug.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
+#include <qpainter.h>
 #include <qxmlstream.h>
 
 #include <BlockEditDialog.h>
@@ -124,8 +125,11 @@ MapEditor::MapEditor(QWidget *parent)
     QRadioButton *rButton = new QRadioButton(this);
     _btnGroupBlocks->addButton(rButton);
     int btnId = _btnGroupBlocks->id(rButton);   //-2, -3, etc...
-    rButton->setText(QString::fromStdString(_blockTypes[btnId].GetTypeName()) 
-      + _blockTypes[btnId].GetFillType_str());
+
+    QPixmap pixmap = drawBlockIcon(_blockTypes[btnId].GetTexPath(),
+      _blockTypes[btnId].GetFillType());
+    rButton->setIconSize(QSize(64, 64));
+    rButton->setIcon(pixmap);
     ui.gridLayout->addWidget(rButton, _row, _col++);
     if (_col == _maxColumnElements)
     {
@@ -155,6 +159,8 @@ void MapEditor::blockEdit()
 
   QRadioButton* rButton;
 
+  QPixmap pixmap;
+
   switch (blockEditDialog.exec())
   {
   case (int)BlockEditAction::CREATE:
@@ -165,7 +171,13 @@ void MapEditor::blockEdit()
       newBlockType.GetTypeName() +
       newBlockType.GetFillType());
     rButton = new QRadioButton(this);
-    rButton->setText(newBlockName);
+
+    //set icon
+    pixmap = drawBlockIcon(newBlockType.GetTexPath(),
+      newBlockType.GetFillType());
+    rButton->setIconSize(QSize(64, 64));
+    rButton->setIcon(pixmap);
+
     _btnGroupBlocks->addButton(rButton);
     _blockTypes[_btnGroupBlocks->id(rButton)] = newBlockType;
     ui.gridLayout->addWidget(rButton, _row, _col++);
@@ -181,7 +193,12 @@ void MapEditor::blockEdit()
     newBlockName = QString::fromStdString(
       _blockTypes[blockTypeId].GetTypeName()+
       _blockTypes[blockTypeId].GetFillType());
-    _btnGroupBlocks->checkedButton()->setText(newBlockName);
+    //set icon
+    pixmap = drawBlockIcon(_blockTypes[blockTypeId].GetTexPath(),
+      _blockTypes[blockTypeId].GetFillType());
+
+    _btnGroupBlocks->checkedButton()->setIconSize(QSize(64, 64));
+    _btnGroupBlocks->checkedButton()->setIcon(pixmap);
     emit SendBlockType(_blockTypes[blockTypeId]);
     break;
 
@@ -203,6 +220,47 @@ void MapEditor::blockEdit()
     emit SendBlockType(_blockTypes[_btnGroupBlocks->checkedId()]);
     break;
   }
+}
+
+QPixmap MapEditor::drawBlockIcon(std::string texPath, std::string fillType)
+{
+  QPixmap pixmap(QSize(32, 32));
+  QPixmap pixmapResult(QSize(32, 32));
+  QPainter painter(&pixmapResult);
+
+  pixmap.load(QString::fromStdString(texPath));
+  int height = 16;
+  int width = 16;
+
+  if (fillType == "FULL")
+  {
+    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
+  }
+  else if (fillType == "LEFT")
+  {
+    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
+  }
+  else if (fillType == "RIGHT")
+  {
+    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
+  }
+  else if (fillType == "BOTTOM")
+  {
+    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
+  }
+  else if (fillType == "TOP")
+  {
+    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
+  }
+
+  return pixmapResult;
 }
 
 void MapEditor::readTextures()

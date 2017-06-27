@@ -61,6 +61,7 @@ private:
   std::map<int, BlockType> _blockTypes;
 
   //методы
+  QPixmap drawBlockIcon(std::string texPath, std::string fillType);
 
   void readTextures();
 
@@ -71,9 +72,6 @@ private:
   //bool isFoundCoordsErrors(int coord, QString coordType);		//функция проверки ошибок
 
   public slots:
-  void onClickedCreateButton();
-  void onClickedDeleteButton();
-
   void NewMap();
   void changeMapSize();
 
