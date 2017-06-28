@@ -95,6 +95,7 @@ private:
     BlockType& blockType, BlockType blockTypeOld);
   void CreateBlockType(QButtonGroup* btnGroup,
     BlockType blockType);
+  void DeleteBlockType(QAbstractButton* button, BlockType blockType);
   void AddBlockType(int id, BlockType blockType);
   void AddBlockTypeButton(QRadioButton* rButton);
   void RemoveBlockType(int id);

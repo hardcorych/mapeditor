@@ -162,6 +162,14 @@ void MapEditor::ChangeBlockType(QAbstractButton* rButton,
   _undoStack->push(changeBlockTypeCommand);
 }
 
+void MapEditor::DeleteBlockType(QAbstractButton* button,
+  BlockType blockType)
+{
+  QUndoCommand* deleteBlockTypeCommand =
+    new DeleteBlockTypeCommand(_btnGroupBlocks, blockType, this);
+  _undoStack->push(deleteBlockTypeCommand);
+}
+
 void MapEditor::AddBlockType(int id, BlockType blockType)
 {
   _blockTypes[id] = blockType;
@@ -185,10 +193,6 @@ void MapEditor::RemoveBlockType(int id)
 
 void MapEditor::RemoveBlockTypeButton(QRadioButton* rButton)
 {
-  _btnGroupBlocks->setExclusive(false);
-  rButton->setChecked(false);
-  _btnGroupBlocks->setExclusive(true);
-
   rButton->hide();
   ui.gridLayout->removeWidget(rButton);
   _btnGroupBlocks->removeButton(rButton);
@@ -198,7 +202,7 @@ void MapEditor::RemoveBlockTypeButton(QRadioButton* rButton)
     _col = _maxColumnElements - 1;
     _row--;
   }
-  //delete rButton;
+  delete rButton;
 
   _btnGroupBlocks->buttons().back()->setChecked(true);
 }
@@ -234,12 +238,12 @@ void MapEditor::blockEdit()
     break;
 
   case (int)BlockEditAction::DELETE:
+    DeleteBlockType(_btnGroupBlocks->checkedButton(),
+      _blockTypes[_btnGroupBlocks->checkedId()]);
+    /*
     rButton =
       qobject_cast<QRadioButton*>(_btnGroupBlocks->checkedButton());
     _blockTypes.erase(blockTypeId);
-    _btnGroupBlocks->setExclusive(false);
-    rButton->setChecked(false);
-    _btnGroupBlocks->setExclusive(true);
 
     rButton->hide();
     ui.gridLayout->removeWidget(rButton);
@@ -249,6 +253,7 @@ void MapEditor::blockEdit()
     _btnGroupBlocks->buttons().back()->setChecked(true);
 
     emit SendBlockType(_blockTypes[_btnGroupBlocks->checkedId()]);
+    */
     break;
   }
 }

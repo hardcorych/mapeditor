@@ -119,12 +119,17 @@ private:
 class DeleteBlockTypeCommand : public QUndoCommand	
 {
 public:
-  DeleteBlockTypeCommand(QUndoCommand* parent = 0);
+  DeleteBlockTypeCommand(QButtonGroup* btnGroup, BlockType blockType,
+    MapEditor* mapEditor, QUndoCommand* parent = 0);
   ~DeleteBlockTypeCommand();
 
   void undo() override;
   void redo() override;
 
 private:
-
+  BlockType _blockType;
+  MapEditor* _mapEditor;
+  QRadioButton* _button;
+  int _buttonId;
+  QButtonGroup* _btnGroup;
 };

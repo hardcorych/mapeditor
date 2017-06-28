@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
-    QByteArrayData data[34];
-    char stringdata0[404];
+    QByteArrayData data[36];
+    char stringdata0[427];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -57,14 +57,16 @@ QT_MOC_LITERAL(22, 251, 12), // "blockTypeOld"
 QT_MOC_LITERAL(23, 264, 15), // "CreateBlockType"
 QT_MOC_LITERAL(24, 280, 13), // "QButtonGroup*"
 QT_MOC_LITERAL(25, 294, 8), // "btnGroup"
-QT_MOC_LITERAL(26, 303, 12), // "AddBlockType"
-QT_MOC_LITERAL(27, 316, 2), // "id"
-QT_MOC_LITERAL(28, 319, 18), // "AddBlockTypeButton"
-QT_MOC_LITERAL(29, 338, 13), // "QRadioButton*"
-QT_MOC_LITERAL(30, 352, 15), // "RemoveBlockType"
-QT_MOC_LITERAL(31, 368, 21), // "RemoveBlockTypeButton"
-QT_MOC_LITERAL(32, 390, 4), // "Undo"
-QT_MOC_LITERAL(33, 395, 8) // "GetMutex"
+QT_MOC_LITERAL(26, 303, 15), // "DeleteBlockType"
+QT_MOC_LITERAL(27, 319, 6), // "button"
+QT_MOC_LITERAL(28, 326, 12), // "AddBlockType"
+QT_MOC_LITERAL(29, 339, 2), // "id"
+QT_MOC_LITERAL(30, 342, 18), // "AddBlockTypeButton"
+QT_MOC_LITERAL(31, 361, 13), // "QRadioButton*"
+QT_MOC_LITERAL(32, 375, 15), // "RemoveBlockType"
+QT_MOC_LITERAL(33, 391, 21), // "RemoveBlockTypeButton"
+QT_MOC_LITERAL(34, 413, 4), // "Undo"
+QT_MOC_LITERAL(35, 418, 8) // "GetMutex"
 
     },
     "MapEditor\0QuitViewer\0\0QuitAppToMain\0"
@@ -75,7 +77,8 @@ QT_MOC_LITERAL(33, 395, 8) // "GetMutex"
     "RemoveBlock\0ReplaceBlock\0ChangeBlockType\0"
     "QAbstractButton*\0rButton\0BlockType&\0"
     "blockTypeOld\0CreateBlockType\0QButtonGroup*\0"
-    "btnGroup\0AddBlockType\0id\0AddBlockTypeButton\0"
+    "btnGroup\0DeleteBlockType\0button\0"
+    "AddBlockType\0id\0AddBlockTypeButton\0"
     "QRadioButton*\0RemoveBlockType\0"
     "RemoveBlockTypeButton\0Undo\0GetMutex"
 };
@@ -87,7 +90,7 @@ static const uint qt_meta_data_MapEditor[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      20,   14, // methods
+      21,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -95,28 +98,29 @@ static const uint qt_meta_data_MapEditor[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,  114,    2, 0x06 /* Public */,
-       3,    0,  115,    2, 0x06 /* Public */,
-       4,    1,  116,    2, 0x06 /* Public */,
+       1,    0,  119,    2, 0x06 /* Public */,
+       3,    0,  120,    2, 0x06 /* Public */,
+       4,    1,  121,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       7,    0,  119,    2, 0x0a /* Public */,
-       8,    0,  120,    2, 0x0a /* Public */,
-       9,    0,  121,    2, 0x0a /* Public */,
-      10,    0,  122,    2, 0x0a /* Public */,
-      11,    0,  123,    2, 0x0a /* Public */,
-      12,    0,  124,    2, 0x0a /* Public */,
-      13,    2,  125,    2, 0x0a /* Public */,
-      16,    1,  130,    2, 0x0a /* Public */,
-      17,    2,  133,    2, 0x0a /* Public */,
-      18,    3,  138,    2, 0x0a /* Public */,
-      23,    2,  145,    2, 0x0a /* Public */,
-      26,    2,  150,    2, 0x0a /* Public */,
-      28,    1,  155,    2, 0x0a /* Public */,
-      30,    1,  158,    2, 0x0a /* Public */,
-      31,    1,  161,    2, 0x0a /* Public */,
-      32,    0,  164,    2, 0x0a /* Public */,
-      33,    0,  165,    2, 0x0a /* Public */,
+       7,    0,  124,    2, 0x0a /* Public */,
+       8,    0,  125,    2, 0x0a /* Public */,
+       9,    0,  126,    2, 0x0a /* Public */,
+      10,    0,  127,    2, 0x0a /* Public */,
+      11,    0,  128,    2, 0x0a /* Public */,
+      12,    0,  129,    2, 0x0a /* Public */,
+      13,    2,  130,    2, 0x0a /* Public */,
+      16,    1,  135,    2, 0x0a /* Public */,
+      17,    2,  138,    2, 0x0a /* Public */,
+      18,    3,  143,    2, 0x0a /* Public */,
+      23,    2,  150,    2, 0x0a /* Public */,
+      26,    2,  155,    2, 0x0a /* Public */,
+      28,    2,  160,    2, 0x0a /* Public */,
+      30,    1,  165,    2, 0x0a /* Public */,
+      32,    1,  168,    2, 0x0a /* Public */,
+      33,    1,  171,    2, 0x0a /* Public */,
+      34,    0,  174,    2, 0x0a /* Public */,
+      35,    0,  175,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -135,10 +139,11 @@ static const uint qt_meta_data_MapEditor[] = {
     QMetaType::Void, 0x80000000 | 14, 0x80000000 | 5,   15,    6,
     QMetaType::Void, 0x80000000 | 19, 0x80000000 | 21, 0x80000000 | 5,   20,    6,   22,
     QMetaType::Void, 0x80000000 | 24, 0x80000000 | 5,   25,    6,
-    QMetaType::Void, QMetaType::Int, 0x80000000 | 5,   27,    6,
-    QMetaType::Void, 0x80000000 | 29,   20,
-    QMetaType::Void, QMetaType::Int,   27,
-    QMetaType::Void, 0x80000000 | 29,   20,
+    QMetaType::Void, 0x80000000 | 19, 0x80000000 | 5,   27,    6,
+    QMetaType::Void, QMetaType::Int, 0x80000000 | 5,   29,    6,
+    QMetaType::Void, 0x80000000 | 31,   20,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void, 0x80000000 | 31,   20,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -165,12 +170,13 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 11: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
         case 12: _t->ChangeBlockType((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2])),(*reinterpret_cast< BlockType(*)>(_a[3]))); break;
         case 13: _t->CreateBlockType((*reinterpret_cast< QButtonGroup*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
-        case 14: _t->AddBlockType((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
-        case 15: _t->AddBlockTypeButton((*reinterpret_cast< QRadioButton*(*)>(_a[1]))); break;
-        case 16: _t->RemoveBlockType((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 17: _t->RemoveBlockTypeButton((*reinterpret_cast< QRadioButton*(*)>(_a[1]))); break;
-        case 18: _t->Undo(); break;
-        case 19: _t->GetMutex(); break;
+        case 14: _t->DeleteBlockType((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
+        case 15: _t->AddBlockType((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
+        case 16: _t->AddBlockTypeButton((*reinterpret_cast< QRadioButton*(*)>(_a[1]))); break;
+        case 17: _t->RemoveBlockType((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 18: _t->RemoveBlockTypeButton((*reinterpret_cast< QRadioButton*(*)>(_a[1]))); break;
+        case 19: _t->Undo(); break;
+        case 20: _t->GetMutex(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -190,14 +196,21 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
                 *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QButtonGroup* >(); break;
             }
             break;
-        case 15:
+        case 14:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QAbstractButton* >(); break;
+            }
+            break;
+        case 16:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
                 *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QRadioButton* >(); break;
             }
             break;
-        case 17:
+        case 18:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
@@ -257,13 +270,13 @@ int MapEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 20)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 21;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 20)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 21;
     }
     return _id;
 }

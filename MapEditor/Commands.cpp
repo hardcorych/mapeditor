@@ -122,8 +122,6 @@ CreateBlockTypeCommand::CreateBlockTypeCommand(QButtonGroup* btnGroup,
   _mapEditor(mapEditor),
   _btnGroup(btnGroup)
 {
-  _button = new QRadioButton;
-  _button->setIconSize(QSize(64, 64));
 }
 
 CreateBlockTypeCommand::~CreateBlockTypeCommand()
@@ -138,6 +136,9 @@ void CreateBlockTypeCommand::undo()
 
 void CreateBlockTypeCommand::redo()
 {
+  _button = new QRadioButton;
+  _button->setIconSize(QSize(64, 64));
+
   QPixmap pixmap = DrawBlockPixmap(_blockType);
   _button->setIcon(pixmap);
   _btnGroup->addButton(_button);
@@ -222,4 +223,40 @@ QPixmap DrawBlockPixmap(BlockType blockType)
   }
 
   return pixmapResult;
+}
+
+DeleteBlockTypeCommand::DeleteBlockTypeCommand(QButtonGroup* btnGroup,
+  BlockType blockType, MapEditor* mapEditor, QUndoCommand* parent) :
+QUndoCommand(parent),
+_btnGroup(btnGroup),
+_mapEditor(mapEditor),
+_blockType(blockType)
+{
+  _button = 
+    qobject_cast<QRadioButton*>(_btnGroup->checkedButton());
+  _buttonId = _btnGroup->checkedId();
+}
+
+DeleteBlockTypeCommand::~DeleteBlockTypeCommand()
+{
+}
+
+void DeleteBlockTypeCommand::undo()
+{
+  _button = new QRadioButton;
+  _button->setIconSize(QSize(64, 64));
+
+  QPixmap pixmap = DrawBlockPixmap(_blockType);
+  _button->setIcon(pixmap);
+  _btnGroup->addButton(_button);
+
+  _mapEditor->AddBlockType(_btnGroup->id(_button), _blockType);
+  _mapEditor->AddBlockTypeButton(_button);
+}
+
+void DeleteBlockTypeCommand::redo()
+{
+  _mapEditor->RemoveBlockType(_buttonId);
+  //_button = qobject_cast<QRadioButton*>(_btnGroup->checkedButton());
+  _mapEditor->RemoveBlockTypeButton(_button);
 }
