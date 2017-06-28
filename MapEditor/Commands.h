@@ -1,11 +1,17 @@
 // undo/redo commands
 #pragma once
+#include <memory>
 #include <mutex>
 
+#include <qbuttongroup.h>
+#include <qradiobutton.h>
 #include <qundostack.h>
 
 #include <Block.h>
 #include <Map.h>
+#include <MapEditor.h>
+
+QPixmap DrawBlockPixmap(BlockType blockType);
 
 //map editor
 class AddCommand : public QUndoCommand	//add block on map
@@ -77,7 +83,8 @@ private:
 class CreateBlockTypeCommand : public QUndoCommand	
 {
 public:
-  CreateBlockTypeCommand(BlockType blockType, QUndoCommand* parent = 0);
+  CreateBlockTypeCommand(QButtonGroup* btnGroup, 
+    BlockType blockType, QUndoCommand* parent = 0);
   ~CreateBlockTypeCommand();
 
   void undo() override;
@@ -90,14 +97,20 @@ private:
 class ChangeBlockTypeCommand : public QUndoCommand	
 {
 public:
-  ChangeBlockTypeCommand(QUndoCommand* parent = 0);
+  ChangeBlockTypeCommand(QAbstractButton* button,
+    BlockType& blockType, BlockType blockTypeNew,
+  MapEditor* mapEditor, QUndoCommand* parent = 0);
   ~ChangeBlockTypeCommand();
 
   void undo() override;
   void redo() override;
 
 private:
-
+  BlockType& _blockTypeRef;
+  BlockType _blockType;
+  BlockType _blockTypeNew;
+  QAbstractButton* _button;
+  MapEditor* _mapEditor;
 };
 
 class DeleteBlockTypeCommand : public QUndoCommand	

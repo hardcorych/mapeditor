@@ -150,6 +150,15 @@ MapEditor::~MapEditor()
   }
 }
 
+void MapEditor::ChangeBlockType(QAbstractButton* rButton, 
+  BlockType& blockType, BlockType blockTypeNew)
+{
+  QUndoCommand* changeBlockTypeCommand =
+    new ChangeBlockTypeCommand(rButton, blockType, blockTypeNew,
+    this);
+  _undoStack->push(changeBlockTypeCommand);
+}
+
 void MapEditor::blockEdit()
 {
   int blockTypeId = _btnGroupBlocks->checkedId();
@@ -192,6 +201,11 @@ void MapEditor::blockEdit()
     break;
 
   case (int)BlockEditAction::CHANGE:
+    //_blockTypes[blockTypeId] = blockEditDialog.GetBlockType();
+    ChangeBlockType(_btnGroupBlocks->checkedButton(),
+      _blockTypes[blockTypeId], blockEditDialog.GetBlockType());
+    ///////////////////////////////////////////////////////////////
+    /*
     _blockTypes[blockTypeId] = blockEditDialog.GetBlockType();
     newBlockName = QString::fromStdString(
       _blockTypes[blockTypeId].GetTypeName()+
@@ -202,8 +216,10 @@ void MapEditor::blockEdit()
 
     _btnGroupBlocks->checkedButton()->setIconSize(QSize(64, 64));
     _btnGroupBlocks->checkedButton()->setIcon(pixmap);
-
+    */
+    ///////////////////////////////////////////////////////////////
     emit SendBlockType(_blockTypes[blockTypeId]);
+    ///////////////////////////////////////////////////////////////
     break;
 
   case (int)BlockEditAction::DELETE:

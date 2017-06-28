@@ -1,6 +1,9 @@
 #pragma once
 
+#include <qpainter.h>
+
 #include <Commands.h>
+#include <MapEditor.h>
 
 //AddCommand
 
@@ -112,8 +115,10 @@ void ChangeSizeCommand::redo()
 }
 
 //CreateBlockTypeCommand
-CreateBlockTypeCommand::CreateBlockTypeCommand(BlockType blockType,
-  QUndoCommand* parent)
+CreateBlockTypeCommand::CreateBlockTypeCommand(QButtonGroup* btnGroup,
+  BlockType blockType, QUndoCommand* parent):
+  QUndoCommand(parent),
+  _blockType(blockType)
 {
 
 }
@@ -130,4 +135,92 @@ void CreateBlockTypeCommand::undo()
 void CreateBlockTypeCommand::redo()
 {
 
+}
+
+//ChangeBlockTypeCommand
+ChangeBlockTypeCommand::ChangeBlockTypeCommand(QAbstractButton* button,
+  BlockType& blockType, BlockType blockTypeNew,
+  MapEditor* mapEditor, QUndoCommand* parent) :
+  QUndoCommand(parent),
+  _blockTypeRef(blockType),
+  _blockType(blockType),
+  _blockTypeNew(blockTypeNew),
+  _button(button),
+  _mapEditor(mapEditor)
+{
+  _button->setIconSize(QSize(64, 64));
+}
+
+ChangeBlockTypeCommand::~ChangeBlockTypeCommand()
+{
+}
+
+void ChangeBlockTypeCommand::undo()
+{
+  QString newBlockName = QString::fromStdString(
+    _blockType.GetTypeName() + _blockType.GetFillType());
+
+  _blockTypeRef = _blockType;
+
+  QPixmap pixmap = DrawBlockPixmap(_blockType);
+
+  _button->setIcon(pixmap);
+
+  emit _mapEditor->SendBlockType(_blockType);
+}
+
+void ChangeBlockTypeCommand::redo()
+{
+  QString newBlockName = QString::fromStdString(
+    _blockTypeNew.GetTypeName() + _blockTypeNew.GetFillType());
+
+  _blockTypeRef = _blockTypeNew;
+
+  QPixmap pixmap = DrawBlockPixmap(_blockTypeNew);
+
+  _button->setIcon(pixmap);
+
+  emit _mapEditor->SendBlockType(_blockTypeNew);
+}
+
+QPixmap DrawBlockPixmap(BlockType blockType)
+{
+  QPixmap pixmap(QSize(32, 32));
+  QPixmap pixmapResult(QSize(32, 32));
+  QPainter painter(&pixmapResult);
+
+  pixmap.load(QString::fromStdString(blockType.GetTexPath()));
+  int height = 16;
+  int width = 16;
+
+  std::string fillType = blockType.GetFillType();
+  if (fillType == "FULL")
+  {
+    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
+  }
+  else if (fillType == "LEFT")
+  {
+    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
+  }
+  else if (fillType == "RIGHT")
+  {
+    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
+  }
+  else if (fillType == "BOTTOM")
+  {
+    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
+  }
+  else if (fillType == "TOP")
+  {
+    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
+    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
+  }
+
+  return pixmapResult;
 }

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
-    QByteArrayData data[20];
-    char stringdata0[213];
+    QByteArrayData data[25];
+    char stringdata0[278];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -49,8 +49,13 @@ QT_MOC_LITERAL(14, 148, 19), // "osg::ref_ptr<Block>"
 QT_MOC_LITERAL(15, 168, 5), // "block"
 QT_MOC_LITERAL(16, 174, 11), // "RemoveBlock"
 QT_MOC_LITERAL(17, 186, 12), // "ReplaceBlock"
-QT_MOC_LITERAL(18, 199, 4), // "Undo"
-QT_MOC_LITERAL(19, 204, 8) // "GetMutex"
+QT_MOC_LITERAL(18, 199, 15), // "ChangeBlockType"
+QT_MOC_LITERAL(19, 215, 16), // "QAbstractButton*"
+QT_MOC_LITERAL(20, 232, 7), // "rButton"
+QT_MOC_LITERAL(21, 240, 10), // "BlockType&"
+QT_MOC_LITERAL(22, 251, 12), // "blockTypeOld"
+QT_MOC_LITERAL(23, 264, 4), // "Undo"
+QT_MOC_LITERAL(24, 269, 8) // "GetMutex"
 
     },
     "MapEditor\0QuitViewer\0\0QuitAppToMain\0"
@@ -58,7 +63,9 @@ QT_MOC_LITERAL(19, 204, 8) // "GetMutex"
     "NewMap\0changeMapSize\0blockEdit\0"
     "LoadXMLFile\0SaveXMLFile\0SaveAsXMLFile\0"
     "AddBlock\0osg::ref_ptr<Block>\0block\0"
-    "RemoveBlock\0ReplaceBlock\0Undo\0GetMutex"
+    "RemoveBlock\0ReplaceBlock\0ChangeBlockType\0"
+    "QAbstractButton*\0rButton\0BlockType&\0"
+    "blockTypeOld\0Undo\0GetMutex"
 };
 #undef QT_MOC_LITERAL
 
@@ -68,7 +75,7 @@ static const uint qt_meta_data_MapEditor[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -76,22 +83,23 @@ static const uint qt_meta_data_MapEditor[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   84,    2, 0x06 /* Public */,
-       3,    0,   85,    2, 0x06 /* Public */,
-       4,    1,   86,    2, 0x06 /* Public */,
+       1,    0,   89,    2, 0x06 /* Public */,
+       3,    0,   90,    2, 0x06 /* Public */,
+       4,    1,   91,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       7,    0,   89,    2, 0x0a /* Public */,
-       8,    0,   90,    2, 0x0a /* Public */,
-       9,    0,   91,    2, 0x0a /* Public */,
-      10,    0,   92,    2, 0x0a /* Public */,
-      11,    0,   93,    2, 0x0a /* Public */,
-      12,    0,   94,    2, 0x0a /* Public */,
-      13,    2,   95,    2, 0x0a /* Public */,
-      16,    1,  100,    2, 0x0a /* Public */,
-      17,    2,  103,    2, 0x0a /* Public */,
-      18,    0,  108,    2, 0x0a /* Public */,
-      19,    0,  109,    2, 0x0a /* Public */,
+       7,    0,   94,    2, 0x0a /* Public */,
+       8,    0,   95,    2, 0x0a /* Public */,
+       9,    0,   96,    2, 0x0a /* Public */,
+      10,    0,   97,    2, 0x0a /* Public */,
+      11,    0,   98,    2, 0x0a /* Public */,
+      12,    0,   99,    2, 0x0a /* Public */,
+      13,    2,  100,    2, 0x0a /* Public */,
+      16,    1,  105,    2, 0x0a /* Public */,
+      17,    2,  108,    2, 0x0a /* Public */,
+      18,    3,  113,    2, 0x0a /* Public */,
+      23,    0,  120,    2, 0x0a /* Public */,
+      24,    0,  121,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -108,6 +116,7 @@ static const uint qt_meta_data_MapEditor[] = {
     QMetaType::Void, 0x80000000 | 14, 0x80000000 | 5,   15,    6,
     QMetaType::Void, 0x80000000 | 14,   15,
     QMetaType::Void, 0x80000000 | 14, 0x80000000 | 5,   15,    6,
+    QMetaType::Void, 0x80000000 | 19, 0x80000000 | 21, 0x80000000 | 5,   20,    6,   22,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -132,8 +141,9 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 9: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
         case 10: _t->RemoveBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1]))); break;
         case 11: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
-        case 12: _t->Undo(); break;
-        case 13: _t->GetMutex(); break;
+        case 12: _t->ChangeBlockType((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2])),(*reinterpret_cast< BlockType(*)>(_a[3]))); break;
+        case 13: _t->Undo(); break;
+        case 14: _t->GetMutex(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -188,13 +198,13 @@ int MapEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 14)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 15;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 14)
+        if (_id < 15)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 14;
+        _id -= 15;
     }
     return _id;
 }

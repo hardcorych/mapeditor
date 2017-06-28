@@ -82,9 +82,16 @@ private:
   void SaveXMLFile();
   void SaveAsXMLFile();
 
+  //undo/redo commands
+  //map editor
   void AddBlock(osg::ref_ptr<Block> block, BlockType blockType);
   void RemoveBlock(osg::ref_ptr<Block> block);
   void ReplaceBlock(osg::ref_ptr<Block> block, BlockType blockType);
+  //void AddBlock(osg::ref_ptr<Block> block, osg::ref_ptr<BlockType> blockType);
+  //void ReplaceBlock(osg::ref_ptr<Block> block, osg::ref_ptr<BlockType> blockType);
+  //block editor
+  void ChangeBlockType(QAbstractButton* rButton,
+    BlockType& blockType, BlockType blockTypeOld);
 
   void Undo();    //????
 
@@ -94,4 +101,5 @@ signals:
   void QuitViewer();
   void QuitAppToMain();
   void SendBlockType(BlockType blockType);
+  //void SendBlockType(osg::ref_ptr<BlockType> blockType);
 };
