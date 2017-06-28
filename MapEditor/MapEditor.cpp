@@ -132,12 +132,7 @@ MapEditor::MapEditor(QWidget *parent)
       _blockTypes[btnId].GetFillType());
     rButton->setIconSize(QSize(64, 64));
     rButton->setIcon(pixmap);
-    ui.gridLayout->addWidget(rButton, _row, _col++);
-    if (_col == _maxColumnElements)
-    {
-      _col = 0;
-      _row++;
-    }
+    AddBlockTypeButton(rButton);
   }
 }
 
@@ -150,6 +145,14 @@ MapEditor::~MapEditor()
   }
 }
 
+void MapEditor::CreateBlockType(QButtonGroup* btnGroup,
+  BlockType blockType)
+{
+  QUndoCommand* createBlockTypeCommand =
+    new CreateBlockTypeCommand(btnGroup, blockType, this);
+  _undoStack->push(createBlockTypeCommand);
+}
+
 void MapEditor::ChangeBlockType(QAbstractButton* rButton, 
   BlockType& blockType, BlockType blockTypeNew)
 {
@@ -157,6 +160,47 @@ void MapEditor::ChangeBlockType(QAbstractButton* rButton,
     new ChangeBlockTypeCommand(rButton, blockType, blockTypeNew,
     this);
   _undoStack->push(changeBlockTypeCommand);
+}
+
+void MapEditor::AddBlockType(int id, BlockType blockType)
+{
+  _blockTypes[id] = blockType;
+}
+
+void MapEditor::AddBlockTypeButton(QRadioButton* rButton)
+{
+  ui.gridLayout->addWidget(rButton, _row, _col++);
+  rButton->setVisible(true);
+  if (_col == _maxColumnElements)
+  {
+    _col = 0;
+    _row++;
+  }
+}
+
+void MapEditor::RemoveBlockType(int id)
+{
+  _blockTypes.erase(id);
+}
+
+void MapEditor::RemoveBlockTypeButton(QRadioButton* rButton)
+{
+  _btnGroupBlocks->setExclusive(false);
+  rButton->setChecked(false);
+  _btnGroupBlocks->setExclusive(true);
+
+  rButton->hide();
+  ui.gridLayout->removeWidget(rButton);
+  _btnGroupBlocks->removeButton(rButton);
+  _col--;
+  if (_col < 0)
+  {
+    _col = _maxColumnElements - 1;
+    _row--;
+  }
+  //delete rButton;
+
+  _btnGroupBlocks->buttons().back()->setChecked(true);
 }
 
 void MapEditor::blockEdit()
@@ -178,47 +222,14 @@ void MapEditor::blockEdit()
   case (int)BlockEditAction::CREATE:
     //QMessageBox::warning(this, "title", "tekst", QMessageBox::Ok);
     //сделать проверку на дублирование блоков?
-    newBlockType = blockEditDialog.GetBlockType();
-    newBlockName = QString::fromStdString(
-      newBlockType.GetTypeName() +
-      newBlockType.GetFillType());
-    rButton = new QRadioButton(this);
-
-    //set icon
-    pixmap = drawBlockIcon(newBlockType.GetTexPath(),
-      newBlockType.GetFillType());
-    rButton->setIconSize(QSize(64, 64));
-    rButton->setIcon(pixmap);
-
-    _btnGroupBlocks->addButton(rButton);
-    _blockTypes[_btnGroupBlocks->id(rButton)] = newBlockType;
-    ui.gridLayout->addWidget(rButton, _row, _col++);
-    if (_col == _maxColumnElements)
-    {
-      _col = 0;
-      _row++;
-    }
+    CreateBlockType(_btnGroupBlocks, blockEditDialog.GetBlockType());
     break;
 
   case (int)BlockEditAction::CHANGE:
-    //_blockTypes[blockTypeId] = blockEditDialog.GetBlockType();
     ChangeBlockType(_btnGroupBlocks->checkedButton(),
       _blockTypes[blockTypeId], blockEditDialog.GetBlockType());
     ///////////////////////////////////////////////////////////////
-    /*
-    _blockTypes[blockTypeId] = blockEditDialog.GetBlockType();
-    newBlockName = QString::fromStdString(
-      _blockTypes[blockTypeId].GetTypeName()+
-      _blockTypes[blockTypeId].GetFillType());
-    //set icon
-    pixmap = drawBlockIcon(_blockTypes[blockTypeId].GetTexPath(),
-      _blockTypes[blockTypeId].GetFillType());
-
-    _btnGroupBlocks->checkedButton()->setIconSize(QSize(64, 64));
-    _btnGroupBlocks->checkedButton()->setIcon(pixmap);
-    */
-    ///////////////////////////////////////////////////////////////
-    emit SendBlockType(_blockTypes[blockTypeId]);
+    //emit SendBlockType(_blockTypes[blockTypeId]);
     ///////////////////////////////////////////////////////////////
     break;
 

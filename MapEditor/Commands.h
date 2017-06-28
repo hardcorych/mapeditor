@@ -84,7 +84,7 @@ class CreateBlockTypeCommand : public QUndoCommand
 {
 public:
   CreateBlockTypeCommand(QButtonGroup* btnGroup, 
-    BlockType blockType, QUndoCommand* parent = 0);
+    BlockType blockType, MapEditor* mapEditor, QUndoCommand* parent = 0);
   ~CreateBlockTypeCommand();
 
   void undo() override;
@@ -92,6 +92,9 @@ public:
 
 private:
   BlockType _blockType;
+  MapEditor* _mapEditor;
+  QRadioButton* _button;
+  QButtonGroup* _btnGroup;
 };
 
 class ChangeBlockTypeCommand : public QUndoCommand	

@@ -6,6 +6,7 @@
 #include <mutex>
 #include <thread>
 
+#include <qradiobutton.h>
 #include <qundostack.h>
 #include <qundoview.h>
 
@@ -92,6 +93,12 @@ private:
   //block editor
   void ChangeBlockType(QAbstractButton* rButton,
     BlockType& blockType, BlockType blockTypeOld);
+  void CreateBlockType(QButtonGroup* btnGroup,
+    BlockType blockType);
+  void AddBlockType(int id, BlockType blockType);
+  void AddBlockTypeButton(QRadioButton* rButton);
+  void RemoveBlockType(int id);
+  void RemoveBlockTypeButton(QRadioButton* rButton);
 
   void Undo();    //????
 
