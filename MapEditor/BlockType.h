@@ -39,6 +39,13 @@ public:
 
   friend bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight);
 
+  bool isEmpty()
+  {
+    return (_typeName.empty() && 
+      _texPath.empty() && 
+      _fillType.empty());
+  }
+
 private:
   std::string _typeName;   
   std::string _texPath;

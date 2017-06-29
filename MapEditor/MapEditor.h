@@ -62,8 +62,6 @@ private:
   std::map<int, BlockType> _blockTypes;
 
   //методы
-  QPixmap drawBlockIcon(std::string texPath, std::string fillType);
-
   void readTextures();
 
   void renderScene();
@@ -97,9 +95,15 @@ private:
     BlockType blockType);
   void DeleteBlockType(QAbstractButton* button, BlockType blockType);
   void AddBlockType(int id, BlockType blockType);
-  void AddBlockTypeButton(QRadioButton* rButton);
+  void AddBlockTypeButton(QRadioButton* rButton, int& row, int& col);
   void RemoveBlockType(int id);
   void RemoveBlockTypeButton(QRadioButton* rButton);
+
+  void GetButtonRowCol(QRadioButton* rButton, int& row, int& col);
+  //int GetNextRow();
+  //1int GetNextCol();
+  std::pair<int, int> GetNextRowCol();
+  void SetPrevRowCol();
 
   void Undo();    //????
 

@@ -119,8 +119,7 @@ MapEditor::MapEditor(QWidget *parent)
   _blockTypes[-14] = BlockType("BRICK", _defaultTexPaths["BRICK"],
     "BOTTOM", 0, 0);
 
-  
-
+  _col = -1;
   for (std::map<int, BlockType>::iterator it = _blockTypes.begin();
     it != _blockTypes.end(); ++it)
   {
@@ -128,11 +127,18 @@ MapEditor::MapEditor(QWidget *parent)
     _btnGroupBlocks->addButton(rButton);
     int btnId = _btnGroupBlocks->id(rButton);   //-2, -3, etc...
 
-    QPixmap pixmap = drawBlockIcon(_blockTypes[btnId].GetTexPath(),
-      _blockTypes[btnId].GetFillType());
+    QPixmap pixmap = DrawBlockPixmap(_blockTypes[btnId]);
     rButton->setIconSize(QSize(64, 64));
     rButton->setIcon(pixmap);
-    AddBlockTypeButton(rButton);
+    //AddBlockTypeButton(rButton, _row, _col);
+    if (++_col == _maxColumnElements)
+    {
+      _col = 0;
+      _row++;
+    }
+
+    ui.gridLayout->addWidget(rButton, _row, _col);
+    rButton->setVisible(true);
   }
 }
 
@@ -175,14 +181,45 @@ void MapEditor::AddBlockType(int id, BlockType blockType)
   _blockTypes[id] = blockType;
 }
 
-void MapEditor::AddBlockTypeButton(QRadioButton* rButton)
+void MapEditor::AddBlockTypeButton(QRadioButton* rButton, int& row, int& col)
 {
-  ui.gridLayout->addWidget(rButton, _row, _col++);
+  //ui.gridLayout->addWidget(rButton, _row, _col++);
+  if (col == _maxColumnElements)
+  {
+    col = 0;
+    row++;
+  }
+
+  ui.gridLayout->addWidget(rButton, row, col);
+  //ui.gridLayout->addWidget(rButton);
   rButton->setVisible(true);
-  if (_col == _maxColumnElements)
+  //int index = ui.gridLayout->indexOf(rButton);
+}
+
+void MapEditor::GetButtonRowCol(QRadioButton* rButton, int& row, int& col)
+{
+  int widgetIndex = ui.gridLayout->indexOf(rButton);
+  int rowSpan, colSpan;
+  ui.gridLayout->getItemPosition(widgetIndex, &row, &col,
+    &rowSpan, &colSpan);
+}
+
+std::pair<int, int> MapEditor::GetNextRowCol()
+{
+  if (++_col == _maxColumnElements)
   {
     _col = 0;
     _row++;
+  }
+  return std::make_pair(_row, _col);
+}
+
+void MapEditor::SetPrevRowCol()
+{
+  if (--_col < 0)
+  {
+    _col = _maxColumnElements - 1;
+    _row--;
   }
 }
 
@@ -194,17 +231,55 @@ void MapEditor::RemoveBlockType(int id)
 void MapEditor::RemoveBlockTypeButton(QRadioButton* rButton)
 {
   rButton->hide();
+
+  //repositioning of buttons
+  /*
+  bool startReplacing = false;
+  QList<QAbstractButton*> buttons = _btnGroupBlocks->buttons();
+  int count = 0;
+  
+  for (QList<QAbstractButton*>::iterator it = buttons.begin();
+    it != buttons.end()-1; ++it)
+  {
+    //QRadioButton* currentButton = qobject_cast<QRadioButton*>(*it);
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (*it == rButton)
+    {
+      startReplacing = true;
+    }
+    if (startReplacing)
+    {
+      int widgetIndex = ui.gridLayout->indexOf(*it);
+      //ui.gridLayout->itemAt(widgetIndex);
+      int row, col, rowSpan, colSpan;
+      ui.gridLayout->getItemPosition(widgetIndex, &row, &col,
+        &rowSpan, &colSpan);
+      //(*it)->hide();
+      ui.gridLayout->removeWidget(*it);
+      ui.gridLayout->addWidget(*(it + 1), row, col);
+      //ui.gridLayout->replaceWidget(*it, *(it+1));
+      //ui.gridLayout->replaceWidget(*(it + 1), button);
+      count++;
+      if (count == 4) break;
+    }
+  }
+  */
+  //!!!!!
+  
+  //ui.gridLayout->replaceWidget(rButton, _btnGroupBlocks->buttons().back());
   ui.gridLayout->removeWidget(rButton);
   _btnGroupBlocks->removeButton(rButton);
+  
+  /*
   _col--;
   if (_col < 0)
   {
     _col = _maxColumnElements - 1;
     _row--;
   }
+  */
+  
   delete rButton;
-
-  _btnGroupBlocks->buttons().back()->setChecked(true);
 }
 
 void MapEditor::blockEdit()
@@ -256,47 +331,6 @@ void MapEditor::blockEdit()
     */
     break;
   }
-}
-
-QPixmap MapEditor::drawBlockIcon(std::string texPath, std::string fillType)
-{
-  QPixmap pixmap(QSize(32, 32));
-  QPixmap pixmapResult(QSize(32, 32));
-  QPainter painter(&pixmapResult);
-
-  pixmap.load(QString::fromStdString(texPath));
-  int height = 16;
-  int width = 16;
-
-  if (fillType == "FULL")
-  {
-    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
-    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
-    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
-    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
-  }
-  else if (fillType == "LEFT")
-  {
-    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
-    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
-  }
-  else if (fillType == "RIGHT")
-  {
-    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
-    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
-  }
-  else if (fillType == "BOTTOM")
-  {
-    painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
-    painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
-  }
-  else if (fillType == "TOP")
-  {
-    painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
-    painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
-  }
-
-  return pixmapResult;
 }
 
 void MapEditor::readTextures()

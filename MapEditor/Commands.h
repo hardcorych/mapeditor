@@ -95,6 +95,8 @@ private:
   MapEditor* _mapEditor;
   QRadioButton* _button;
   QButtonGroup* _btnGroup;
+  int _row;
+  int _col;
 };
 
 class ChangeBlockTypeCommand : public QUndoCommand	
@@ -132,4 +134,6 @@ private:
   QRadioButton* _button;
   int _buttonId;
   QButtonGroup* _btnGroup;
+  int _row;
+  int _col;
 };

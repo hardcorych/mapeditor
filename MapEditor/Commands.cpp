@@ -132,6 +132,10 @@ void CreateBlockTypeCommand::undo()
 {
   _mapEditor->RemoveBlockType(_btnGroup->id(_button));
   _mapEditor->RemoveBlockTypeButton(_button);
+
+  _mapEditor->SetPrevRowCol();
+
+  emit _mapEditor->SendBlockType(BlockType());
 }
 
 void CreateBlockTypeCommand::redo()
@@ -144,7 +148,12 @@ void CreateBlockTypeCommand::redo()
   _btnGroup->addButton(_button);
 
   _mapEditor->AddBlockType(_btnGroup->id(_button), _blockType);
-  _mapEditor->AddBlockTypeButton(_button);
+
+  std::pair<int, int> rowCol = _mapEditor->GetNextRowCol();
+  _row = rowCol.first;
+  _col = rowCol.second;
+
+  _mapEditor->AddBlockTypeButton(_button, _row, _col);
 }
 
 //ChangeBlockTypeCommand
@@ -235,6 +244,7 @@ _blockType(blockType)
   _button = 
     qobject_cast<QRadioButton*>(_btnGroup->checkedButton());
   _buttonId = _btnGroup->checkedId();
+  _mapEditor->GetButtonRowCol(_button, _row, _col);
 }
 
 DeleteBlockTypeCommand::~DeleteBlockTypeCommand()
@@ -251,7 +261,7 @@ void DeleteBlockTypeCommand::undo()
   _btnGroup->addButton(_button);
 
   _mapEditor->AddBlockType(_btnGroup->id(_button), _blockType);
-  _mapEditor->AddBlockTypeButton(_button);
+  _mapEditor->AddBlockTypeButton(_button, _row, _col);
 }
 
 void DeleteBlockTypeCommand::redo()
@@ -259,4 +269,5 @@ void DeleteBlockTypeCommand::redo()
   _mapEditor->RemoveBlockType(_buttonId);
   //_button = qobject_cast<QRadioButton*>(_btnGroup->checkedButton());
   _mapEditor->RemoveBlockTypeButton(_button);
+  emit _mapEditor->SendBlockType(BlockType());
 }
