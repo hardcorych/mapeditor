@@ -45,7 +45,6 @@ private:
 
   osg::ref_ptr<Map> _map = new Map(10, 10);
 
-  //QString _errorText;
   std::mutex _mutex;
 
   QString _filename;
@@ -55,6 +54,8 @@ private:
   int _row = 0;
   int _col = 0;
   int _maxColumnElements = 5;
+
+  int _blockSize = 16;
 
   //!!!
   QButtonGroup* _btnGroupBlocks;
@@ -86,8 +87,6 @@ private:
   void AddBlock(osg::ref_ptr<Block> block, BlockType blockType);
   void RemoveBlock(osg::ref_ptr<Block> block);
   void ReplaceBlock(osg::ref_ptr<Block> block, BlockType blockType);
-  //void AddBlock(osg::ref_ptr<Block> block, osg::ref_ptr<BlockType> blockType);
-  //void ReplaceBlock(osg::ref_ptr<Block> block, osg::ref_ptr<BlockType> blockType);
   //block editor
   void ChangeBlockType(QAbstractButton* rButton,
     BlockType& blockType, BlockType blockTypeOld);
@@ -100,8 +99,7 @@ private:
   void RemoveBlockTypeButton(QRadioButton* rButton);
 
   void GetButtonRowCol(QRadioButton* rButton, int& row, int& col);
-  //int GetNextRow();
-  //1int GetNextCol();
+
   std::pair<int, int> GetNextRowCol();
   void SetPrevRowCol();
 
@@ -113,5 +111,4 @@ signals:
   void QuitViewer();
   void QuitAppToMain();
   void SendBlockType(BlockType blockType);
-  //void SendBlockType(osg::ref_ptr<BlockType> blockType);
 };

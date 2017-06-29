@@ -21,8 +21,8 @@ public:
   int GetZ()	{ return _z; }
 
   //для записи в файл
-  QString GetX_str()	{ return QString::number(_x + 16); }	//+16 for matching with file
-  QString GetZ_str()	{ return QString::number(_z + 16); }
+  QString GetX_str()	{ return QString::number(_x + _size); }	//+16 for matching with file
+  QString GetZ_str()	{ return QString::number(_z + _size); }
 
   void SetType(BlockType blockType);
 

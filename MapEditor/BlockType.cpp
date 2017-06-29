@@ -10,18 +10,6 @@ BlockType::BlockType(std::string typeName, std::string texPath,
 {
 }
 
-void BlockType::GetBlockType(std::string& typeName, std::string& texPath,
-  int& fillType, bool& isPassable, bool& isUnderTank) const
-{
-  /*
-  typeName = _typeName;
-  texPath = _texPath;
-  fillType = (int)_fillType;
-  isPassable = _isPassable;
-  isUnderTank = _isUnderTank;
-  */
-}
-
 BlockType::~BlockType()
 {
 }

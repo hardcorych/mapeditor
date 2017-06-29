@@ -17,14 +17,6 @@ _step(16)
   //указанный размер карты
   //размер задаетс€ в количестве блоков игровой области
 
-  //определение типов блоков
-  _texPaths["BORDER"] = "Resources/tiles/BORDER.png";
-  _texPaths["ARMOR"] = "Resources/tiles/ARMOR.png";
-  _texPaths["BRICK"] = "Resources/tiles/BRICK.png";
-  _texPaths["BUSHES"] = "Resources/tiles/BUSHES.png";
-  _texPaths["ICE"] = "Resources/tiles/ICE.png";
-  _texPaths["WATER"] = "Resources/tiles/WATER.png";
-
   //формирование границ
   setBorder();
   setGameArea();
@@ -48,12 +40,11 @@ void Map::setBorder()
   _sizeX = (_sizeX + 3)*_step;	//выделение места под рамку +3 по X
   _sizeZ = (_sizeZ + 2)*_step;	//выделение места под рамку +2 по Z
   //формирование границ
-  //карта с 2 индексами, каждый элемент хранит тайл (тип тайла?)
 
   //заполнение против часовой стрелки, начина€ с нижней границы
   //нижн€€ граница
   //int startBorder = -1 * _step;
-  BlockType borderBlock("BORDER", _texPaths["BORDER"], "FULL",
+  BlockType borderBlock("BORDER", "Resources/tiles/BORDER.png", "FULL",
     0, 0);
 
   for (int x = -_step; x < _sizeX - _step; x += _step) {
@@ -96,16 +87,20 @@ void Map::Remove()		//удаление карты
   removeChildren(0, getNumChildren());
 }
 
-void Map::AddBlock(osg::ref_ptr<Block> block, int x, int z)	//дл€ чтени€ из файла
+
+void Map::AddBlock(osg::ref_ptr<Block> block)	//дл€ чтени€ из файла
 {
   std::lock_guard<std::mutex> lgMutex(_mutex);
 
   osg::ref_ptr<Block> blockOld = nullptr;
 
   //поиск блока, который нужно заменить
-  for (int i = 0; i < getNumChildren(); i++) {
+  for (int i = 0; i < getNumChildren(); i++)
+  {
     blockOld = dynamic_cast<Block*>(getChild(i));
-    if (blockOld->GetX() == x && blockOld->GetZ() == z) {
+    if (blockOld->GetX() == block->GetX() && 
+      blockOld->GetZ() == block->GetZ())
+    {
       replaceChild(blockOld, block);
     }
   }
@@ -203,14 +198,4 @@ Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
     setBorder();
   }
   return deletedBlocks;
-}
-
-std::string Map::GetTexPath(std::string type)
-{
-  return _texPaths[type];
-}
-
-bool Map::isFoundTexPath(std::string type)
-{ 
-  return (_texPaths.find(type) != _texPaths.end());
 }

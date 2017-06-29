@@ -34,9 +34,6 @@ public:
   void SetPassability(bool isPassable) { _isPassable = isPassable; }
   void SetUnderTank(bool isUnderTank) { _isUnderTank = isUnderTank; }
 
-  void GetBlockType(std::string& typeName, std::string& texPath,
-    int& fillType, bool& isPassable, bool& isUnderTank) const;
-
   friend bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight);
 
   bool isEmpty()

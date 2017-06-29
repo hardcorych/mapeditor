@@ -24,11 +24,9 @@ public:
   void Set(int sizeX, int sizeZ);
   void Remove();
 
-  void AddBlock(osg::ref_ptr<Block> block, int x, int z);
+  //void AddBlock(osg::ref_ptr<Block> block, int x, int z);
+  void AddBlock(osg::ref_ptr<Block> block);
   void RemoveBlock(int x, int z);
-
-  void AddBlockType(std::string typeName, std::string texPath)
-  { _texPaths[typeName] = texPath; }
 
   //resizing
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize
@@ -38,18 +36,11 @@ public:
   std::mutex& GetMutex() { return std::ref(_mutex); }
 
   std::string GetTexPath(std::string type);
-  bool isFoundTexPath(std::string type);
 
 private:
   int _sizeX;
   int _sizeZ;
   int _step;		//step equals block size
-
-  std::map<std::string, std::string> _texPaths;
-  //std::vector<BlockType> _blockTypes;
-
-  //std::map<std::string, BlockType> _blockTypes;
-  //std::map<int, BlockType> _blockTypes;
 
   std::mutex _mutex;
 

@@ -267,7 +267,6 @@ void DeleteBlockTypeCommand::undo()
 void DeleteBlockTypeCommand::redo()
 {
   _mapEditor->RemoveBlockType(_buttonId);
-  //_button = qobject_cast<QRadioButton*>(_btnGroup->checkedButton());
   _mapEditor->RemoveBlockTypeButton(_button);
   emit _mapEditor->SendBlockType(BlockType());
 }
