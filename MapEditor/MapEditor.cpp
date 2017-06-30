@@ -382,6 +382,7 @@ void MapEditor::LoadXMLFile()
           }
           //получаем размер в блоках
           mapSizeZ /= _blockSize;
+          //!!!
           createMap(mapSizeX, mapSizeZ);
         }
         else if (element == "block")
@@ -512,6 +513,7 @@ void MapEditor::LoadXMLFile()
             //чтение координат
             int numCoords = 0;
 
+            //x coord
             xmlReader.readNextStartElement();
             element = xmlReader.name().toString();
             if (element == "x")
@@ -541,6 +543,7 @@ void MapEditor::LoadXMLFile()
               x -= _blockSize;		//-16 for matching
             }
 
+            //z coord
             xmlReader.readNextStartElement();
             element = xmlReader.name().toString();
             if (element == "z")
@@ -592,6 +595,7 @@ void MapEditor::LoadXMLFile()
     {
       QMessageBox::critical(this, "File error", errorText, QMessageBox::Ok);
       _filename.clear();
+      _map->Remove();
       ui.labelMessage->setText("There were some errors while reading file.");
     }
     else
