@@ -57,19 +57,15 @@ private:
 
   int _blockSize = 16;
 
-  //!!!
   QButtonGroup* _btnGroupBlocks;
-  std::map<std::string, std::string> _defaultTexPaths;
+  std::map<std::string, std::string> _texPaths;
   std::map<int, BlockType> _blockTypes;
 
   //методы
-  void readTextures();
-
   void renderScene();
   void createMap(int sizeX, int sizeZ);
   void createUndoView();
   void createUndoRedoActions();
-  //bool isFoundCoordsErrors(int coord, QString coordType);		//функция проверки ошибок
 
   public slots:
   void NewMap();
@@ -93,17 +89,18 @@ private:
   void CreateBlockType(QButtonGroup* btnGroup,
     BlockType blockType);
   void DeleteBlockType(QAbstractButton* button, BlockType blockType);
+
+
   void AddBlockType(int id, BlockType blockType);
   void AddBlockTypeButton(QRadioButton* rButton, int& row, int& col);
   void RemoveBlockType(int id);
   void RemoveBlockTypeButton(QRadioButton* rButton);
 
+  //button coords on grid
   void GetButtonRowCol(QRadioButton* rButton, int& row, int& col);
 
   std::pair<int, int> GetNextRowCol();
-  void SetPrevRowCol();
-
-  void Undo();    //????
+  void SetPrevRowCol(); 
 
   std::mutex& GetMutex()	{ return _mutex; }
 

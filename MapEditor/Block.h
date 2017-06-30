@@ -13,8 +13,6 @@ public:
   Block(int x, int z, BlockType blockType);
   ~Block();
 
-  std::pair<QString, QString> GetType_str();
-
   BlockType GetType() const { return _blockType; }
 
   int GetX()	{ return _x; }

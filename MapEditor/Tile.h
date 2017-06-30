@@ -16,7 +16,7 @@ class Tile : public osg::Geometry
 {
 public:
   Tile() = default;
-  //Tile(unsigned int x, unsigned int z, TexType type);
+
   //string textype
   Tile(unsigned int x, unsigned int z, std::string typeName, std::string texPath);
   Tile(unsigned int x, unsigned int z, std::string typeName, EmptyTile empty);	//дл€ пустых тайлов
@@ -35,7 +35,7 @@ private:
   int _z;
   static const int _size = 8;		//размер тайла 8х8
 
-  std::string _typeName;    //отсекать регул€ркой, начина€ с _
+  std::string _typeName;    
   std::string _texPath;
 
   osg::ref_ptr<osg::Vec3Array> _vertices = new osg::Vec3Array;

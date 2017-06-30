@@ -23,7 +23,6 @@ protected:
   double _mouseX, _mouseY;	//mouse coords
 
   BlockType _blockType;
-  //osg::ref_ptr<BlockType> _blockType;
 
   std::pair<bool, osg::ref_ptr<Block>> 
     findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);

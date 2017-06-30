@@ -83,43 +83,47 @@ MapEditor::MapEditor(QWidget *parent)
 
   _renderThread = std::thread(&MapEditor::renderScene, this);
   
-  _defaultTexPaths["BORDER"] = "Resources/tiles/BORDER.png";
-  _defaultTexPaths["ARMOR"] = "Resources/tiles/ARMOR.png";
-  _defaultTexPaths["BRICK"] = "Resources/tiles/BRICK.png";
-  _defaultTexPaths["BUSHES"] = "Resources/tiles/BUSHES.png";
-  _defaultTexPaths["ICE"] = "Resources/tiles/ICE.png";
-  _defaultTexPaths["WATER"] = "Resources/tiles/WATER.png";
+  //setting default texture paths
+  _texPaths["BORDER"] = "Resources/tiles/BORDER.png";
+  _texPaths["ARMOR"] = "Resources/tiles/ARMOR.png";
+  _texPaths["BRICK"] = "Resources/tiles/BRICK.png";
+  _texPaths["BUSHES"] = "Resources/tiles/BUSHES.png";
+  _texPaths["ICE"] = "Resources/tiles/ICE.png";
+  _texPaths["WATER"] = "Resources/tiles/WATER.png";
 
-  _blockTypes[-2] = BlockType("BUSHES", _defaultTexPaths["BUSHES"],
+  //setting default blocktypes
+  _blockTypes[-2] = BlockType("BUSHES", _texPaths["BUSHES"],
     "FULL", 0, 0);
-  _blockTypes[-3] = BlockType("WATER", _defaultTexPaths["WATER"],
+  _blockTypes[-3] = BlockType("WATER", _texPaths["WATER"],
     "FULL", 0, 0);
-  _blockTypes[-4] = BlockType("ICE", _defaultTexPaths["ICE"],
+  _blockTypes[-4] = BlockType("ICE", _texPaths["ICE"],
     "FULL", 0, 0);
 
-  _blockTypes[-5] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
+  _blockTypes[-5] = BlockType("ARMOR", _texPaths["ARMOR"],
     "FULL", 0, 0);
-  _blockTypes[-6] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
+  _blockTypes[-6] = BlockType("ARMOR", _texPaths["ARMOR"],
     "LEFT", 0, 0);
-  _blockTypes[-7] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
+  _blockTypes[-7] = BlockType("ARMOR", _texPaths["ARMOR"],
     "RIGHT", 0, 0);
-  _blockTypes[-8] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
+  _blockTypes[-8] = BlockType("ARMOR", _texPaths["ARMOR"],
     "TOP", 0, 0);
-  _blockTypes[-9] = BlockType("ARMOR", _defaultTexPaths["ARMOR"],
+  _blockTypes[-9] = BlockType("ARMOR", _texPaths["ARMOR"],
     "BOTTOM", 0, 0);
 
-  _blockTypes[-10] = BlockType("BRICK", _defaultTexPaths["BRICK"],
+  _blockTypes[-10] = BlockType("BRICK", _texPaths["BRICK"],
     "FULL", 0, 0);
-  _blockTypes[-11] = BlockType("BRICK", _defaultTexPaths["BRICK"],
+  _blockTypes[-11] = BlockType("BRICK", _texPaths["BRICK"],
     "LEFT", 0, 0);
-  _blockTypes[-12] = BlockType("BRICK", _defaultTexPaths["BRICK"],
+  _blockTypes[-12] = BlockType("BRICK", _texPaths["BRICK"],
     "RIGHT", 0, 0);
-  _blockTypes[-13] = BlockType("BRICK", _defaultTexPaths["BRICK"],
+  _blockTypes[-13] = BlockType("BRICK", _texPaths["BRICK"],
     "TOP", 0, 0);
-  _blockTypes[-14] = BlockType("BRICK", _defaultTexPaths["BRICK"],
+  _blockTypes[-14] = BlockType("BRICK", _texPaths["BRICK"],
     "BOTTOM", 0, 0);
 
+  //setting blocktypes buttons
   _col = -1;
+
   for (std::map<int, BlockType>::iterator it = _blockTypes.begin();
     it != _blockTypes.end(); ++it)
   {
@@ -130,7 +134,7 @@ MapEditor::MapEditor(QWidget *parent)
     QPixmap pixmap = DrawBlockPixmap(_blockTypes[btnId]);
     rButton->setIconSize(QSize(64, 64));
     rButton->setIcon(pixmap);
-    //AddBlockTypeButton(rButton, _row, _col);
+
     if (++_col == _maxColumnElements)
     {
       _col = 0;
@@ -179,15 +183,14 @@ void MapEditor::DeleteBlockType(QAbstractButton* button,
 void MapEditor::AddBlockType(int id, BlockType blockType)
 {
   _blockTypes[id] = blockType;
-  if (_defaultTexPaths.find(blockType.GetTypeName()) == _defaultTexPaths.end())
+  if (_texPaths.find(blockType.GetTypeName()) == _texPaths.end())
   {
-    _defaultTexPaths[blockType.GetTypeName()] = blockType.GetTexPath();
+    _texPaths[blockType.GetTypeName()] = blockType.GetTexPath();
   }
 }
 
 void MapEditor::AddBlockTypeButton(QRadioButton* rButton, int& row, int& col)
 {
-  //ui.gridLayout->addWidget(rButton, _row, _col++);
   if (col == _maxColumnElements)
   {
     col = 0;
@@ -195,9 +198,7 @@ void MapEditor::AddBlockTypeButton(QRadioButton* rButton, int& row, int& col)
   }
 
   ui.gridLayout->addWidget(rButton, row, col);
-  //ui.gridLayout->addWidget(rButton);
   rButton->setVisible(true);
-  //int index = ui.gridLayout->indexOf(rButton);
 }
 
 void MapEditor::GetButtonRowCol(QRadioButton* rButton, int& row, int& col)
@@ -274,11 +275,6 @@ void MapEditor::blockEdit()
   }
 }
 
-void MapEditor::readTextures()
-{
-
-}
-
 void MapEditor::NewMap()
 {
   //create new map by modal dialog
@@ -311,7 +307,6 @@ void MapEditor::LoadXMLFile()
 
   if (!file.open(QIODevice::ReadOnly | QFile::Text))
   {
-    //обработка ошибки?
     //QMessageBox::warning(this, "file error", "file can't be opened", QMessageBox::Ok);
   }
   else
@@ -443,7 +438,7 @@ void MapEditor::LoadXMLFile()
               {
                 blockType.SetTypeName(attrValue);
                 //определение пути файла текстуры
-                blockType.SetTexPath(_defaultTexPaths[attrValue]);
+                blockType.SetTexPath(_texPaths[attrValue]);
               }
               else
               {
@@ -583,7 +578,7 @@ void MapEditor::LoadXMLFile()
               break;
             }
 
-            //_map->AddBlock(new Block(x, z, blockType), x, z);
+            //add read block
             _map->AddBlock(new Block(x, z, blockType));
           }
           
@@ -745,9 +740,6 @@ void MapEditor::renderScene()
   connect(keyboardMouseHandler, &KeyboardMouseHandler::Redo,
     _undoStack, &QUndoStack::redo);
 
-  //установка объектов на сцену
-  //osg::ref_ptr<Map> map = new Map(10,10);
-
   viewer.setSceneData(_map);
   viewer.setCameraManipulator(new osgGA::TrackballManipulator);
 
@@ -758,8 +750,7 @@ void MapEditor::renderScene()
   //viewer.run();
 
   while (!viewer.done())
-  {
-    //std::lock_guard<std::mutex> lgMutex(_mutex);	
+  {	
     //для избежания конфликта при создании новой карты
     std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
     viewer.frame();
@@ -825,9 +816,4 @@ void MapEditor::changeMapSize()
     }
   }
 
-}
-
-void MapEditor::Undo()
-{
-  if (_undoStack->canUndo()) _undoStack->undo();
 }

@@ -3,39 +3,8 @@
 #include <osg/Texture2D>
 #include <osgDB/ReadFile>
 
-/*
-Tile::Tile(unsigned int x, unsigned int z, TexType type) :
-_x(x), _z(z),
-_type(type)
-{
-  //polygon drawing
-  _vertices->push_back(osg::Vec3(_x, 0., _z));
-  _vertices->push_back(osg::Vec3(_x, 0., _z + _size));
-  _vertices->push_back(osg::Vec3(_x + _size, 0., _z));
-  _vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
-
-  setVertexArray(_vertices);
-  addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,
-    0, _vertices->size()));
-
-  //normals
-  _normals->setBinding(osg::Array::BIND_PER_VERTEX);
-
-  calculateNormals(osg::Vec3(_x, 0., _z),
-    osg::Vec3(_x + _size, 0., _z),
-    osg::Vec3(_x, 0., _z + _size));
-
-  calculateNormals(osg::Vec3(_x, 0., _z + _size),
-    osg::Vec3(_x + _size, 0., _z),
-    osg::Vec3(_x + _size, 0., _z + _size));
-
-  setNormalArray(_normals);
-
-  setTexture();
-}
-*/
-
-Tile::Tile(unsigned int x, unsigned int z, std::string typeName, std::string texPath) :
+Tile::Tile(unsigned int x, unsigned int z, std::string typeName,
+  std::string texPath) :
 _x(x), _z(z),
 _typeName(typeName),
 _texPath(texPath)
@@ -126,42 +95,14 @@ void Tile::setTexture(std::string texPath)
 
   osg::ref_ptr<osg::Image> image;
 
-  /*
-  std::string texFilename = "Resources/tiles/";
-
-  switch (_type)
-  {
-  case TexType::ARMOR:
-    texFilename += "ARMOR.png";
-    break;
-  case TexType::BORDER:
-    texFilename += "BORDER.png";
-    break;
-  case TexType::BRICK:
-    texFilename += "BRICK.png";
-    break;
-  case TexType::BUSHES:
-    texFilename += "BUSHES.png";
-    break;
-  case TexType::ICE:
-    texFilename += "ICE.png";
-    break;
-  case TexType::WATER:
-    texFilename += "WATER.png";
-    break;
-  case TexType::EMPTY:
-
-    break;
-  }
-  */
-
-  //image = osgDB::readImageFile(texFilename);
   //image->s();   //_s,_t атрибуты размера изображения
   image = osgDB::readImageFile(texPath);
+  /*
   if (!image)
   {
-    // error handling?
+    
   }
+  */
 
   texture->setImage(image);
 
@@ -204,10 +145,12 @@ void Tile::setEmptyTexture(EmptyTile empty)
 
   image = osgDB::readImageFile(texFilename);
 
+  /*
   if (!image)
   {
-    // ошибка
+
   }
+  */
 
   texture->setImage(image);
 

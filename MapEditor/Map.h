@@ -24,7 +24,6 @@ public:
   void Set(int sizeX, int sizeZ);
   void Remove();
 
-  //void AddBlock(osg::ref_ptr<Block> block, int x, int z);
   void AddBlock(osg::ref_ptr<Block> block);
   void RemoveBlock(int x, int z);
 

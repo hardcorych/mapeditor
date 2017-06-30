@@ -28,7 +28,6 @@ void Block::createFromTiles(BlockType blockType)
 {
   int tileSize = Tile::Size();
 
-  //blocktype parsing is here
   std::string typeName = blockType.GetTypeName();
   std::string texPath = blockType.GetTexPath();
   std::string fillType = blockType.GetFillType();
@@ -109,61 +108,4 @@ void Block::SetType(BlockType blockType)
     replaceChild(oldRightTop, _rightTop);
     replaceChild(oldRightBottom, _rightBottom);
   }
-}
-
-//переделать тип возвращаемой функции
-std::pair<QString, QString> Block::GetType_str()
-{
-  //QString texType;
-  QString fillType = QString::fromStdString(_blockType.GetFillType());
-  
-  //проверка на empty?
-  /*
-  switch (_type)
-  {
-  case TexType::ARMOR:
-    texType = "ARMOR";
-    break;
-  case TexType::BORDER:
-    texType = "BORDER";
-    break;
-  case TexType::BRICK:
-    texType = "BRICK";
-    break;
-  case TexType::BUSHES:
-    texType = "BUSHES";
-    break;
-  case TexType::EMPTY:
-    //не писать в файл
-    return std::make_pair("EMPTY", "EMPTY");
-  case TexType::WATER:
-    texType = "WATER";
-    break;
-  case TexType::ICE:
-    texType = "ICE";
-    break;
-  }
-  */
-  /*
-  switch (_blockType.GetFillType())
-  {
-  case FillType::BOTTOM:
-    fillType = "BOTTOM";
-    break;
-  case FillType::FULL:
-    fillType = "FULL";
-    break;
-  case FillType::LEFT:
-    fillType = "LEFT";
-    break;
-  case FillType::RIGHT:
-    fillType = "RIGHT";
-    break;
-  case FillType::TOP:
-    fillType = "TOP";
-    break;
-  }
-  */
-  //return std::make_pair(texType, fillType);
-  return std::make_pair("izi", fillType);
 }

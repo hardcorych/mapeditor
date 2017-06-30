@@ -151,7 +151,6 @@ void BlockEditDialog::setTexPath()
 
   if (!file.open(QIODevice::ReadOnly | QFile::Text))
   {
-    //error
     //QMessageBox::warning(this, "file error", "file can't be opened", QMessageBox::Ok);
   }
   else

@@ -46,7 +46,7 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         if (isValid)
         {
           osg::ref_ptr<Block> block = std::get<1>(validBlock);
-          //!!!!!!!!!!!!!!!!
+
           if (block->GetType().GetTypeName() != "BORDER" &&
             !_blockType.isEmpty())
           {
