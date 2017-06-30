@@ -49,11 +49,13 @@ QPixmap DrawBlockPixmap(BlockType blockType)
 
 //AddCommand
 
-AddCommand::AddCommand(osg::ref_ptr<Block> block, 
+AddCommand::AddCommand(osg::ref_ptr<Map> map, int x, int z, 
   BlockType blockType, QUndoCommand* parent) :
 QUndoCommand(parent),
-_block(block),
-_blockType(blockType)
+//_block(block),
+_x(x), _z(z),
+_blockType(blockType),
+_map(map)
 {
 }
 
@@ -64,14 +66,16 @@ AddCommand::~AddCommand()
 void AddCommand::undo()
 {
   //remove
-  BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
-  _block->SetType(emptyBlock);
+  //BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
+  //_block->SetType(emptyBlock);
+  _map->RemoveBlock(_x, _z);
 }
 
 void AddCommand::redo()
 {
   //add
-  _block->SetType(_blockType);
+  //_block->SetType(_blockType);
+  _map->AddBlock(_x, _z, _blockType);
 }
 
 //ReplaceCommand
@@ -103,11 +107,14 @@ void ReplaceCommand::redo()
 
 //RemoveCommand
 
-RemoveCommand::RemoveCommand(osg::ref_ptr<Block> block, QUndoCommand* parent) :
+RemoveCommand::RemoveCommand(osg::ref_ptr<Map> map,
+  int x, int z, BlockType blockType, QUndoCommand* parent) :
 QUndoCommand(parent),
-_block(block)
+_map(map),
+_x(x), _z(z),
+_blockType(blockType)
 {
-  _blockType = block->GetType();
+  //_blockType = block->GetType();
 }
 
 RemoveCommand::~RemoveCommand()
@@ -117,14 +124,16 @@ RemoveCommand::~RemoveCommand()
 void RemoveCommand::undo()
 {
   //add
-  _block->SetType(_blockType);
+  //_block->SetType(_blockType);
+  _map->AddBlock(_x, _z, _blockType);
 }
 
 void RemoveCommand::redo()
 {
   //remove
-  BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
-  _block->SetType(emptyBlock);
+  //BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
+  //_block->SetType(emptyBlock);
+  _map->RemoveBlock(_x, _z);
 }
 
 //ChangeSizeCommand

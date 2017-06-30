@@ -144,6 +144,10 @@ MapEditor::MapEditor(QWidget *parent)
     ui.gridLayout->addWidget(rButton, _row, _col);
     rButton->setVisible(true);
   }
+
+  _listTexPathWidget.setWindowTitle("Texture paths list");
+  _listTexPathWidget.resize(320, 240);
+  _listTexPathWidget.show();
 }
 
 MapEditor::~MapEditor()
@@ -167,8 +171,10 @@ void MapEditor::ChangeBlockType(QAbstractButton* rButton,
   BlockType& blockType, BlockType blockTypeNew)
 {
   QUndoCommand* changeBlockTypeCommand =
-    new ChangeBlockTypeCommand(rButton, blockType, blockTypeNew,
-    this);
+                            new ChangeBlockTypeCommand( rButton,
+                                                        blockType,
+                                                        blockTypeNew,
+                                                        this);
   _undoStack->push(changeBlockTypeCommand);
 }
 
@@ -259,11 +265,11 @@ void MapEditor::blockEdit()
   //processing of dialog action
   switch (blockEditDialog.exec())
   {
-  case (int)BlockEditAction::CREATE:
+  case static_cast<int>(BlockEditAction::CREATE):
     CreateBlockType(_btnGroupBlocks, blockEditDialog.GetBlockType());
     break;
 
-  case (int)BlockEditAction::CHANGE:
+  case static_cast<int>(BlockEditAction::CHANGE):
     if (_btnGroupBlocks->checkedButton() != 0)
     {
       ChangeBlockType(_btnGroupBlocks->checkedButton(),
@@ -276,7 +282,7 @@ void MapEditor::blockEdit()
     }
     break;
 
-  case (int)BlockEditAction::DELETE:
+  case static_cast<int>(BlockEditAction::DELETE):
     if (_btnGroupBlocks->checkedButton() != 0)
     {
       DeleteBlockType(_btnGroupBlocks->checkedButton(),
@@ -598,7 +604,8 @@ void MapEditor::LoadXMLFile()
             }
 
             //add read block
-            _map->AddBlock(new Block(x, z, blockType));
+            //_map->AddBlock(new Block(x, z, blockType));
+            _map->AddBlock(x, z, blockType);
           }
           
         }
@@ -749,9 +756,9 @@ void MapEditor::renderScene()
 
   connect(this, &MapEditor::SendBlockType, keyboardMouseHandler,
     &KeyboardMouseHandler::ReceiveBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::AddableBlock, 
+  connect(keyboardMouseHandler, &KeyboardMouseHandler::AddBlock, 
     this, &MapEditor::AddBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::RemovableBlock, 
+  connect(keyboardMouseHandler, &KeyboardMouseHandler::RemoveBlock, 
     this, &MapEditor::RemoveBlock, Qt::DirectConnection);
   connect(keyboardMouseHandler, &KeyboardMouseHandler::ReplaceableBlock, 
     this, &MapEditor::ReplaceBlock, Qt::DirectConnection);
@@ -768,11 +775,12 @@ void MapEditor::renderScene()
   viewer.realize();
   /////////////////////////////
   //viewer.run();
-
+  std::mutex mutex;
   while (!viewer.done())
   {	
     //для избежания конфликта при создании новой карты
-    std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
+    std::lock_guard<std::recursive_mutex> lgMutex(_map->GetMutex());
+    //std::lock_guard<std::mutex> lgMutex(mutex);
     viewer.frame();
   }
 
@@ -796,16 +804,17 @@ void MapEditor::createUndoRedoActions()
   _redoAct->setShortcuts(QKeySequence::Redo);
 }
 
-void MapEditor::AddBlock(osg::ref_ptr<Block> block,
+void MapEditor::AddBlock(osg::ref_ptr<Map> map, int x, int z,
   BlockType blockType)
 {
-  QUndoCommand* addCommand = new AddCommand(block, blockType);
+  QUndoCommand* addCommand = new AddCommand(map, x, z, blockType);
   _undoStack->push(addCommand);
 }
 
-void MapEditor::RemoveBlock(osg::ref_ptr<Block> block)
+void MapEditor::RemoveBlock(osg::ref_ptr<Map> map, int x, int z,
+  BlockType blockType)
 {
-  QUndoCommand* removeCommand = new RemoveCommand(block);
+  QUndoCommand* removeCommand = new RemoveCommand(map, x, z, blockType);
   _undoStack->push(removeCommand);
 }
 

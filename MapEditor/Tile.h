@@ -4,7 +4,7 @@
 #include <osgDB/ReadFile>
 #include <qstring.h>
 
-enum class EmptyTile    //???
+enum class EmptyTile    
 {
   LEFT_BOTTOM,
   LEFT_TOP,

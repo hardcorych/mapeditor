@@ -17,7 +17,8 @@ QPixmap DrawBlockPixmap(BlockType blockType);
 class AddCommand : public QUndoCommand	//add block on map
 {
 public:
-  AddCommand(osg::ref_ptr<Block> block, BlockType blockType,
+  AddCommand(osg::ref_ptr<Map> map, int x, int z,
+    BlockType blockType,
     QUndoCommand* parent = 0);
   ~AddCommand();
 
@@ -25,7 +26,10 @@ public:
   void redo() override;
 
 private:
-  osg::ref_ptr<Block> _block = nullptr;
+  //osg::ref_ptr<Block> _block = nullptr;
+  osg::ref_ptr<Map> _map;
+  int _x;
+  int _z;
   BlockType _blockType;
 };
 
@@ -48,14 +52,18 @@ private:
 class RemoveCommand : public QUndoCommand	//remove block from map
 {
 public:
-  RemoveCommand(osg::ref_ptr<Block> block, QUndoCommand* parent = 0);
+  RemoveCommand(osg::ref_ptr<Map> map,
+    int x, int z, BlockType blockType, QUndoCommand* parent = 0);
   ~RemoveCommand();
 
   void undo() override;
   void redo() override;
 
 private:
-  osg::ref_ptr<Block> _block = nullptr;
+  osg::ref_ptr<Map> _map;
+  //osg::ref_ptr<Block> _block = nullptr;
+  int _x;
+  int _z;
   BlockType _blockType;
 };
 

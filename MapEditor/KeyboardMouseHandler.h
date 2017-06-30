@@ -24,12 +24,14 @@ protected:
 
   BlockType _blockType;
 
-  std::pair<bool, osg::ref_ptr<Block>> 
+  std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> 
     findBlockAndMap(const double x, const double y, osgViewer::Viewer* viewer);
 
 signals:
-  void RemovableBlock(osg::ref_ptr<Block> block);
-  void AddableBlock(osg::ref_ptr<Block> block, BlockType blockType);
+  void RemoveBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
+  //void RemovableBlock(osg::ref_ptr<Block> block);
+  //void AddableBlock(osg::ref_ptr<Block> block, BlockType blockType);
+  void AddBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
   void ReplaceableBlock(osg::ref_ptr<Block> block, BlockType blockType);
 
   void Undo();

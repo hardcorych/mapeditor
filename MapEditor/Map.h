@@ -24,15 +24,18 @@ public:
   void Set(int sizeX, int sizeZ);
   void Remove();
 
-  void AddBlock(osg::ref_ptr<Block> block);
+  //void AddBlock(osg::ref_ptr<Block> block);
+  void AddBlock(int x, int z, BlockType blockType);
   void RemoveBlock(int x, int z);
+  //void ReplaceBlock();
 
   //resizing
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize
     (std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
     int sizeX, int sizeZ);
 
-  std::mutex& GetMutex() { return std::ref(_mutex); }
+  //std::mutex& GetMutex() { return std::ref(_mutex); }
+  std::recursive_mutex& GetMutex() { return std::ref(_mutex); }
 
   std::string GetTexPath(std::string type);
 
@@ -41,7 +44,8 @@ private:
   int _sizeZ;
   int _step;		//step equals block size
 
-  std::mutex _mutex;
+  //std::mutex _mutex;
+  std::recursive_mutex _mutex;
 
   void setBorder();
   void setGameArea();

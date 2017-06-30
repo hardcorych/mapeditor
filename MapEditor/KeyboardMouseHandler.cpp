@@ -41,22 +41,27 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         _mouseX = ea.getXnormalized();	
         _mouseY = ea.getYnormalized();
 
-        std::pair<bool, osg::ref_ptr<Block>> validBlock = findBlockAndMap(_mouseX, _mouseY, viewer);
-        bool isValid = std::get<0>(validBlock);
-        if (isValid)
+        std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> blockAndMap = 
+          findBlockAndMap(_mouseX, _mouseY, viewer);
+        //bool isValid = std::get<0>(validBlock);
+
+        //if (isValid)
         {
-          osg::ref_ptr<Block> block = std::get<1>(validBlock);
+          osg::ref_ptr<Map> map = std::get<0>(blockAndMap);
+          osg::ref_ptr<Block> block = std::get<1>(blockAndMap);
 
           if (block->GetType().GetTypeName() != "BORDER" &&
             !_blockType.isEmpty())
           {
             if (block->GetType().GetTypeName() == "EMPTY")
             {
-              emit AddableBlock(block, _blockType);
+              //emit AddableBlock(block, _blockType);
+              emit AddBlock(map, block->GetX(), block->GetZ(),
+                _blockType);
             }
             else if (block->GetType() != _blockType)
             {
-              emit ReplaceableBlock(block, _blockType);
+              //emit ReplaceableBlock(block, _blockType);
             }
           }
           return true;	//TRUE to process an event
@@ -70,18 +75,21 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         _mouseX = ea.getXnormalized();
         _mouseY = ea.getYnormalized();
 
-        std::pair<bool, osg::ref_ptr<Block>> validBlock =
+        std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> blockAndMap =
           findBlockAndMap(_mouseX, _mouseY, viewer);
-        bool isValid = std::get<0>(validBlock);
-        if (isValid)
+        //bool isValid = std::get<0>(validBlock);
+        //if (isValid)
         {
-          osg::ref_ptr<Block> block = std::get<1>(validBlock);
+          osg::ref_ptr<Map> map = std::get<0>(blockAndMap);
+          osg::ref_ptr<Block> block = std::get<1>(blockAndMap);
           BlockType blockType = block->GetType();
           if (blockType.GetTypeName() != "BORDER" && 
             blockType.GetTypeName() != "EMPTY")
           {
             //emit to delete command
-            emit RemovableBlock(block);
+            //emit RemovableBlock(block);
+            emit RemoveBlock(map, 
+              block->GetX(), block->GetZ(), blockType);
           }
           return true;	//TRUE to process an event
         }
@@ -116,12 +124,12 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
   }
 }
 
-std::pair<bool, osg::ref_ptr<Block>> 
+std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> 
 KeyboardMouseHandler::findBlockAndMap(const double x, const double y,
                                       osgViewer::Viewer* viewer)
 {
-  if (!viewer->getSceneData())
-    return std::make_pair(false, nullptr);	//nothing to pick
+  //if (!viewer->getSceneData())
+    //return std::make_pair(false, nullptr);	//nothing to pick
 
   osg::ref_ptr<osgUtil::LineSegmentIntersector> picker = 
     new osgUtil::LineSegmentIntersector(
@@ -155,7 +163,8 @@ KeyboardMouseHandler::findBlockAndMap(const double x, const double y,
     selectedBlock = block;
     selectedMap = map;
   }
-  return std::make_pair((selectedBlock.valid() && selectedMap.valid()), block);
+  //return std::make_pair((selectedBlock.valid() && selectedMap.valid()), block);
+  return std::make_pair(map, block);
 }
 
 void KeyboardMouseHandler::ReceiveBlock(BlockType blockType)

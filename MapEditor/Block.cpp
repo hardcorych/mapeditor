@@ -88,7 +88,6 @@ void Block::SetType(BlockType blockType)
 {
   std::string typeName = blockType.GetTypeName();
   std::string texPath = blockType.GetTexPath();
-  //FillType fillType = blockType.GetFillType();
   std::string fillType = blockType.GetFillType();
 
   if (_blockType != blockType)        //если блок точно такой же, ничего не меняется

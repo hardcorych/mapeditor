@@ -1,6 +1,7 @@
 #pragma once
 
 #include <osg/Group>
+
 #include <qstring.h>
 
 #include <BlockType.h>

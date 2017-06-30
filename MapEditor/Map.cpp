@@ -1,6 +1,5 @@
 #include "Map.h"
 
-
 Map::Map() :
 _step(16),	//дл€ блоков
 _sizeX(10), _sizeZ(10)
@@ -82,25 +81,32 @@ void Map::setGameArea()
 
 void Map::Remove()		//удаление карты
 {
-  std::lock_guard<std::mutex> lgMutex(_mutex);
+  //std::lock_guard<std::mutex> lgMutex(_mutex);
+  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
 
   removeChildren(0, getNumChildren());
 }
 
 
-void Map::AddBlock(osg::ref_ptr<Block> block)	//дл€ чтени€ из файла
+//void Map::AddBlock(osg::ref_ptr<Block> block)	//дл€ чтени€ из файла
+void Map::AddBlock(int x, int z, BlockType blockType)
 {
-  std::lock_guard<std::mutex> lgMutex(_mutex);
+  //std::lock_guard<std::mutex> lgMutex(_mutex);
+  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
 
   osg::ref_ptr<Block> blockOld = nullptr;
 
+  osg::ref_ptr<Block> block = new Block(x, z, blockType);
   //поиск блока, который нужно заменить
   for (int i = 0; i < getNumChildren(); i++)
   {
     blockOld = dynamic_cast<Block*>(getChild(i));
-    if (blockOld->GetX() == block->GetX() && 
-      blockOld->GetZ() == block->GetZ())
+    //if (blockOld->GetX() == block->GetX() && 
+      //blockOld->GetZ() == block->GetZ())
+    if (blockOld->GetX() == x &&
+      blockOld->GetZ() == z)
     {
+      //blockOld->SetType(blockType);
       replaceChild(blockOld, block);
     }
   }
@@ -108,7 +114,8 @@ void Map::AddBlock(osg::ref_ptr<Block> block)	//дл€ чтени€ из файла
 
 void Map::RemoveBlock(int x, int z)
 {
-  std::lock_guard<std::mutex> lgMutex(_mutex);
+  //std::lock_guard<std::mutex> lgMutex(_mutex);
+  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
 
   osg::ref_ptr<Block> block = nullptr;
 
@@ -127,13 +134,14 @@ std::map<std::pair<int, int>, osg::ref_ptr<Block>>
 Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
   int sizeX, int sizeZ)
 {
-  std::lock_guard<std::mutex> lgMutex(_mutex);
+  //std::lock_guard<std::mutex> lgMutex(_mutex);
+  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
 
   //перевод размера в осгшные единицы
   sizeX *= _step;
   sizeZ *= _step;
 
-  bool isNewSizeSame = (_sizeX == sizeX && _sizeZ == sizeZ);	//лишн€€ проверка?
+  bool isNewSizeSame = (_sizeX == sizeX && _sizeZ == sizeZ);	//
 
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks;
 

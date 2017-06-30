@@ -11,6 +11,7 @@
 #include <qundoview.h>
 
 #include <Block.h>
+#include <ListTexPathsWidget.h>
 #include <Map.h>
 
 class MapEditor : public QMainWindow
@@ -41,7 +42,10 @@ private:
   QAction* _redoAct;
 
   QUndoStack* _undoStack;
+
   QUndoView* _undoView;
+
+  ListTexPathsWidget _listTexPathWidget;
 
   osg::ref_ptr<Map> _map = new Map(10, 10);
 
@@ -80,8 +84,10 @@ private:
 
   //undo/redo commands
   //map editor
-  void AddBlock(osg::ref_ptr<Block> block, BlockType blockType);
-  void RemoveBlock(osg::ref_ptr<Block> block);
+  //void AddBlock(osg::ref_ptr<Block> block, BlockType blockType);
+  //void RemoveBlock(osg::ref_ptr<Block> block);
+  void AddBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
+  void RemoveBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
   void ReplaceBlock(osg::ref_ptr<Block> block, BlockType blockType);
   //block editor
   void ChangeBlockType(QAbstractButton* rButton,

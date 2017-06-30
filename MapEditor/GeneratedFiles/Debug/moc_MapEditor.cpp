@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
-    QByteArrayData data[42];
-    char stringdata0[498];
+    QByteArrayData data[46];
+    char stringdata0[524];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -45,47 +45,52 @@ QT_MOC_LITERAL(10, 101, 11), // "LoadXMLFile"
 QT_MOC_LITERAL(11, 113, 11), // "SaveXMLFile"
 QT_MOC_LITERAL(12, 125, 13), // "SaveAsXMLFile"
 QT_MOC_LITERAL(13, 139, 8), // "AddBlock"
-QT_MOC_LITERAL(14, 148, 19), // "osg::ref_ptr<Block>"
-QT_MOC_LITERAL(15, 168, 5), // "block"
-QT_MOC_LITERAL(16, 174, 11), // "RemoveBlock"
-QT_MOC_LITERAL(17, 186, 12), // "ReplaceBlock"
-QT_MOC_LITERAL(18, 199, 15), // "ChangeBlockType"
-QT_MOC_LITERAL(19, 215, 16), // "QAbstractButton*"
-QT_MOC_LITERAL(20, 232, 7), // "rButton"
-QT_MOC_LITERAL(21, 240, 10), // "BlockType&"
-QT_MOC_LITERAL(22, 251, 12), // "blockTypeOld"
-QT_MOC_LITERAL(23, 264, 15), // "CreateBlockType"
-QT_MOC_LITERAL(24, 280, 13), // "QButtonGroup*"
-QT_MOC_LITERAL(25, 294, 8), // "btnGroup"
-QT_MOC_LITERAL(26, 303, 15), // "DeleteBlockType"
-QT_MOC_LITERAL(27, 319, 6), // "button"
-QT_MOC_LITERAL(28, 326, 12), // "AddBlockType"
-QT_MOC_LITERAL(29, 339, 2), // "id"
-QT_MOC_LITERAL(30, 342, 18), // "AddBlockTypeButton"
-QT_MOC_LITERAL(31, 361, 13), // "QRadioButton*"
-QT_MOC_LITERAL(32, 375, 4), // "int&"
-QT_MOC_LITERAL(33, 380, 3), // "row"
-QT_MOC_LITERAL(34, 384, 3), // "col"
-QT_MOC_LITERAL(35, 388, 15), // "RemoveBlockType"
-QT_MOC_LITERAL(36, 404, 21), // "RemoveBlockTypeButton"
-QT_MOC_LITERAL(37, 426, 15), // "GetButtonRowCol"
-QT_MOC_LITERAL(38, 442, 13), // "GetNextRowCol"
-QT_MOC_LITERAL(39, 456, 18), // "std::pair<int,int>"
-QT_MOC_LITERAL(40, 475, 13), // "SetPrevRowCol"
-QT_MOC_LITERAL(41, 489, 8) // "GetMutex"
+QT_MOC_LITERAL(14, 148, 17), // "osg::ref_ptr<Map>"
+QT_MOC_LITERAL(15, 166, 3), // "map"
+QT_MOC_LITERAL(16, 170, 1), // "x"
+QT_MOC_LITERAL(17, 172, 1), // "z"
+QT_MOC_LITERAL(18, 174, 11), // "RemoveBlock"
+QT_MOC_LITERAL(19, 186, 12), // "ReplaceBlock"
+QT_MOC_LITERAL(20, 199, 19), // "osg::ref_ptr<Block>"
+QT_MOC_LITERAL(21, 219, 5), // "block"
+QT_MOC_LITERAL(22, 225, 15), // "ChangeBlockType"
+QT_MOC_LITERAL(23, 241, 16), // "QAbstractButton*"
+QT_MOC_LITERAL(24, 258, 7), // "rButton"
+QT_MOC_LITERAL(25, 266, 10), // "BlockType&"
+QT_MOC_LITERAL(26, 277, 12), // "blockTypeOld"
+QT_MOC_LITERAL(27, 290, 15), // "CreateBlockType"
+QT_MOC_LITERAL(28, 306, 13), // "QButtonGroup*"
+QT_MOC_LITERAL(29, 320, 8), // "btnGroup"
+QT_MOC_LITERAL(30, 329, 15), // "DeleteBlockType"
+QT_MOC_LITERAL(31, 345, 6), // "button"
+QT_MOC_LITERAL(32, 352, 12), // "AddBlockType"
+QT_MOC_LITERAL(33, 365, 2), // "id"
+QT_MOC_LITERAL(34, 368, 18), // "AddBlockTypeButton"
+QT_MOC_LITERAL(35, 387, 13), // "QRadioButton*"
+QT_MOC_LITERAL(36, 401, 4), // "int&"
+QT_MOC_LITERAL(37, 406, 3), // "row"
+QT_MOC_LITERAL(38, 410, 3), // "col"
+QT_MOC_LITERAL(39, 414, 15), // "RemoveBlockType"
+QT_MOC_LITERAL(40, 430, 21), // "RemoveBlockTypeButton"
+QT_MOC_LITERAL(41, 452, 15), // "GetButtonRowCol"
+QT_MOC_LITERAL(42, 468, 13), // "GetNextRowCol"
+QT_MOC_LITERAL(43, 482, 18), // "std::pair<int,int>"
+QT_MOC_LITERAL(44, 501, 13), // "SetPrevRowCol"
+QT_MOC_LITERAL(45, 515, 8) // "GetMutex"
 
     },
     "MapEditor\0QuitViewer\0\0QuitAppToMain\0"
     "SendBlockType\0BlockType\0blockType\0"
     "NewMap\0changeMapSize\0blockEdit\0"
     "LoadXMLFile\0SaveXMLFile\0SaveAsXMLFile\0"
-    "AddBlock\0osg::ref_ptr<Block>\0block\0"
-    "RemoveBlock\0ReplaceBlock\0ChangeBlockType\0"
-    "QAbstractButton*\0rButton\0BlockType&\0"
-    "blockTypeOld\0CreateBlockType\0QButtonGroup*\0"
-    "btnGroup\0DeleteBlockType\0button\0"
-    "AddBlockType\0id\0AddBlockTypeButton\0"
-    "QRadioButton*\0int&\0row\0col\0RemoveBlockType\0"
+    "AddBlock\0osg::ref_ptr<Map>\0map\0x\0z\0"
+    "RemoveBlock\0ReplaceBlock\0osg::ref_ptr<Block>\0"
+    "block\0ChangeBlockType\0QAbstractButton*\0"
+    "rButton\0BlockType&\0blockTypeOld\0"
+    "CreateBlockType\0QButtonGroup*\0btnGroup\0"
+    "DeleteBlockType\0button\0AddBlockType\0"
+    "id\0AddBlockTypeButton\0QRadioButton*\0"
+    "int&\0row\0col\0RemoveBlockType\0"
     "RemoveBlockTypeButton\0GetButtonRowCol\0"
     "GetNextRowCol\0std::pair<int,int>\0"
     "SetPrevRowCol\0GetMutex"
@@ -117,20 +122,20 @@ static const uint qt_meta_data_MapEditor[] = {
       10,    0,  137,    2, 0x0a /* Public */,
       11,    0,  138,    2, 0x0a /* Public */,
       12,    0,  139,    2, 0x0a /* Public */,
-      13,    2,  140,    2, 0x0a /* Public */,
-      16,    1,  145,    2, 0x0a /* Public */,
-      17,    2,  148,    2, 0x0a /* Public */,
-      18,    3,  153,    2, 0x0a /* Public */,
-      23,    2,  160,    2, 0x0a /* Public */,
-      26,    2,  165,    2, 0x0a /* Public */,
-      28,    2,  170,    2, 0x0a /* Public */,
-      30,    3,  175,    2, 0x0a /* Public */,
-      35,    1,  182,    2, 0x0a /* Public */,
-      36,    1,  185,    2, 0x0a /* Public */,
-      37,    3,  188,    2, 0x0a /* Public */,
-      38,    0,  195,    2, 0x0a /* Public */,
-      40,    0,  196,    2, 0x0a /* Public */,
-      41,    0,  197,    2, 0x0a /* Public */,
+      13,    4,  140,    2, 0x0a /* Public */,
+      18,    4,  149,    2, 0x0a /* Public */,
+      19,    2,  158,    2, 0x0a /* Public */,
+      22,    3,  163,    2, 0x0a /* Public */,
+      27,    2,  170,    2, 0x0a /* Public */,
+      30,    2,  175,    2, 0x0a /* Public */,
+      32,    2,  180,    2, 0x0a /* Public */,
+      34,    3,  185,    2, 0x0a /* Public */,
+      39,    1,  192,    2, 0x0a /* Public */,
+      40,    1,  195,    2, 0x0a /* Public */,
+      41,    3,  198,    2, 0x0a /* Public */,
+      42,    0,  205,    2, 0x0a /* Public */,
+      44,    0,  206,    2, 0x0a /* Public */,
+      45,    0,  207,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -144,18 +149,18 @@ static const uint qt_meta_data_MapEditor[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 14, 0x80000000 | 5,   15,    6,
-    QMetaType::Void, 0x80000000 | 14,   15,
-    QMetaType::Void, 0x80000000 | 14, 0x80000000 | 5,   15,    6,
-    QMetaType::Void, 0x80000000 | 19, 0x80000000 | 21, 0x80000000 | 5,   20,    6,   22,
-    QMetaType::Void, 0x80000000 | 24, 0x80000000 | 5,   25,    6,
-    QMetaType::Void, 0x80000000 | 19, 0x80000000 | 5,   27,    6,
-    QMetaType::Void, QMetaType::Int, 0x80000000 | 5,   29,    6,
-    QMetaType::Void, 0x80000000 | 31, 0x80000000 | 32, 0x80000000 | 32,   20,   33,   34,
-    QMetaType::Void, QMetaType::Int,   29,
-    QMetaType::Void, 0x80000000 | 31,   20,
-    QMetaType::Void, 0x80000000 | 31, 0x80000000 | 32, 0x80000000 | 32,   20,   33,   34,
-    0x80000000 | 39,
+    QMetaType::Void, 0x80000000 | 14, QMetaType::Int, QMetaType::Int, 0x80000000 | 5,   15,   16,   17,    6,
+    QMetaType::Void, 0x80000000 | 14, QMetaType::Int, QMetaType::Int, 0x80000000 | 5,   15,   16,   17,    6,
+    QMetaType::Void, 0x80000000 | 20, 0x80000000 | 5,   21,    6,
+    QMetaType::Void, 0x80000000 | 23, 0x80000000 | 25, 0x80000000 | 5,   24,    6,   26,
+    QMetaType::Void, 0x80000000 | 28, 0x80000000 | 5,   29,    6,
+    QMetaType::Void, 0x80000000 | 23, 0x80000000 | 5,   31,    6,
+    QMetaType::Void, QMetaType::Int, 0x80000000 | 5,   33,    6,
+    QMetaType::Void, 0x80000000 | 35, 0x80000000 | 36, 0x80000000 | 36,   24,   37,   38,
+    QMetaType::Void, QMetaType::Int,   33,
+    QMetaType::Void, 0x80000000 | 35,   24,
+    QMetaType::Void, 0x80000000 | 35, 0x80000000 | 36, 0x80000000 | 36,   24,   37,   38,
+    0x80000000 | 43,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -177,8 +182,8 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 6: _t->LoadXMLFile(); break;
         case 7: _t->SaveXMLFile(); break;
         case 8: _t->SaveAsXMLFile(); break;
-        case 9: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
-        case 10: _t->RemoveBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1]))); break;
+        case 9: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Map>(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< BlockType(*)>(_a[4]))); break;
+        case 10: _t->RemoveBlock((*reinterpret_cast< osg::ref_ptr<Map>(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< BlockType(*)>(_a[4]))); break;
         case 11: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
         case 12: _t->ChangeBlockType((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2])),(*reinterpret_cast< BlockType(*)>(_a[3]))); break;
         case 13: _t->CreateBlockType((*reinterpret_cast< QButtonGroup*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;

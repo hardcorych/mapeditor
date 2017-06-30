@@ -100,6 +100,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_BlockEditDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="ListTexPathsWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ListTexPathsWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ListTexPathsWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MapEditor.h">
@@ -118,6 +127,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="BlockEditDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ListTexPathsWidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
