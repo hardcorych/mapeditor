@@ -268,5 +268,6 @@ void DeleteBlockTypeCommand::redo()
 {
   _mapEditor->RemoveBlockType(_buttonId);
   _mapEditor->RemoveBlockTypeButton(_button);
+
   emit _mapEditor->SendBlockType(BlockType());
 }

@@ -264,13 +264,29 @@ void MapEditor::blockEdit()
     break;
 
   case (int)BlockEditAction::CHANGE:
-    ChangeBlockType(_btnGroupBlocks->checkedButton(),
-      _blockTypes[blockTypeId], blockEditDialog.GetBlockType());
+    if (_btnGroupBlocks->checkedButton() != 0)
+    {
+      ChangeBlockType(_btnGroupBlocks->checkedButton(),
+        _blockTypes[blockTypeId], blockEditDialog.GetBlockType());
+    }
+    else
+    {
+      QMessageBox::critical(this, "Error",
+        "Block type is not selected", QMessageBox::Ok);
+    }
     break;
 
   case (int)BlockEditAction::DELETE:
-    DeleteBlockType(_btnGroupBlocks->checkedButton(),
-      _blockTypes[_btnGroupBlocks->checkedId()]);
+    if (_btnGroupBlocks->checkedButton() != 0)
+    {
+      DeleteBlockType(_btnGroupBlocks->checkedButton(),
+        _blockTypes[_btnGroupBlocks->checkedId()]);
+    }
+    else
+    {
+      QMessageBox::critical(this, "Error", 
+        "Block type is not selected", QMessageBox::Ok);
+    }
     break;
   }
 }
