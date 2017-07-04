@@ -88,7 +88,8 @@ private:
   //void RemoveBlock(osg::ref_ptr<Block> block);
   void AddBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
   void RemoveBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
-  void ReplaceBlock(osg::ref_ptr<Block> block, BlockType blockType);
+  //void ReplaceBlock(osg::ref_ptr<Block> block, BlockType blockType);
+  void ReplaceBlock(osg::ref_ptr<Map> map, osg::ref_ptr<Block> block, BlockType blockType);
   //block editor
   void ChangeBlockType(QAbstractButton* rButton,
     BlockType& blockType, BlockType blockTypeOld);
@@ -109,6 +110,9 @@ private:
   void SetPrevRowCol(); 
 
   std::mutex& GetMutex()	{ return _mutex; }
+
+  void Undo() { if (_undoStack->canUndo()) _undoStack->undo(); }
+  void Redo() { if (_undoStack->canRedo()) _undoStack->redo(); }
 
 signals:
   void QuitViewer();

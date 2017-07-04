@@ -162,7 +162,7 @@ MapEditor::~MapEditor()
 void MapEditor::CreateBlockType(QButtonGroup* btnGroup,
   BlockType blockType)
 {
-  QUndoCommand* createBlockTypeCommand =
+  CreateBlockTypeCommand* createBlockTypeCommand =
     new CreateBlockTypeCommand(btnGroup, blockType, this);
   _undoStack->push(createBlockTypeCommand);
 }
@@ -170,7 +170,7 @@ void MapEditor::CreateBlockType(QButtonGroup* btnGroup,
 void MapEditor::ChangeBlockType(QAbstractButton* rButton, 
   BlockType& blockType, BlockType blockTypeNew)
 {
-  QUndoCommand* changeBlockTypeCommand =
+  ChangeBlockTypeCommand* changeBlockTypeCommand =
                             new ChangeBlockTypeCommand( rButton,
                                                         blockType,
                                                         blockTypeNew,
@@ -181,7 +181,7 @@ void MapEditor::ChangeBlockType(QAbstractButton* rButton,
 void MapEditor::DeleteBlockType(QAbstractButton* button,
   BlockType blockType)
 {
-  QUndoCommand* deleteBlockTypeCommand =
+  DeleteBlockTypeCommand* deleteBlockTypeCommand =
     new DeleteBlockTypeCommand(_btnGroupBlocks, blockType, this);
   _undoStack->push(deleteBlockTypeCommand);
 }
@@ -807,21 +807,25 @@ void MapEditor::createUndoRedoActions()
 void MapEditor::AddBlock(osg::ref_ptr<Map> map, int x, int z,
   BlockType blockType)
 {
-  QUndoCommand* addCommand = new AddCommand(map, x, z, blockType);
+  AddCommand* addCommand = new AddCommand(map, x, z, blockType);
   _undoStack->push(addCommand);
 }
 
 void MapEditor::RemoveBlock(osg::ref_ptr<Map> map, int x, int z,
   BlockType blockType)
 {
-  QUndoCommand* removeCommand = new RemoveCommand(map, x, z, blockType);
+  RemoveCommand* removeCommand = new RemoveCommand(map, x, z, blockType);
   _undoStack->push(removeCommand);
 }
 
-void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, 
-  BlockType blockType)
+//void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, 
+  //BlockType blockType)
+void MapEditor::ReplaceBlock(osg::ref_ptr<Map> map,
+                             osg::ref_ptr<Block> block,
+                             BlockType blockType)
 {
-  QUndoCommand* replaceCommand = new ReplaceCommand(block, blockType);
+  ReplaceCommand* replaceCommand = 
+    new ReplaceCommand(map, block, blockType);
   _undoStack->push(replaceCommand);
 }
 

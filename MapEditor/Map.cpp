@@ -112,6 +112,13 @@ void Map::AddBlock(int x, int z, BlockType blockType)
   }
 }
 
+void Map::ReplaceBlock(int x, int z, BlockType blockType)
+{
+  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
+
+
+}
+
 void Map::RemoveBlock(int x, int z)
 {
   //std::lock_guard<std::mutex> lgMutex(_mutex);

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
-    QByteArrayData data[46];
-    char stringdata0[524];
+    QByteArrayData data[48];
+    char stringdata0[534];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -76,7 +76,9 @@ QT_MOC_LITERAL(41, 452, 15), // "GetButtonRowCol"
 QT_MOC_LITERAL(42, 468, 13), // "GetNextRowCol"
 QT_MOC_LITERAL(43, 482, 18), // "std::pair<int,int>"
 QT_MOC_LITERAL(44, 501, 13), // "SetPrevRowCol"
-QT_MOC_LITERAL(45, 515, 8) // "GetMutex"
+QT_MOC_LITERAL(45, 515, 8), // "GetMutex"
+QT_MOC_LITERAL(46, 524, 4), // "Undo"
+QT_MOC_LITERAL(47, 529, 4) // "Redo"
 
     },
     "MapEditor\0QuitViewer\0\0QuitAppToMain\0"
@@ -93,7 +95,7 @@ QT_MOC_LITERAL(45, 515, 8) // "GetMutex"
     "int&\0row\0col\0RemoveBlockType\0"
     "RemoveBlockTypeButton\0GetButtonRowCol\0"
     "GetNextRowCol\0std::pair<int,int>\0"
-    "SetPrevRowCol\0GetMutex"
+    "SetPrevRowCol\0GetMutex\0Undo\0Redo"
 };
 #undef QT_MOC_LITERAL
 
@@ -103,7 +105,7 @@ static const uint qt_meta_data_MapEditor[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      23,   14, // methods
+      25,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -111,31 +113,33 @@ static const uint qt_meta_data_MapEditor[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,  129,    2, 0x06 /* Public */,
-       3,    0,  130,    2, 0x06 /* Public */,
-       4,    1,  131,    2, 0x06 /* Public */,
+       1,    0,  139,    2, 0x06 /* Public */,
+       3,    0,  140,    2, 0x06 /* Public */,
+       4,    1,  141,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       7,    0,  134,    2, 0x0a /* Public */,
-       8,    0,  135,    2, 0x0a /* Public */,
-       9,    0,  136,    2, 0x0a /* Public */,
-      10,    0,  137,    2, 0x0a /* Public */,
-      11,    0,  138,    2, 0x0a /* Public */,
-      12,    0,  139,    2, 0x0a /* Public */,
-      13,    4,  140,    2, 0x0a /* Public */,
-      18,    4,  149,    2, 0x0a /* Public */,
-      19,    2,  158,    2, 0x0a /* Public */,
-      22,    3,  163,    2, 0x0a /* Public */,
-      27,    2,  170,    2, 0x0a /* Public */,
-      30,    2,  175,    2, 0x0a /* Public */,
-      32,    2,  180,    2, 0x0a /* Public */,
-      34,    3,  185,    2, 0x0a /* Public */,
-      39,    1,  192,    2, 0x0a /* Public */,
-      40,    1,  195,    2, 0x0a /* Public */,
-      41,    3,  198,    2, 0x0a /* Public */,
-      42,    0,  205,    2, 0x0a /* Public */,
-      44,    0,  206,    2, 0x0a /* Public */,
-      45,    0,  207,    2, 0x0a /* Public */,
+       7,    0,  144,    2, 0x0a /* Public */,
+       8,    0,  145,    2, 0x0a /* Public */,
+       9,    0,  146,    2, 0x0a /* Public */,
+      10,    0,  147,    2, 0x0a /* Public */,
+      11,    0,  148,    2, 0x0a /* Public */,
+      12,    0,  149,    2, 0x0a /* Public */,
+      13,    4,  150,    2, 0x0a /* Public */,
+      18,    4,  159,    2, 0x0a /* Public */,
+      19,    3,  168,    2, 0x0a /* Public */,
+      22,    3,  175,    2, 0x0a /* Public */,
+      27,    2,  182,    2, 0x0a /* Public */,
+      30,    2,  187,    2, 0x0a /* Public */,
+      32,    2,  192,    2, 0x0a /* Public */,
+      34,    3,  197,    2, 0x0a /* Public */,
+      39,    1,  204,    2, 0x0a /* Public */,
+      40,    1,  207,    2, 0x0a /* Public */,
+      41,    3,  210,    2, 0x0a /* Public */,
+      42,    0,  217,    2, 0x0a /* Public */,
+      44,    0,  218,    2, 0x0a /* Public */,
+      45,    0,  219,    2, 0x0a /* Public */,
+      46,    0,  220,    2, 0x0a /* Public */,
+      47,    0,  221,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -151,7 +155,7 @@ static const uint qt_meta_data_MapEditor[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 14, QMetaType::Int, QMetaType::Int, 0x80000000 | 5,   15,   16,   17,    6,
     QMetaType::Void, 0x80000000 | 14, QMetaType::Int, QMetaType::Int, 0x80000000 | 5,   15,   16,   17,    6,
-    QMetaType::Void, 0x80000000 | 20, 0x80000000 | 5,   21,    6,
+    QMetaType::Void, 0x80000000 | 14, 0x80000000 | 20, 0x80000000 | 5,   15,   21,    6,
     QMetaType::Void, 0x80000000 | 23, 0x80000000 | 25, 0x80000000 | 5,   24,    6,   26,
     QMetaType::Void, 0x80000000 | 28, 0x80000000 | 5,   29,    6,
     QMetaType::Void, 0x80000000 | 23, 0x80000000 | 5,   31,    6,
@@ -161,6 +165,8 @@ static const uint qt_meta_data_MapEditor[] = {
     QMetaType::Void, 0x80000000 | 35,   24,
     QMetaType::Void, 0x80000000 | 35, 0x80000000 | 36, 0x80000000 | 36,   24,   37,   38,
     0x80000000 | 43,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -184,7 +190,7 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 8: _t->SaveAsXMLFile(); break;
         case 9: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Map>(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< BlockType(*)>(_a[4]))); break;
         case 10: _t->RemoveBlock((*reinterpret_cast< osg::ref_ptr<Map>(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< BlockType(*)>(_a[4]))); break;
-        case 11: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
+        case 11: _t->ReplaceBlock((*reinterpret_cast< osg::ref_ptr<Map>(*)>(_a[1])),(*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[2])),(*reinterpret_cast< BlockType(*)>(_a[3]))); break;
         case 12: _t->ChangeBlockType((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2])),(*reinterpret_cast< BlockType(*)>(_a[3]))); break;
         case 13: _t->CreateBlockType((*reinterpret_cast< QButtonGroup*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
         case 14: _t->DeleteBlockType((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
@@ -197,6 +203,8 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
             if (_a[0]) *reinterpret_cast< std::pair<int,int>*>(_a[0]) = _r; }  break;
         case 21: _t->SetPrevRowCol(); break;
         case 22: _t->GetMutex(); break;
+        case 23: _t->Undo(); break;
+        case 24: _t->Redo(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -297,13 +305,13 @@ int MapEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 23)
+        if (_id < 25)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 23;
+        _id -= 25;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 23)
+        if (_id < 25)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 23;
+        _id -= 25;
     }
     return _id;
 }

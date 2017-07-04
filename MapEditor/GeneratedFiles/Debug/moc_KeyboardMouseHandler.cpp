@@ -73,17 +73,17 @@ static const uint qt_meta_data_KeyboardMouseHandler[] = {
  // signals: name, argc, parameters, tag, flags
        1,    4,   44,    2, 0x06 /* Public */,
        9,    4,   53,    2, 0x06 /* Public */,
-      10,    2,   62,    2, 0x06 /* Public */,
-      13,    0,   67,    2, 0x06 /* Public */,
-      14,    0,   68,    2, 0x06 /* Public */,
+      10,    3,   62,    2, 0x06 /* Public */,
+      13,    0,   69,    2, 0x06 /* Public */,
+      14,    0,   70,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      15,    1,   69,    2, 0x0a /* Public */,
+      15,    1,   71,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3, QMetaType::Int, QMetaType::Int, 0x80000000 | 7,    4,    5,    6,    8,
     QMetaType::Void, 0x80000000 | 3, QMetaType::Int, QMetaType::Int, 0x80000000 | 7,    4,    5,    6,    8,
-    QMetaType::Void, 0x80000000 | 11, 0x80000000 | 7,   12,    8,
+    QMetaType::Void, 0x80000000 | 3, 0x80000000 | 11, 0x80000000 | 7,    4,   12,    8,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -101,7 +101,7 @@ void KeyboardMouseHandler::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         switch (_id) {
         case 0: _t->RemoveBlock((*reinterpret_cast< osg::ref_ptr<Map>(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< BlockType(*)>(_a[4]))); break;
         case 1: _t->AddBlock((*reinterpret_cast< osg::ref_ptr<Map>(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< BlockType(*)>(_a[4]))); break;
-        case 2: _t->ReplaceableBlock((*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[1])),(*reinterpret_cast< BlockType(*)>(_a[2]))); break;
+        case 2: _t->ReplaceableBlock((*reinterpret_cast< osg::ref_ptr<Map>(*)>(_a[1])),(*reinterpret_cast< osg::ref_ptr<Block>(*)>(_a[2])),(*reinterpret_cast< BlockType(*)>(_a[3]))); break;
         case 3: _t->Undo(); break;
         case 4: _t->Redo(); break;
         case 5: _t->ReceiveBlock((*reinterpret_cast< BlockType(*)>(_a[1]))); break;
@@ -125,7 +125,7 @@ void KeyboardMouseHandler::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
             }
         }
         {
-            typedef void (KeyboardMouseHandler::*_t)(osg::ref_ptr<Block> , BlockType );
+            typedef void (KeyboardMouseHandler::*_t)(osg::ref_ptr<Map> , osg::ref_ptr<Block> , BlockType );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&KeyboardMouseHandler::ReplaceableBlock)) {
                 *result = 2;
                 return;
@@ -201,9 +201,9 @@ void KeyboardMouseHandler::AddBlock(osg::ref_ptr<Map> _t1, int _t2, int _t3, Blo
 }
 
 // SIGNAL 2
-void KeyboardMouseHandler::ReplaceableBlock(osg::ref_ptr<Block> _t1, BlockType _t2)
+void KeyboardMouseHandler::ReplaceableBlock(osg::ref_ptr<Map> _t1, osg::ref_ptr<Block> _t2, BlockType _t3)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
