@@ -68,10 +68,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddCommand.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockEditDialog.cpp" />
     <ClCompile Include="BlockType.cpp" />
-    <ClCompile Include="Commands.cpp" />
+    <ClCompile Include="ChangeBlockTypeCommand.cpp" />
+    <ClCompile Include="ChangeSizeCommand.cpp" />
+    <ClCompile Include="CreateBlockTypeCommand.cpp" />
+    <ClCompile Include="DeleteBlockTypeCommand.cpp" />
+    <ClCompile Include="DrawBlockPixmap.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_BlockEditDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -102,6 +107,8 @@
     <ClCompile Include="GeneratedFiles\Release\moc_TableTexPathsWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="RemoveCommand.cpp" />
+    <ClCompile Include="ReplaceCommand.cpp" />
     <ClCompile Include="TableTexPathsWidget.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -136,6 +143,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddCommand.h" />
     <ClInclude Include="Block.h" />
     <CustomBuild Include="BlockEditDialog.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -148,7 +156,11 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(OSG_INCLUDE_DIR)\."</Command>
     </CustomBuild>
     <ClInclude Include="BlockType.h" />
-    <ClInclude Include="Commands.h" />
+    <ClInclude Include="ChangeBlockTypeCommand.h" />
+    <ClInclude Include="ChangeSizeCommand.h" />
+    <ClInclude Include="CreateBlockTypeCommand.h" />
+    <ClInclude Include="DeleteBlockTypeCommand.h" />
+    <ClInclude Include="DrawBlockPixmap.h" />
     <ClInclude Include="GeneratedFiles\ui_MapEditor.h" />
     <CustomBuild Include="TableTexPathsWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -185,6 +197,8 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(OSG_INCLUDE_DIR)\."</Command>
     </CustomBuild>
+    <ClInclude Include="RemoveCommand.h" />
+    <ClInclude Include="ReplaceCommand.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Viewer.h" />
   </ItemGroup>

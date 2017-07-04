@@ -11,10 +11,17 @@
 #include <qpainter.h>
 #include <qxmlstream.h>
 
+#include <AddCommand.h>
 #include <BlockEditDialog.h>
-#include <Commands.h>
+#include <ChangeBlockTypeCommand.h>
+#include <ChangeSizeCommand.h>
+#include <CreateBlockTypeCommand.h>
+#include <DeleteBlockTypeCommand.h>
+#include <DrawBlockPixmap.h>
 #include <KeyboardMouseHandler.h>
 #include <MapSizeDialog.h>
+#include <RemoveCommand.h>
+#include <ReplaceCommand.h>
 #include <Viewer.h>
 
 MapEditor::MapEditor(QWidget *parent)
@@ -834,11 +841,3 @@ void MapEditor::changeMapSize()
   }
 
 }
-
-/*
-BlockType MapEditor::GetSelectedBlockType()
-{
-  int blockTypeId = _btnGroupBlocks->checkedId();
-  return _blockTypes[_btnGroupBlocks->checkedId()];
-}
-*/
