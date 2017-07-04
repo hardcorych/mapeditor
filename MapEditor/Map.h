@@ -27,7 +27,6 @@ public:
   //void AddBlock(osg::ref_ptr<Block> block);
   void AddBlock(int x, int z, BlockType blockType);
   void RemoveBlock(int x, int z);
-  void ReplaceBlock(int x, int z, BlockType blockType);
 
   //resizing
   std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize

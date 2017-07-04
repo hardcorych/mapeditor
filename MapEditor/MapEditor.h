@@ -11,7 +11,7 @@
 #include <qundoview.h>
 
 #include <Block.h>
-#include <ListTexPathsWidget.h>
+#include <TableTexPathsWidget.h>
 #include <Map.h>
 
 class MapEditor : public QMainWindow
@@ -45,7 +45,8 @@ private:
 
   QUndoView* _undoView;
 
-  ListTexPathsWidget _listTexPathWidget;
+  //ListTexPathsWidget _listTexPathWidget;
+  TableTexPathsWidget* _tableTexPathsWidget;
 
   osg::ref_ptr<Map> _map = new Map(10, 10);
 
@@ -84,11 +85,8 @@ private:
 
   //undo/redo commands
   //map editor
-  //void AddBlock(osg::ref_ptr<Block> block, BlockType blockType);
-  //void RemoveBlock(osg::ref_ptr<Block> block);
   void AddBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
   void RemoveBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
-  //void ReplaceBlock(osg::ref_ptr<Block> block, BlockType blockType);
   void ReplaceBlock(osg::ref_ptr<Map> map, osg::ref_ptr<Block> block, BlockType blockType);
   //block editor
   void ChangeBlockType(QAbstractButton* rButton,
@@ -114,8 +112,10 @@ private:
   void Undo() { if (_undoStack->canUndo()) _undoStack->undo(); }
   void Redo() { if (_undoStack->canRedo()) _undoStack->redo(); }
 
+  BlockType GetSelectedBlockType()
+  { return _blockTypes[_btnGroupBlocks->checkedId()]; }
+
 signals:
   void QuitViewer();
   void QuitAppToMain();
-  void SendBlockType(BlockType blockType);
 };

@@ -3,8 +3,9 @@
 #include <algorithm>
 #include <memory>
 
-KeyboardMouseHandler::KeyboardMouseHandler() :
-_mouseX(0), _mouseY(0)
+KeyboardMouseHandler::KeyboardMouseHandler(MapEditor* mapEditor) :
+_mouseX(0), _mouseY(0),
+_mapEditor(mapEditor)
 {
 }
 
@@ -32,39 +33,35 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
   {
     if (_mouseX == ea.getX() && _mouseY == ea.getY())
     {
+      //screen coordinates normalization for PolytopeIntersector
+      _mouseX = ea.getXnormalized();
+      _mouseY = ea.getYnormalized();
+
+      std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> blockAndMap =
+        findBlockAndMap(_mouseX, _mouseY, viewer);
+
+      osg::ref_ptr<Map> map = std::get<0>(blockAndMap);
+      osg::ref_ptr<Block> block = std::get<1>(blockAndMap);
       switch (ea.getButton())
       {
       case(osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON) :
       {
         //adding/changing the block
-        //screen coordinates normalization for PolytopeIntersector
-        _mouseX = ea.getXnormalized();	
-        _mouseY = ea.getYnormalized();
-
-        std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> blockAndMap = 
-          findBlockAndMap(_mouseX, _mouseY, viewer);
-        //bool isValid = std::get<0>(validBlock);
-
-        //if (isValid)
-        osg::ref_ptr<Map> map = std::get<0>(blockAndMap);
-        osg::ref_ptr<Block> block = std::get<1>(blockAndMap);
         if (map.valid() && block.valid())
         {
-          osg::ref_ptr<Map> map = std::get<0>(blockAndMap);
-          osg::ref_ptr<Block> block = std::get<1>(blockAndMap);
+          _blockType = _mapEditor->GetSelectedBlockType();
 
           if (block->GetType().GetTypeName() != "BORDER" &&
             !_blockType.isEmpty())
           {
             if (block->GetType().GetTypeName() == "EMPTY")
             {
-              //emit AddableBlock(block, _blockType);
-              emit AddBlock(map, block->GetX(), block->GetZ(),
+              _mapEditor->AddBlock(map, block->GetX(), block->GetZ(),
                 _blockType);
             }
             else if (block->GetType() != _blockType)
             {
-              emit ReplaceableBlock(map, block, _blockType);
+              _mapEditor->ReplaceBlock(map, block, _blockType);
             }
           }
           return true;	//TRUE to process an event
@@ -74,29 +71,15 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
       case(osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON) :
       {
         //removing the block
-        //screen coordinates normalization for PolytopeIntersector
-        _mouseX = ea.getXnormalized();
-        _mouseY = ea.getYnormalized();
-
-        std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> blockAndMap =
-          findBlockAndMap(_mouseX, _mouseY, viewer);
-        //bool isValid = std::get<0>(validBlock);
-        //if (isValid)
-        osg::ref_ptr<Map> map = std::get<0>(blockAndMap);
-        osg::ref_ptr<Block> block = std::get<1>(blockAndMap);
         if (map.valid() && block.valid())
         {
-          osg::ref_ptr<Map> map = std::get<0>(blockAndMap);
-          osg::ref_ptr<Block> block = std::get<1>(blockAndMap);
-          
           BlockType blockType = block->GetType();
           if (blockType.GetTypeName() != "BORDER" && 
             blockType.GetTypeName() != "EMPTY")
           {
             //emit to delete command
-            //emit RemovableBlock(block);
-            emit RemoveBlock(map, 
-              block->GetX(), block->GetZ(), blockType);
+            _mapEditor->RemoveBlock(map, block->GetX(),
+              block->GetZ(), blockType);
           }
           return true;	//TRUE to process an event
         }
@@ -113,14 +96,14 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
       (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
       ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
     {
-      emit Undo();
+      _mapEditor->Undo();
       return true;
     }
     else if (ea.getUnmodifiedKey() == osgGA::GUIEventAdapter::KEY_Y &&
       (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
       ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
     {
-      emit Redo();
+      _mapEditor->Redo();
       return true;
     }
 
@@ -173,9 +156,4 @@ KeyboardMouseHandler::findBlockAndMap(const double x, const double y,
   //!!!!!!!!!!!!!
   //return std::make_pair((selectedBlock.valid() && selectedMap.valid()), block);
   return std::make_pair(map, block);
-}
-
-void KeyboardMouseHandler::ReceiveBlock(BlockType blockType)
-{
-  _blockType = blockType;
 }

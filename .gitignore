@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+*.suo
+*.sdf
+*.user
+x64/
+MapEditor/x64
+MapEditor/GeneratedFiles/Debug
+MapEditor/GeneratedFiles/Release

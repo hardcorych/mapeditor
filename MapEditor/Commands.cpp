@@ -88,7 +88,6 @@ QUndoCommand(parent),
 _map(map),
 _blockType(blockType)
 {
-  //_blockTypeOld = block->GetType();
   _blockTypeOld = block->GetType();
   _x = block->GetX();
   _z = block->GetZ();
@@ -192,8 +191,6 @@ void CreateBlockTypeCommand::undo()
   _mapEditor->RemoveBlockTypeButton(_button);
 
   _mapEditor->SetPrevRowCol();
-
-  emit _mapEditor->SendBlockType(BlockType());
 }
 
 void CreateBlockTypeCommand::redo()
@@ -237,8 +234,6 @@ void ChangeBlockTypeCommand::undo()
   _blockTypeRef = _blockType;
   QPixmap pixmap = DrawBlockPixmap(_blockType);
   _button->setIcon(pixmap);
-
-  emit _mapEditor->SendBlockType(_blockType);
 }
 
 void ChangeBlockTypeCommand::redo()
@@ -246,8 +241,6 @@ void ChangeBlockTypeCommand::redo()
   _blockTypeRef = _blockTypeNew;
   QPixmap pixmap = DrawBlockPixmap(_blockTypeNew);
   _button->setIcon(pixmap);
-
-  emit _mapEditor->SendBlockType(_blockTypeNew);
 }
 
 DeleteBlockTypeCommand::DeleteBlockTypeCommand(QButtonGroup* btnGroup,
@@ -284,6 +277,4 @@ void DeleteBlockTypeCommand::redo()
 {
   _mapEditor->RemoveBlockType(_buttonId);
   _mapEditor->RemoveBlockTypeButton(_button);
-
-  emit _mapEditor->SendBlockType(BlockType());
 }

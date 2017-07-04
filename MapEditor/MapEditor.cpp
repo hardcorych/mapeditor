@@ -74,13 +74,6 @@ MapEditor::MapEditor(QWidget *parent)
 
   ui.labelMessage->setText("Information label");
 
-  connect(_btnGroupBlocks,
-    static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked),
-    [=](int id)
-  {
-    emit SendBlockType(_blockTypes[id]);
-  });
-
   _renderThread = std::thread(&MapEditor::renderScene, this);
   
   //setting default texture paths
@@ -145,9 +138,11 @@ MapEditor::MapEditor(QWidget *parent)
     rButton->setVisible(true);
   }
 
-  _listTexPathWidget.setWindowTitle("Texture paths list");
-  _listTexPathWidget.resize(320, 240);
-  _listTexPathWidget.show();
+  _tableTexPathsWidget = 
+    new TableTexPathsWidget(_blockTypes, _btnGroupBlocks);
+  _tableTexPathsWidget->setWindowTitle("Texture paths list");
+  _tableTexPathsWidget->resize(500, 500);
+  _tableTexPathsWidget->show();
 }
 
 MapEditor::~MapEditor()
@@ -750,22 +745,9 @@ void MapEditor::renderScene()
   viewer.realize();
 
   osg::ref_ptr<KeyboardMouseHandler> keyboardMouseHandler = 
-    new KeyboardMouseHandler;
+    new KeyboardMouseHandler(this);
   viewer.addEventHandler(keyboardMouseHandler);
   viewer.addEventHandler(new osgViewer::StatsHandler);
-
-  connect(this, &MapEditor::SendBlockType, keyboardMouseHandler,
-    &KeyboardMouseHandler::ReceiveBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::AddBlock, 
-    this, &MapEditor::AddBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::RemoveBlock, 
-    this, &MapEditor::RemoveBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::ReplaceableBlock, 
-    this, &MapEditor::ReplaceBlock, Qt::DirectConnection);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::Undo,
-    _undoStack, &QUndoStack::undo);
-  connect(keyboardMouseHandler, &KeyboardMouseHandler::Redo,
-    _undoStack, &QUndoStack::redo);
 
   viewer.setSceneData(_map);
   viewer.setCameraManipulator(new osgGA::TrackballManipulator);
@@ -779,8 +761,10 @@ void MapEditor::renderScene()
   while (!viewer.done())
   {	
     //для избежания конфликта при создании новой карты
+    //!!
     std::lock_guard<std::recursive_mutex> lgMutex(_map->GetMutex());
     //std::lock_guard<std::mutex> lgMutex(mutex);
+    //std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
     viewer.frame();
   }
 
@@ -843,10 +827,18 @@ void MapEditor::changeMapSize()
       mapSizeZ == _map->GetSizeZ() / _blockSize))
     {
       //push undoStack
-      QUndoCommand* changeSizeCommand = 
+      ChangeSizeCommand* changeSizeCommand = 
         new ChangeSizeCommand(_map, mapSizeX, mapSizeZ);
       _undoStack->push(changeSizeCommand);
     }
   }
 
 }
+
+/*
+BlockType MapEditor::GetSelectedBlockType()
+{
+  int blockTypeId = _btnGroupBlocks->checkedId();
+  return _blockTypes[_btnGroupBlocks->checkedId()];
+}
+*/
