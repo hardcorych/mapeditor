@@ -1,3 +1,5 @@
+#pragma once
+
 #include "MapEditor.h"
 
 #include <memory>
@@ -18,16 +20,19 @@
 #include <CreateBlockTypeCommand.h>
 #include <DeleteBlockTypeCommand.h>
 #include <DrawBlockPixmap.h>
-#include <KeyboardMouseHandler.h>
 #include <MapSizeDialog.h>
 #include <RemoveCommand.h>
 #include <ReplaceCommand.h>
-#include <Viewer.h>
 
-MapEditor::MapEditor(QWidget *parent)
-  : QMainWindow(parent),
-  _minMapSize(5),
-  _maxMapSize(30)
+MapEditor::MapEditor(QWidget *parent):
+    QMainWindow(parent),
+    _minMapSize(5),
+    _maxMapSize(30),
+    _map(new Map(10,10)),
+    _row(0),
+    _col(0),
+    _maxColumnElements(5),
+    _blockSize(16)
 {
   ui.setupUi(this);
 
@@ -82,7 +87,35 @@ MapEditor::MapEditor(QWidget *parent)
   ui.labelMessage->setText("Information label");
 
   _renderThread = std::thread(&MapEditor::renderScene, this);
-  
+  /*
+  //настройка окна
+  int xViewer = 100;
+  int yViewer = 100;
+  int wViewer = 640;
+  int hViewer = 480;
+
+  _viewer.setUpViewInWindow(xViewer, yViewer, wViewer, hViewer);
+
+  _viewer.realize();
+
+  _keyboardMouseHandler = new KeyboardMouseHandler(this);
+  _viewer.addEventHandler(_keyboardMouseHandler);
+  _viewer.addEventHandler(new osgViewer::StatsHandler);
+
+  _viewer.setSceneData(_map);
+  _viewer.setCameraManipulator(new osgGA::TrackballManipulator);
+
+  _viewer.realize();
+
+  _viewer.frame();
+  //_viewer.run();
+  /*
+  while (!viewer.done())
+  {
+    viewer.frame();
+  }
+  */
+
   //setting default texture paths
   _texPaths["BORDER"] = "Resources/tiles/BORDER.png";
   _texPaths["ARMOR"] = "Resources/tiles/ARMOR.png";
@@ -217,14 +250,15 @@ void MapEditor::GetButtonRowCol(QRadioButton* rButton, int& row, int& col)
     &rowSpan, &colSpan);
 }
 
-std::pair<int, int> MapEditor::GetNextRowCol()
+void MapEditor::GetNextRowCol(int& rowOutput, int& colOutput)
 {
   if (++_col == _maxColumnElements)
   {
     _col = 0;
     _row++;
   }
-  return std::make_pair(_row, _col);
+  rowOutput = _row;
+  colOutput = _col;
 }
 
 void MapEditor::SetPrevRowCol()
@@ -317,8 +351,8 @@ void MapEditor::NewMap()
 
 void MapEditor::createMap(int sizeX, int sizeZ)
 {
-  _map->Remove();
-  _map->Set(sizeX, sizeZ);
+  _map->Clear();
+  _map->GenerateEmptyMap(sizeX, sizeZ);
 }
 
 void MapEditor::LoadXMLFile()
@@ -620,7 +654,7 @@ void MapEditor::LoadXMLFile()
     {
       QMessageBox::critical(this, "File error", errorText, QMessageBox::Ok);
       _filename.clear();
-      _map->Remove();
+      _map->Clear();
       ui.labelMessage->setText("There were some errors while reading file.");
     }
     else
@@ -738,8 +772,11 @@ void MapEditor::renderScene()
 {
   Viewer viewer;
 
-  connect(this, &MapEditor::QuitViewer, 
-    &viewer, &Viewer::onQuitViewer, Qt::DirectConnection);
+  connect(this, 
+          &MapEditor::QuitViewer, 
+          &viewer,
+          &Viewer::onQuitViewer, 
+          Qt::DirectConnection);
 
   //настройка окна
   int xViewer = 100;
@@ -770,7 +807,7 @@ void MapEditor::renderScene()
   {	
     //для избежания конфликта при создании новой карты
     //!!
-    //std::lock_guard<std::recursive_mutex> lgMutex(_map->GetMutex());
+    std::lock_guard<std::recursive_mutex> lgMutex(_map->GetMutex());
     //std::lock_guard<std::mutex> lgMutex(mutex);
     //std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
     viewer.frame();
@@ -831,8 +868,8 @@ void MapEditor::changeMapSize()
     int mapSizeX = mapSizeDialog.GetSizeX();
     int mapSizeZ = mapSizeDialog.GetSizeZ();
 
-    if (!(mapSizeX == _map->GetSizeX() / _blockSize && 
-      mapSizeZ == _map->GetSizeZ() / _blockSize))
+    if (!(mapSizeX == _map->GetSizeX() && 
+      mapSizeZ == _map->GetSizeZ()))
     {
       //push undoStack
       ChangeSizeCommand* changeSizeCommand = 

@@ -2,10 +2,10 @@
 
 
 TableTexPathsWidget::TableTexPathsWidget(std::map<int, BlockType> blockTypes,
-  QButtonGroup* btnGroupBlock,
-  QWidget* parent) :
-  QWidget(parent),
-  _rowCounter(0)
+                                         QButtonGroup* btnGroupBlock,
+                                         QWidget* parent) :
+    QWidget(parent),
+    _rowCounter(0)
 {
   _tableWidget = new QTableWidget(this);
   _tableWidget->setColumnCount(3);

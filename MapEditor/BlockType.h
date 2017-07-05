@@ -4,15 +4,6 @@
 
 #include <qstring.h>
 
-enum class FillType		//block filling
-{
-  FULL,		//4 tiles
-  RIGHT,	//2 tiles
-  BOTTOM,
-  LEFT,
-  TOP
-};
-
 class BlockType
 {
 public:
@@ -21,22 +12,26 @@ public:
     std::string fillType, bool isPassable, bool isUnderTank);
   ~BlockType();
 
-  std::string GetTypeName() const { return _typeName; }
-  std::string GetTexPath() const { return _texPath; }
-  std::string GetFillType() const { return _fillType; }
-  QString GetFillType_str() const;
-  bool GetPassability() const { return _isPassable; }
-  bool GetUnderTank() const { return _isUnderTank; }
+public:
+  inline std::string GetTypeName() const;
+  inline std::string GetTexPath() const;
+  inline std::string GetFillType() const;
+  inline bool GetPassability() const;
+  inline bool GetUnderTank() const;
 
-  void SetTypeName(std::string typeName) { _typeName = typeName; }
-  void SetTexPath(std::string texPath) { _texPath = texPath; }
-  void SetFillType(std::string fillType) { _fillType = fillType; }
-  void SetPassability(bool isPassable) { _isPassable = isPassable; }
-  void SetUnderTank(bool isUnderTank) { _isUnderTank = isUnderTank; }
+  inline void SetTypeName(std::string typeName);
+  inline void SetTexPath(std::string texPath);
+  inline void SetFillType(std::string fillType);
+  inline void SetPassability(bool isPassable);
+  inline void SetUnderTank(bool isUnderTank);
 
   friend bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight);
 
-  bool isEmpty()
+  //isBorder
+  //isEmpty
+
+  //isEmptyInfo
+  bool isEmpty()    //!!!
   {
     return (_typeName.empty() && 
       _texPath.empty() && 
@@ -50,4 +45,54 @@ private:
   bool _isPassable;   //is obstacle or not
   bool _isUnderTank;  //drawing under tank or not
 };
+
+inline std::string BlockType::GetTypeName() const 
+{ 
+  return _typeName;
+}
+
+inline std::string BlockType::GetTexPath() const 
+{ 
+  return _texPath;
+}
+
+inline std::string BlockType::GetFillType() const
+{ 
+  return _fillType;
+}
+
+inline bool BlockType::GetPassability() const
+{ 
+  return _isPassable;
+}
+
+inline bool BlockType::GetUnderTank() const
+{ 
+  return _isUnderTank;
+}
+
+inline void BlockType::SetTypeName(std::string typeName)
+{ 
+  _typeName = typeName;
+}
+
+inline void BlockType::SetTexPath(std::string texPath)
+{ 
+  _texPath = texPath;
+}
+
+inline void BlockType::SetFillType(std::string fillType)
+{ 
+  _fillType = fillType;
+}
+
+inline void BlockType::SetPassability(bool isPassable)
+{ 
+  _isPassable = isPassable;
+}
+
+inline void BlockType::SetUnderTank(bool isUnderTank)
+{ 
+  _isUnderTank = isUnderTank;
+}
 

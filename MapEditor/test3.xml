@@ -2,7 +2,7 @@
 <map>
     <sizeX>160</sizeX>
     <sizeZ>160</sizeZ>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>0</z>
         <tile type="BORDER">
@@ -22,7 +22,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>16</x>
         <z>0</z>
         <tile type="BORDER">
@@ -42,7 +42,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>32</x>
         <z>0</z>
         <tile type="BORDER">
@@ -62,7 +62,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>48</x>
         <z>0</z>
         <tile type="BORDER">
@@ -82,7 +82,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>64</x>
         <z>0</z>
         <tile type="BORDER">
@@ -102,7 +102,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>80</x>
         <z>0</z>
         <tile type="BORDER">
@@ -122,7 +122,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>96</x>
         <z>0</z>
         <tile type="BORDER">
@@ -142,7 +142,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>112</x>
         <z>0</z>
         <tile type="BORDER">
@@ -162,7 +162,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>128</x>
         <z>0</z>
         <tile type="BORDER">
@@ -182,7 +182,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>144</x>
         <z>0</z>
         <tile type="BORDER">
@@ -202,7 +202,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>160</x>
         <z>0</z>
         <tile type="BORDER">
@@ -222,7 +222,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>0</z>
         <tile type="BORDER">
@@ -242,7 +242,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>0</z>
         <tile type="BORDER">
@@ -262,7 +262,7 @@
             <z>0</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>16</z>
         <tile type="BORDER">
@@ -282,7 +282,7 @@
             <z>16</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>16</z>
         <tile type="BORDER">
@@ -302,7 +302,7 @@
             <z>16</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>32</z>
         <tile type="BORDER">
@@ -322,7 +322,7 @@
             <z>32</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>32</z>
         <tile type="BORDER">
@@ -342,7 +342,7 @@
             <z>32</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>48</z>
         <tile type="BORDER">
@@ -362,7 +362,7 @@
             <z>48</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>48</z>
         <tile type="BORDER">
@@ -382,7 +382,7 @@
             <z>48</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>64</z>
         <tile type="BORDER">
@@ -402,7 +402,7 @@
             <z>64</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>64</z>
         <tile type="BORDER">
@@ -422,7 +422,7 @@
             <z>64</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>80</z>
         <tile type="BORDER">
@@ -442,7 +442,7 @@
             <z>80</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>80</z>
         <tile type="BORDER">
@@ -462,7 +462,7 @@
             <z>80</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>96</z>
         <tile type="BORDER">
@@ -482,7 +482,7 @@
             <z>96</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>96</z>
         <tile type="BORDER">
@@ -502,7 +502,7 @@
             <z>96</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>112</z>
         <tile type="BORDER">
@@ -522,7 +522,7 @@
             <z>112</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>112</z>
         <tile type="BORDER">
@@ -542,7 +542,7 @@
             <z>112</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>128</z>
         <tile type="BORDER">
@@ -562,7 +562,7 @@
             <z>128</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>128</z>
         <tile type="BORDER">
@@ -582,7 +582,7 @@
             <z>128</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>144</z>
         <tile type="BORDER">
@@ -602,7 +602,7 @@
             <z>144</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>144</z>
         <tile type="BORDER">
@@ -622,7 +622,7 @@
             <z>144</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>160</z>
         <tile type="BORDER">
@@ -642,7 +642,7 @@
             <z>160</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>160</z>
         <tile type="BORDER">
@@ -662,7 +662,7 @@
             <z>160</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>176</x>
         <z>176</z>
         <tile type="BORDER">
@@ -682,7 +682,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>192</x>
         <z>176</z>
         <tile type="BORDER">
@@ -702,27 +702,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
-        <x>176</x>
-        <z>176</z>
-        <tile type="BORDER">
-            <x>176</x>
-            <z>176</z>
-        </tile>
-        <tile type="BORDER">
-            <x>176</x>
-            <z>184</z>
-        </tile>
-        <tile type="BORDER">
-            <x>184</x>
-            <z>184</z>
-        </tile>
-        <tile type="BORDER">
-            <x>184</x>
-            <z>176</z>
-        </tile>
-    </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>160</x>
         <z>176</z>
         <tile type="BORDER">
@@ -742,7 +722,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>144</x>
         <z>176</z>
         <tile type="BORDER">
@@ -762,7 +742,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>128</x>
         <z>176</z>
         <tile type="BORDER">
@@ -782,7 +762,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>112</x>
         <z>176</z>
         <tile type="BORDER">
@@ -802,7 +782,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>96</x>
         <z>176</z>
         <tile type="BORDER">
@@ -822,7 +802,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>80</x>
         <z>176</z>
         <tile type="BORDER">
@@ -842,7 +822,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>64</x>
         <z>176</z>
         <tile type="BORDER">
@@ -862,7 +842,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>48</x>
         <z>176</z>
         <tile type="BORDER">
@@ -882,7 +862,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>32</x>
         <z>176</z>
         <tile type="BORDER">
@@ -902,7 +882,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>16</x>
         <z>176</z>
         <tile type="BORDER">
@@ -922,7 +902,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>176</z>
         <tile type="BORDER">
@@ -942,7 +922,7 @@
             <z>176</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>160</z>
         <tile type="BORDER">
@@ -962,7 +942,7 @@
             <z>160</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>144</z>
         <tile type="BORDER">
@@ -982,7 +962,7 @@
             <z>144</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>128</z>
         <tile type="BORDER">
@@ -1002,7 +982,7 @@
             <z>128</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>112</z>
         <tile type="BORDER">
@@ -1022,7 +1002,7 @@
             <z>112</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>96</z>
         <tile type="BORDER">
@@ -1042,7 +1022,7 @@
             <z>96</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>80</z>
         <tile type="BORDER">
@@ -1062,7 +1042,7 @@
             <z>80</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>64</z>
         <tile type="BORDER">
@@ -1082,7 +1062,7 @@
             <z>64</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>48</z>
         <tile type="BORDER">
@@ -1102,7 +1082,7 @@
             <z>48</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>32</z>
         <tile type="BORDER">
@@ -1122,7 +1102,7 @@
             <z>32</z>
         </tile>
     </block>
-    <block texType="BORDER" fillType="FULL">
+    <block texType="BORDER" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>0</x>
         <z>16</z>
         <tile type="BORDER">
@@ -1142,7 +1122,7 @@
             <z>16</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>16</x>
         <z>48</z>
         <tile type="BRICK">
@@ -1162,7 +1142,7 @@
             <z>48</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>48</x>
         <z>48</z>
         <tile type="BRICK">
@@ -1182,7 +1162,7 @@
             <z>48</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>80</x>
         <z>48</z>
         <tile type="BRICK">
@@ -1202,7 +1182,7 @@
             <z>48</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>96</x>
         <z>48</z>
         <tile type="BRICK">
@@ -1222,7 +1202,7 @@
             <z>48</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>112</x>
         <z>48</z>
         <tile type="BRICK">
@@ -1242,7 +1222,7 @@
             <z>48</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>16</x>
         <z>64</z>
         <tile type="BRICK">
@@ -1262,7 +1242,7 @@
             <z>64</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>32</x>
         <z>64</z>
         <tile type="BRICK">
@@ -1282,7 +1262,7 @@
             <z>64</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>48</x>
         <z>64</z>
         <tile type="BRICK">
@@ -1302,7 +1282,7 @@
             <z>64</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>112</x>
         <z>64</z>
         <tile type="BRICK">
@@ -1322,7 +1302,7 @@
             <z>64</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>16</x>
         <z>80</z>
         <tile type="BRICK">
@@ -1342,7 +1322,7 @@
             <z>80</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>48</x>
         <z>80</z>
         <tile type="BRICK">
@@ -1362,7 +1342,7 @@
             <z>80</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>80</x>
         <z>80</z>
         <tile type="BRICK">
@@ -1382,7 +1362,7 @@
             <z>80</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>96</x>
         <z>80</z>
         <tile type="BRICK">
@@ -1402,7 +1382,7 @@
             <z>80</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>112</x>
         <z>80</z>
         <tile type="BRICK">
@@ -1422,7 +1402,7 @@
             <z>80</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>16</x>
         <z>96</z>
         <tile type="BRICK">
@@ -1442,7 +1422,7 @@
             <z>96</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>48</x>
         <z>96</z>
         <tile type="BRICK">
@@ -1462,7 +1442,7 @@
             <z>96</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>80</x>
         <z>96</z>
         <tile type="BRICK">
@@ -1482,7 +1462,7 @@
             <z>96</z>
         </tile>
     </block>
-    <block texType="BRICK" fillType="FULL">
+    <block texType="BRICK" fillType="FULL" isPassable="false" isUnderTank="false">
         <x>112</x>
         <z>96</z>
         <tile type="BRICK">

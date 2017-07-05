@@ -3,11 +3,16 @@
 #include <osg/Texture2D>
 #include <osgDB/ReadFile>
 
-Tile::Tile(unsigned int x, unsigned int z, std::string typeName,
-  std::string texPath) :
-_x(x), _z(z),
-_typeName(typeName),
-_texPath(texPath)
+Tile::Tile(unsigned int x, 
+           unsigned int z,
+           std::string typeName,
+           std::string texPath) :
+    _x(x),
+    _z(z),
+    _typeName(typeName),
+    _texPath(texPath),
+    _vertices(new osg::Vec3Array),
+    _normals(new osg::Vec3Array)
 {
   //polygon drawing
   _vertices->push_back(osg::Vec3(_x, 0., _z));
@@ -36,9 +41,15 @@ _texPath(texPath)
 }
 
 
-Tile::Tile(unsigned int x, unsigned int z, std::string typeName, EmptyTile empty) :
-_x(x), _z(z),
-_typeName(typeName)
+Tile::Tile(unsigned int x,
+           unsigned int z,
+           std::string typeName, 
+           EmptyTile empty) :
+    _x(x),
+    _z(z),
+    _typeName(typeName),
+    _vertices(new osg::Vec3Array),
+    _normals(new osg::Vec3Array)
 {
   //polygon drawing
   _vertices->push_back(osg::Vec3(_x, 0., _z));
@@ -65,7 +76,6 @@ _typeName(typeName)
 
   setEmptyTexture(empty);
 }
-
 
 Tile::~Tile()
 {

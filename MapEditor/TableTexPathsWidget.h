@@ -12,7 +12,8 @@ class TableTexPathsWidget : public QWidget
   Q_OBJECT
 public:
   TableTexPathsWidget(std::map<int, BlockType> blockTypes,
-    QButtonGroup* btnGroupBlocks, QWidget* parent = 0);
+                      QButtonGroup* btnGroupBlocks, 
+                      QWidget* parent = 0);
   ~TableTexPathsWidget();
 
 private:

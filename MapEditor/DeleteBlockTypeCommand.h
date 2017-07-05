@@ -7,8 +7,10 @@
 class DeleteBlockTypeCommand : public QUndoCommand
 {
 public:
-  DeleteBlockTypeCommand(QButtonGroup* btnGroup, BlockType blockType,
-    MapEditor* mapEditor, QUndoCommand* parent = 0);
+  DeleteBlockTypeCommand(QButtonGroup* btnGroup, 
+                         BlockType blockType,
+                         MapEditor* mapEditor, 
+                         QUndoCommand* parent = 0);
   ~DeleteBlockTypeCommand();
 
   void undo() override;

@@ -4,8 +4,9 @@
 #include <memory>
 
 KeyboardMouseHandler::KeyboardMouseHandler(MapEditor* mapEditor) :
-_mouseX(0), _mouseY(0),
-_mapEditor(mapEditor)
+    _mouseX(0), 
+    _mouseY(0),
+    _mapEditor(mapEditor)
 {
 }
 
@@ -37,11 +38,11 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
       _mouseX = ea.getXnormalized();
       _mouseY = ea.getYnormalized();
 
-      std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> blockAndMap =
-        findBlockAndMap(_mouseX, _mouseY, viewer);
+      osg::ref_ptr<Map> map = nullptr;
+      osg::ref_ptr<Block> block = nullptr;
 
-      osg::ref_ptr<Map> map = std::get<0>(blockAndMap);
-      osg::ref_ptr<Block> block = std::get<1>(blockAndMap);
+      findBlockAndMap(_mouseX, _mouseY, viewer, map, block);
+
       switch (ea.getButton())
       {
       case(osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON) :
@@ -114,9 +115,11 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
   }
 }
 
-std::pair<osg::ref_ptr<Map>, osg::ref_ptr<Block>> 
-KeyboardMouseHandler::findBlockAndMap(const double x, const double y,
-                                      osgViewer::Viewer* viewer)
+void KeyboardMouseHandler::findBlockAndMap(const double x, 
+                                           const double y,
+                                           osgViewer::Viewer* viewer, 
+                                           osg::ref_ptr<Map>& mapOutput,
+                                           osg::ref_ptr<Block>& blockOutput)
 {
   //if (!viewer->getSceneData())
     //return std::make_pair(false, nullptr);	//nothing to pick
@@ -129,31 +132,18 @@ KeyboardMouseHandler::findBlockAndMap(const double x, const double y,
 
   viewer->getCamera()->accept(iv);
 
-  osg::ref_ptr<osg::Node> selectedBlock = nullptr;
-  osg::ref_ptr<osg::Node> selectedMap = nullptr;
-
-  //get block and map
-  osg::ref_ptr<Map> map = nullptr;
-  osg::ref_ptr<Block> block = nullptr;
-
   if (picker->containsIntersections())
   {
     osg::NodePath& nodePath = picker->getFirstIntersection().nodePath;
     unsigned int idx = nodePath.size();
 
     //find block and map
-    while ((idx--) && (block == nullptr || map == nullptr))
+    while ((idx--) && (blockOutput == nullptr || mapOutput == nullptr))
     {
-      if (block == nullptr)
-        block = dynamic_cast<Block*>(nodePath[idx]);
-      if (map == nullptr)
-        map = dynamic_cast<Map*>(nodePath[idx]);
+      if (blockOutput == nullptr)
+        blockOutput = dynamic_cast<Block*>(nodePath[idx]);
+      if (mapOutput == nullptr)
+        mapOutput = dynamic_cast<Map*>(nodePath[idx]);
     }
-
-    selectedBlock = block;
-    selectedMap = map;
   }
-  //!!!!!!!!!!!!!
-  //return std::make_pair((selectedBlock.valid() && selectedMap.valid()), block);
-  return std::make_pair(map, block);
 }

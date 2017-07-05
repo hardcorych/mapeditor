@@ -7,8 +7,10 @@
 class ChangeSizeCommand : public QUndoCommand	//change map size
 {
 public:
-  ChangeSizeCommand(osg::ref_ptr<Map> map, int mapSizeX, int mapSizeZ,
-    QUndoCommand* parent = 0);
+  ChangeSizeCommand(osg::ref_ptr<Map> map, 
+                    int mapSizeX,
+                    int mapSizeZ,
+                    QUndoCommand* parent = 0);
   ~ChangeSizeCommand();
 
   void undo() override;
@@ -21,5 +23,5 @@ private:
   int _mapSizeZ;
   int _mapSizeXOld;
   int _mapSizeZOld;
-  std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks;
+  std::vector<osg::ref_ptr<Block>> savedBlocks;
 };

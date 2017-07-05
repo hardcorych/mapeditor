@@ -11,11 +11,23 @@ public:
   MapSizeDialog(QWidget* parent = 0);
   ~MapSizeDialog();
 
-  int GetSizeX() { return _spnBoxX->value(); }
-  int GetSizeZ() { return _spnBoxZ->value(); }
+public:
+  inline int GetSizeX() const;
+  inline int GetSizeZ() const;
 
 private:
   QSpinBox* _spnBoxX;
   QSpinBox* _spnBoxZ;
 };
+
+inline int MapSizeDialog::GetSizeX() const 
+{ 
+  return _spnBoxX->value(); 
+}
+
+inline int MapSizeDialog::GetSizeZ() const
+{ 
+  return _spnBoxZ->value();
+}
+
 

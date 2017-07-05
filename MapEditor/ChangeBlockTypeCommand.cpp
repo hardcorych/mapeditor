@@ -4,14 +4,16 @@
 #include <DrawBlockPixmap.h>
 
 ChangeBlockTypeCommand::ChangeBlockTypeCommand(QAbstractButton* button,
-  BlockType& blockType, BlockType blockTypeNew,
-  MapEditor* mapEditor, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  _blockTypeRef(blockType),
-  _blockType(blockType),
-  _blockTypeNew(blockTypeNew),
-  _button(button),
-  _mapEditor(mapEditor)
+                                               BlockType& blockType,
+                                               BlockType blockTypeNew,
+                                               MapEditor* mapEditor, 
+                                               QUndoCommand* parent) :
+    QUndoCommand(parent),
+    _blockTypeRef(blockType),
+    _blockType(blockType),
+    _blockTypeNew(blockTypeNew),
+    _button(button),
+    _mapEditor(mapEditor)
 {
   _button->setIconSize(QSize(64, 64));
 }

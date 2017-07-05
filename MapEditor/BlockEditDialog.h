@@ -25,8 +25,15 @@ public:
   BlockEditDialog(QWidget* parent, BlockType blockType);
   ~BlockEditDialog();
 
-  BlockType GetBlockType() const { return _blockType; }
+public:
+  inline BlockType GetBlockType() const;
   
+private slots:
+  void setTexPath();
+  void createBlockType();
+  void changeBlockType();
+  void deleteBlockType();
+
 private:
   BlockType _blockType;
 
@@ -53,11 +60,10 @@ private:
   QPushButton* _pBtnChangeBlockType;
   QPushButton* _pBtnDeleteBlockType;
   QPushButton* _pBtnCancel;
-
-  private slots:
-  void setTexPath();
-  void createBlockType();
-  void changeBlockType();
-  void deleteBlockType();
 };
+
+inline BlockType BlockEditDialog::GetBlockType() const 
+{ 
+  return _blockType; 
+}
 

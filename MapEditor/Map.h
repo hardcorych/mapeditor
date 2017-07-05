@@ -11,32 +11,39 @@
 class Map : public osg::Group
 {
 public:
-  Map();
+  Map() = delete;
   Map(unsigned int sizeX, unsigned int sizeZ);
+
+protected:
   ~Map();
 
-  const int GetSizeX()	{ return _sizeX; }
-  const int GetSizeZ()	{ return _sizeZ; }
+public:
+  inline int GetSizeX() const;
+  inline int GetSizeZ() const;
 
-  QString GetSizeX_str()	{ return QString::number(_sizeX); }	//size in blocks
-  QString GetSizeZ_str()	{ return QString::number(_sizeZ); }
+  inline QString GetSizeX_str() const;
+  inline QString GetSizeZ_str() const;
 
-  void Set(int sizeX, int sizeZ);
-  void Remove();
+  void GenerateEmptyMap(int sizeX, int sizeZ);
+  void Clear();
 
-  //void AddBlock(osg::ref_ptr<Block> block);
   void AddBlock(int x, int z, BlockType blockType);
   void RemoveBlock(int x, int z);
 
   //resizing
-  std::map<std::pair<int, int>, osg::ref_ptr<Block>> Resize
-    (std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
-    int sizeX, int sizeZ);
+  std::vector<osg::ref_ptr<Block>> SaveBlocksAndGet();
+  void Resize(std::vector<osg::ref_ptr<Block>> savedBlocks,
+    int sizeX,
+    int sizeZ);
 
   //std::mutex& GetMutex() { return std::ref(_mutex); }
   std::recursive_mutex& GetMutex() { return std::ref(_mutex); }
 
-  std::string GetTexPath(std::string type);
+private:
+  //generateBorder
+  //generateGameArea
+  void generateBorder();
+  void generateGameArea();
 
 private:
   int _sizeX;
@@ -45,8 +52,26 @@ private:
 
   //std::mutex _mutex;
   std::recursive_mutex _mutex;
-
-  void setBorder();
-  void setGameArea();
 };
+
+inline int Map::GetSizeX() const	
+{ 
+  return _sizeX / _step; 
+}
+
+inline int Map::GetSizeZ() const
+{ 
+  return _sizeZ / _step;
+}
+
+inline QString Map::GetSizeX_str() const
+{ 
+  return QString::number(_sizeX); 
+}	//size in blocks
+
+inline QString Map::GetSizeZ_str() const
+{ 
+  return QString::number(_sizeZ);
+}
+
 

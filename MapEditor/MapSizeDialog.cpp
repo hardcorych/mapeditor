@@ -4,7 +4,8 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
-MapSizeDialog::MapSizeDialog(QWidget* parent) : QDialog(parent)
+MapSizeDialog::MapSizeDialog(QWidget* parent) : 
+    QDialog(parent)
 {
   QGridLayout* layout = new QGridLayout(this);
 

@@ -8,7 +8,9 @@ class CreateBlockTypeCommand : public QUndoCommand
 {
 public:
   CreateBlockTypeCommand(QButtonGroup* btnGroup,
-    BlockType blockType, MapEditor* mapEditor, QUndoCommand* parent = 0);
+                         BlockType blockType, 
+                         MapEditor* mapEditor, 
+                         QUndoCommand* parent = 0);
   ~CreateBlockTypeCommand();
 
   void undo() override;

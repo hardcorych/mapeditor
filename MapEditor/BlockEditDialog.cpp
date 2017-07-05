@@ -5,9 +5,9 @@
 #include "BlockEditDialog.h"
 
 BlockEditDialog::BlockEditDialog(QWidget* parent, 
-  BlockType blockType):
-QDialog(parent),
-_blockType(blockType)
+                                 BlockType blockType):
+    QDialog(parent),
+    _blockType(blockType)
 {
   setWindowTitle("BlockEditor");
 

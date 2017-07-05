@@ -10,32 +10,58 @@
 class Block : public osg::Group		//block consists 4 tiles, block size 16x16
 {
 public:
-  Block();
+  Block() = default;
   Block(int x, int z, BlockType blockType);
+
+protected:
   ~Block();
 
-  BlockType GetType() const { return _blockType; }
+public:
+  inline BlockType GetType() const;
 
-  int GetX()	{ return _x; }
-  int GetZ()	{ return _z; }
+  inline int GetX() const;
+  inline int GetZ() const;
 
   //для записи в файл
-  QString GetX_str()	{ return QString::number(_x + _size); }	//+16 for matching with file
-  QString GetZ_str()	{ return QString::number(_z + _size); }
+  inline QString GetX_str() const;
+  inline QString GetZ_str() const;
 
-  void SetType(BlockType blockType);
+private:
+  void createFromTiles(BlockType blockType);
 
 private:
   int _x;
   int _z;
-  const int _size = 16;
+  int _size;
 
-  osg::ref_ptr<Tile> _leftBottom = nullptr;
-  osg::ref_ptr<Tile> _leftTop = nullptr;
-  osg::ref_ptr<Tile> _rightTop = nullptr;
-  osg::ref_ptr<Tile> _rightBottom = nullptr;
+  osg::ref_ptr<Tile> _leftBottom;
+  osg::ref_ptr<Tile> _leftTop;
+  osg::ref_ptr<Tile> _rightTop;
+  osg::ref_ptr<Tile> _rightBottom;
 
   BlockType _blockType;
-
-  void createFromTiles(BlockType blockType);
 };
+
+inline BlockType Block::GetType() const
+{
+  return _blockType; 
+}
+
+inline int Block::GetX() const
+{
+  return _x; 
+}
+inline int Block::GetZ() const
+{ 
+  return _z; 
+}
+
+inline QString Block::GetX_str() const
+{
+  return QString::number(_x + _size); //+16 for matching with file
+}	
+
+inline QString Block::GetZ_str() const
+{
+  return QString::number(_z + _size);
+}

@@ -6,11 +6,13 @@
 #include <DrawBlockPixmap.h>
 
 CreateBlockTypeCommand::CreateBlockTypeCommand(QButtonGroup* btnGroup,
-  BlockType blockType, MapEditor* mapEditor, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  _blockType(blockType),
-  _mapEditor(mapEditor),
-  _btnGroup(btnGroup)
+                                               BlockType blockType, 
+                                               MapEditor* mapEditor, 
+                                               QUndoCommand* parent) :
+    QUndoCommand(parent),
+    _blockType(blockType),
+    _mapEditor(mapEditor),
+    _btnGroup(btnGroup)
 {
 }
 
@@ -37,9 +39,7 @@ void CreateBlockTypeCommand::redo()
 
   _mapEditor->AddBlockType(_btnGroup->id(_button), _blockType);
 
-  std::pair<int, int> rowCol = _mapEditor->GetNextRowCol();
-  _row = rowCol.first;
-  _col = rowCol.second;
+  _mapEditor->GetNextRowCol(_row, _col);
 
   _mapEditor->AddBlockTypeButton(_button, _row, _col);
 }

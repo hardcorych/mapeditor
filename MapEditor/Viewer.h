@@ -7,7 +7,7 @@ class Viewer : public osgViewer::Viewer,
   public QObject
 {
 public:
-  Viewer();
+  Viewer() = default;
   ~Viewer();
 
   public slots:

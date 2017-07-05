@@ -1,39 +1,31 @@
 #include "Map.h"
 
-Map::Map() :
-_step(16),	//для блоков
-_sizeX(10), _sizeZ(10)
-{
-  setBorder();
-  setGameArea();
-}
-
 Map::Map(unsigned int sizeX, unsigned int sizeZ) :
-_sizeX(sizeX),
-_sizeZ(sizeZ),
-_step(16)
+    _sizeX(sizeX),
+    _sizeZ(sizeZ),
+    _step(16)
 {
   //указанный размер карты
   //размер задается в количестве блоков игровой области
 
   //формирование границ
-  setBorder();
-  setGameArea();
+  generateBorder();
+  generateGameArea();
 }
 
 Map::~Map()
 {
 }
 
-void Map::Set(int sizeX, int sizeZ)		//создание новой карты
+void Map::GenerateEmptyMap(int sizeX, int sizeZ)		//создание новой карты
 {
   if (_sizeX != sizeX) _sizeX = sizeX;
   if (_sizeZ != sizeZ) _sizeZ = sizeZ;
-  setBorder();
-  setGameArea();
+  generateBorder();
+  generateGameArea();
 }
 
-void Map::setBorder()
+void Map::generateBorder()
 {
   //потайловое формирование границы
   _sizeX = (_sizeX + 3)*_step;	//выделение места под рамку +3 по X
@@ -43,6 +35,7 @@ void Map::setBorder()
   //заполнение против часовой стрелки, начиная с нижней границы
   //нижняя граница
   //int startBorder = -1 * _step;
+  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
   BlockType borderBlock("BORDER", "Resources/tiles/BORDER.png", "FULL",
     0, 0);
 
@@ -68,8 +61,9 @@ void Map::setBorder()
   _sizeZ -= 2 * _step;
 }
 
-void Map::setGameArea()
+void Map::generateGameArea()
 {
+  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
   BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
   for (int z = 0; z < _sizeZ; z += _step) {
     for (int x = 0; x < _sizeX; x += _step) {
@@ -79,7 +73,7 @@ void Map::setGameArea()
   }
 }
 
-void Map::Remove()		//удаление карты
+void Map::Clear()		//удаление карты
 {
   //std::lock_guard<std::mutex> lgMutex(_mutex);
   std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
@@ -104,7 +98,8 @@ void Map::AddBlock(int x, int z, BlockType blockType)
     //if (blockOld->GetX() == block->GetX() && 
       //blockOld->GetZ() == block->GetZ())
     if (blockOld->GetX() == x &&
-      blockOld->GetZ() == z)
+      blockOld->GetZ() == z && 
+      blockOld->GetType().GetTypeName() != "BORDER")
     {
       //blockOld->SetType(blockType);
       replaceChild(blockOld, block);
@@ -130,9 +125,48 @@ void Map::RemoveBlock(int x, int z)
   }
 }
 
-std::map<std::pair<int, int>, osg::ref_ptr<Block>> 
-Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
-  int sizeX, int sizeZ)
+std::vector<osg::ref_ptr<Block>> Map::SaveBlocksAndGet()
+{
+  std::vector<osg::ref_ptr<Block>> savedBlocks;
+
+  osg::ref_ptr<Block> block;
+
+  for (int blockIndex = 0; blockIndex < getNumChildren(); blockIndex++)
+  {
+    block = dynamic_cast<Block*>(getChild(blockIndex));
+
+    bool isBorderBlock = 
+      (block->GetType().GetTypeName() == "BORDER");
+    bool isEmptyBlock =
+      (block->GetType().GetTypeName() == "EMPTY");
+
+    if (!isBorderBlock && !isEmptyBlock)
+    {
+      savedBlocks.push_back(block);
+    }
+  }
+
+  return savedBlocks;
+}
+
+void Map::Resize(std::vector<osg::ref_ptr<Block>> savedBlocks,
+                 int sizeX, 
+                 int sizeZ)
+{
+  Clear();
+  GenerateEmptyMap(sizeX, sizeZ);
+  for (std::vector<osg::ref_ptr<Block>>::iterator it = savedBlocks.begin();
+    it != savedBlocks.end(); ++it)
+  {
+    AddBlock((*it)->GetX(), (*it)->GetZ(), (*it)->GetType());
+  }
+}
+
+/*
+std::vector<osg::ref_ptr<Block>> Map::ResizeAndGetDeletedBlocks(
+  std::vector<osg::ref_ptr<Block>> deletedBlocksOld,
+  int sizeX,
+  int sizeZ)
 {
   //std::lock_guard<std::mutex> lgMutex(_mutex);
   std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
@@ -141,33 +175,38 @@ Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
   sizeX *= _step;
   sizeZ *= _step;
 
+  //saving the not-border and not-empty blocks
+
   bool isNewSizeSame = (_sizeX == sizeX && _sizeZ == sizeZ);	//
 
-  std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocks;
+  std::vector<osg::ref_ptr<Block>> deletedBlocks;
 
   if (!isNewSizeSame) {
     osg::ref_ptr<Block> block = nullptr;
 
-    bool isBlockCoordsMoreThanSize;
+    bool isBlockCoordsGreaterThanSize;
     bool isBorderBlock;
 
     for (int i = 0; i < getNumChildren(); i++) {
       block = dynamic_cast<Block*>(getChild(i));
 
-      isBlockCoordsMoreThanSize = 
+      isBlockCoordsGreaterThanSize = 
         (block->GetX() >= sizeX || block->GetZ() >= sizeZ);
 
       isBorderBlock = (block->GetType().GetTypeName() == "BORDER");
 
-      if (isBlockCoordsMoreThanSize || isBorderBlock) {
+      if (isBlockCoordsGreaterThanSize || isBorderBlock) {
         //удаление блоков вне игровой области и рамки
         if (!isBorderBlock)		//сохраняем, если не граничный блок
-          deletedBlocks[std::make_pair(block->GetX(), block->GetZ())] = block;
+        {
+          deletedBlocks.push_back(block);
+        }          
         removeChild(block);
         i--;
       }
     }
 
+    //resizing
     int oldSizeX = _sizeX;
     int oldSizeZ = _sizeZ;
     _sizeX = sizeX;
@@ -176,13 +215,14 @@ Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
     bool isNewSizeGreater = (_sizeX > oldSizeX || _sizeZ > oldSizeZ);
 
     if (isNewSizeGreater) {
-      //заполнение свободной области пустыми блоками
+      //заполнение сохраненными блоками
       if (!deletedBlocksOld.empty()) {
-        std::map<std::pair<int, int>, osg::ref_ptr<Block>>::iterator it;
+        std::vector<osg::ref_ptr<Block>>::iterator it;
         for (it = deletedBlocksOld.begin(); it != deletedBlocksOld.end(); ++it) {
-          addChild(it->second);
+          addChild(*it);
         }
       }
+      //заполнение свободной области пустыми блоками
       else {
         BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
 
@@ -207,3 +247,4 @@ Map::Resize(std::map<std::pair<int, int>, osg::ref_ptr<Block>> deletedBlocksOld,
   }
   return deletedBlocks;
 }
+*/

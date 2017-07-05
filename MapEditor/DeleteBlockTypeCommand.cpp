@@ -4,11 +4,13 @@
 #include <DrawBlockPixmap.h>
 
 DeleteBlockTypeCommand::DeleteBlockTypeCommand(QButtonGroup* btnGroup,
-  BlockType blockType, MapEditor* mapEditor, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  _btnGroup(btnGroup),
-  _mapEditor(mapEditor),
-  _blockType(blockType)
+                                               BlockType blockType, 
+                                               MapEditor* mapEditor, 
+                                               QUndoCommand* parent) :
+    QUndoCommand(parent),
+    _btnGroup(btnGroup),
+    _mapEditor(mapEditor),
+    _blockType(blockType)
 {
   _button =
     qobject_cast<QRadioButton*>(_btnGroup->checkedButton());
