@@ -26,6 +26,9 @@ private:
   Ui::MapEditorClass ui;
 
   std::thread _renderThread;
+
+  //osg::viewer Viewer;
+
   QMenu* _fileMenu;
   QMenu* _editMenu;
   QMenu* _settingsMenu;

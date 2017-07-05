@@ -765,11 +765,12 @@ void MapEditor::renderScene()
   /////////////////////////////
   //viewer.run();
   std::mutex mutex;
+
   while (!viewer.done())
   {	
     //для избежания конфликта при создании новой карты
     //!!
-    std::lock_guard<std::recursive_mutex> lgMutex(_map->GetMutex());
+    //std::lock_guard<std::recursive_mutex> lgMutex(_map->GetMutex());
     //std::lock_guard<std::mutex> lgMutex(mutex);
     //std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
     viewer.frame();
