@@ -3,12 +3,11 @@
 #include <qlineedit.h>
 #include <qspinbox.h>
 
-class MapSizeDialog :
-  public QDialog
+class MapSizeDialog : public QDialog
 {
   Q_OBJECT
 public:
-  MapSizeDialog(QWidget* parent = 0);
+  MapSizeDialog(QWidget* parent = nullptr);
   ~MapSizeDialog();
 
 public:

@@ -8,7 +8,7 @@ class CreateBlockTypeCommand : public QUndoCommand
 {
 public:
   CreateBlockTypeCommand(QButtonGroup* btnGroup,
-                         BlockType blockType, 
+                         const BlockType& blockType, 
                          MapEditor* mapEditor, 
                          QUndoCommand* parent = 0);
   ~CreateBlockTypeCommand();

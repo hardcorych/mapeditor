@@ -10,7 +10,7 @@ public:
   RemoveCommand(osg::ref_ptr<Map> map,
                 int x, 
                 int z,
-                BlockType blockType, 
+                const BlockType& blockType, 
                 QUndoCommand* parent = 0);
   ~RemoveCommand();
 

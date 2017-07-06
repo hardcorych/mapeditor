@@ -4,11 +4,11 @@
 
 ReplaceCommand::ReplaceCommand(osg::ref_ptr<Map> map,
                                osg::ref_ptr<Block> block,
-                               BlockType blockType,
+                               const BlockType& blockType,
                                QUndoCommand* parent) :
-    QUndoCommand(parent),
-    _map(map),
-    _blockType(blockType)
+  QUndoCommand(parent),
+  _map(map),
+  _blockType(blockType)
 {
   _blockTypeOld = block->GetType();
   _x = block->GetX();

@@ -6,14 +6,14 @@ ChangeSizeCommand::ChangeSizeCommand(osg::ref_ptr<Map> map,
                                      int mapSizeX,
                                      int mapSizeZ,
                                      QUndoCommand* parent) :
-    QUndoCommand(parent),
-    _map(map),
-    _mapSizeX(mapSizeX),
-    _mapSizeZ(mapSizeZ)
+  QUndoCommand(parent),
+  _map(map),
+  _mapSizeX(mapSizeX),
+  _mapSizeZ(mapSizeZ)
 {
   _mapSizeXOld = _map->GetSizeX();
   _mapSizeZOld = _map->GetSizeZ();
-  savedBlocks = _map->SaveBlocksAndGet();
+  _savedBlocks = _map->SaveBlocksAndGet();
 }
 
 ChangeSizeCommand::~ChangeSizeCommand()
@@ -23,11 +23,11 @@ ChangeSizeCommand::~ChangeSizeCommand()
 void ChangeSizeCommand::undo()
 {
   //set old map
-  _map->Resize(savedBlocks, _mapSizeXOld, _mapSizeZOld);
+  _map->Resize(_savedBlocks, _mapSizeXOld, _mapSizeZOld);
 }
 
 void ChangeSizeCommand::redo()
 {
   //set new map size
-  _map->Resize(savedBlocks, _mapSizeX, _mapSizeZ);
+  _map->Resize(_savedBlocks, _mapSizeX, _mapSizeZ);
 }

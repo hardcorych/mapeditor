@@ -87,34 +87,6 @@ MapEditor::MapEditor(QWidget *parent):
   ui.labelMessage->setText("Information label");
 
   _renderThread = std::thread(&MapEditor::renderScene, this);
-  /*
-  //настройка окна
-  int xViewer = 100;
-  int yViewer = 100;
-  int wViewer = 640;
-  int hViewer = 480;
-
-  _viewer.setUpViewInWindow(xViewer, yViewer, wViewer, hViewer);
-
-  _viewer.realize();
-
-  _keyboardMouseHandler = new KeyboardMouseHandler(this);
-  _viewer.addEventHandler(_keyboardMouseHandler);
-  _viewer.addEventHandler(new osgViewer::StatsHandler);
-
-  _viewer.setSceneData(_map);
-  _viewer.setCameraManipulator(new osgGA::TrackballManipulator);
-
-  _viewer.realize();
-
-  _viewer.frame();
-  //_viewer.run();
-  /*
-  while (!viewer.done())
-  {
-    viewer.frame();
-  }
-  */
 
   //setting default texture paths
   _texPaths["BORDER"] = "Resources/tiles/BORDER.png";
@@ -178,12 +150,12 @@ MapEditor::MapEditor(QWidget *parent):
     rButton->setVisible(true);
   }
 
+  
   _tableTexPathsWidget = 
     new TableTexPathsWidget(_blockTypes, _btnGroupBlocks);
   _tableTexPathsWidget->setWindowTitle("Texture paths list");
   _tableTexPathsWidget->resize(500, 500);
   _tableTexPathsWidget->show();
-
 }
 
 MapEditor::~MapEditor()
@@ -241,14 +213,23 @@ void MapEditor::AddBlockTypeButton(QRadioButton* rButton, int& row, int& col)
 
   ui.gridLayout->addWidget(rButton, row, col);
   rButton->setVisible(true);
+  if (_btnGroupBlocks->checkedButton() != 0)
+  {
+    _btnGroupBlocks->checkedButton()->setChecked(false);
+  }
+  
+  rButton->setChecked(true);
 }
 
 void MapEditor::GetButtonRowCol(QRadioButton* rButton, int& row, int& col)
 {
   int widgetIndex = ui.gridLayout->indexOf(rButton);
   int rowSpan, colSpan;
-  ui.gridLayout->getItemPosition(widgetIndex, &row, &col,
-    &rowSpan, &colSpan);
+  ui.gridLayout->getItemPosition(widgetIndex,
+                                 &row, 
+                                 &col,
+                                 &rowSpan, 
+                                 &colSpan);
 }
 
 void MapEditor::GetNextRowCol(int& rowOutput, int& colOutput)
@@ -280,6 +261,7 @@ void MapEditor::RemoveBlockTypeButton(QRadioButton* rButton)
 {
   rButton->hide();
 
+  //!!!
   ui.gridLayout->removeWidget(rButton);
   _btnGroupBlocks->removeButton(rButton);
   
@@ -290,7 +272,7 @@ void MapEditor::blockEdit()
 {
   int blockTypeId = _btnGroupBlocks->checkedId();
   BlockType blockType = _blockTypes[blockTypeId];
-  BlockEditDialog blockEditDialog(this, blockType);
+  BlockEditDialog blockEditDialog(blockType, this);
   BlockType newBlockType;
 
   QString newBlockName;
@@ -310,7 +292,8 @@ void MapEditor::blockEdit()
     if (_btnGroupBlocks->checkedButton() != 0)
     {
       ChangeBlockType(_btnGroupBlocks->checkedButton(),
-        _blockTypes[blockTypeId], blockEditDialog.GetBlockType());
+                      _blockTypes[blockTypeId],
+                      blockEditDialog.GetBlockType());
     }
     else
     {
@@ -323,7 +306,7 @@ void MapEditor::blockEdit()
     if (_btnGroupBlocks->checkedButton() != 0)
     {
       DeleteBlockType(_btnGroupBlocks->checkedButton(),
-        _blockTypes[_btnGroupBlocks->checkedId()]);
+                      _blockTypes[_btnGroupBlocks->checkedId()]);
     }
     else
     {
@@ -774,13 +757,33 @@ void MapEditor::SaveAsXMLFile()
 
 void MapEditor::renderScene()
 {
-  Viewer viewer;
+  //Viewer viewer;
+  osg::ref_ptr<osgViewer::Viewer> viewer =
+    new osgViewer::Viewer;
 
+  /*
   connect(this, 
           &MapEditor::QuitViewer, 
           &viewer,
           &Viewer::onQuitViewer, 
           Qt::DirectConnection);
+  */
+  /*
+  connect(this,
+    &MapEditor::QuitViewer,
+    &viewer,
+    &osgViewer::Viewer::setDone,
+    Qt::DirectConnection);
+  */
+
+  
+  connect(this,
+    &MapEditor::QuitViewer,
+    [=]
+  {
+    viewer->setDone(true);
+  });
+  
 
   //настройка окна
   int xViewer = 100;
@@ -788,33 +791,33 @@ void MapEditor::renderScene()
   int wViewer = 640;
   int hViewer = 480;
 
-  viewer.setUpViewInWindow(xViewer, yViewer, wViewer, hViewer);
+  viewer->setUpViewInWindow(xViewer, yViewer, wViewer, hViewer);
 
-  viewer.realize();
+  viewer->realize();
 
   osg::ref_ptr<KeyboardMouseHandler> keyboardMouseHandler = 
-    new KeyboardMouseHandler(this);
-  viewer.addEventHandler(keyboardMouseHandler);
-  viewer.addEventHandler(new osgViewer::StatsHandler);
+    new KeyboardMouseHandler(*this);
+  viewer->addEventHandler(keyboardMouseHandler);
+  viewer->addEventHandler(new osgViewer::StatsHandler);
 
-  viewer.setSceneData(_map);
-  viewer.setCameraManipulator(new osgGA::TrackballManipulator);
+  viewer->setSceneData(_map);
+  viewer->setCameraManipulator(new osgGA::TrackballManipulator);
 
   //viewer.getCamera()->setClearColor(osg::Vec4(0., 0., 0., 0.));
 
-  viewer.realize();
+  viewer->realize();
   /////////////////////////////
   //viewer.run();
   std::mutex mutex;
 
-  while (!viewer.done())
+  while (!viewer->done())
   {	
     //для избежания конфликта при создании новой карты
     //!!
     std::lock_guard<std::recursive_mutex> lgMutex(_map->GetMutex());
     //std::lock_guard<std::mutex> lgMutex(mutex);
     //std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
-    viewer.frame();
+    viewer->frame();
   }
 
   emit QuitAppToMain();

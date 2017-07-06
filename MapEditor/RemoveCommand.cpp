@@ -5,13 +5,13 @@
 RemoveCommand::RemoveCommand(osg::ref_ptr<Map> map,
                              int x,
                              int z, 
-                             BlockType blockType, 
+                             const BlockType& blockType, 
                              QUndoCommand* parent) :
-    QUndoCommand(parent),
-    _map(map),
-    _x(x),
-    _z(z),
-    _blockType(blockType)
+  QUndoCommand(parent),
+  _map(map),
+  _x(x),
+  _z(z),
+  _blockType(blockType)
 {
 }
 

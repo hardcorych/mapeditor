@@ -1,9 +1,11 @@
-#include "KeyboardMouseHandler.h"
+#include <osgUtil/PolytopeIntersector>
 
 #include <algorithm>
 #include <memory>
 
-KeyboardMouseHandler::KeyboardMouseHandler(MapEditor* mapEditor) :
+#include "KeyboardMouseHandler.h"
+
+KeyboardMouseHandler::KeyboardMouseHandler(MapEditor& mapEditor) :
     _mouseX(0), 
     _mouseY(0),
     _mapEditor(mapEditor)
@@ -50,18 +52,18 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         //adding/changing the block
         if (map.valid() && block.valid())
         {
-          BlockType blockType = _mapEditor->GetSelectedBlockType();
+          BlockType blockType = _mapEditor.GetSelectedBlockType();
 
           if (block->GetType().isNotBorderType() && !blockType.isNoData())
           {
             if (!block->GetType().isNotEmptyType())
             {
-              _mapEditor->AddBlock(map, block->GetX(), block->GetZ(),
+              _mapEditor.AddBlock(map, block->GetX(), block->GetZ(),
                 blockType);
             }
             else if (block->GetType() != blockType)
             {
-              _mapEditor->ReplaceBlock(map, block, blockType);
+              _mapEditor.ReplaceBlock(map, block, blockType);
             }
           }
           return true;	//TRUE to process an event
@@ -76,8 +78,7 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
           BlockType blockType = block->GetType();
           if (blockType.isNotBorderType() && blockType.isNotEmptyType())
           {
-            //emit to delete command
-            _mapEditor->RemoveBlock(map, block->GetX(),
+            _mapEditor.RemoveBlock(map, block->GetX(),
               block->GetZ(), blockType);
           }
           return true;	//TRUE to process an event
@@ -95,14 +96,14 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
       (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
       ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
     {
-      _mapEditor->Undo();
+      _mapEditor.Undo();
       return true;
     }
     else if (ea.getUnmodifiedKey() == osgGA::GUIEventAdapter::KEY_Y &&
       (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
       ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
     {
-      _mapEditor->Redo();
+      _mapEditor.Redo();
       return true;
     }
 

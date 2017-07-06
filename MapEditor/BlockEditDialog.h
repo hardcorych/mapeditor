@@ -22,7 +22,7 @@ class BlockEditDialog: public QDialog
 {
   Q_OBJECT
 public:
-  BlockEditDialog(QWidget* parent, BlockType blockType);
+  BlockEditDialog(BlockType blockType, QWidget* parent = nullptr);
   ~BlockEditDialog();
 
 public:

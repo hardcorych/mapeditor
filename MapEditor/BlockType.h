@@ -8,8 +8,11 @@ class BlockType
 {
 public:
   BlockType() = default;
-  BlockType(std::string typeName, std::string texPath, 
-    std::string fillType, bool isPassable, bool isUnderTank);
+  BlockType(std::string typeName, 
+            std::string texPath,
+            std::string fillType, 
+            bool isPassable, 
+            bool isUnderTank);
   ~BlockType();
 
 public:
@@ -94,9 +97,7 @@ inline void BlockType::SetUnderTank(bool isUnderTank)
 
 inline bool BlockType::isNoData() const
 {
-  return (_typeName.empty() &&
-          _texPath.empty() &&
-          _fillType.empty());
+  return (_typeName.empty() && _texPath.empty() && _fillType.empty());
 }
 
 inline bool BlockType::isBorderType() const

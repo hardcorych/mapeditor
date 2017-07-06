@@ -6,7 +6,7 @@
 #include <DrawBlockPixmap.h>
 
 CreateBlockTypeCommand::CreateBlockTypeCommand(QButtonGroup* btnGroup,
-                                               BlockType blockType, 
+                                               const BlockType& blockType, 
                                                MapEditor* mapEditor, 
                                                QUndoCommand* parent) :
     QUndoCommand(parent),

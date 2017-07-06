@@ -8,7 +8,7 @@ class DeleteBlockTypeCommand : public QUndoCommand
 {
 public:
   DeleteBlockTypeCommand(QButtonGroup* btnGroup, 
-                         BlockType blockType,
+                         const BlockType& blockType,
                          MapEditor* mapEditor, 
                          QUndoCommand* parent = 0);
   ~DeleteBlockTypeCommand();

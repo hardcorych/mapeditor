@@ -11,6 +11,9 @@
 class Map : public osg::Group
 {
 public:
+  typedef std::vector<osg::ref_ptr<Block>> Blocks;
+
+public:
   Map() = delete;
   Map(unsigned int sizeX, unsigned int sizeZ);
 
@@ -27,21 +30,17 @@ public:
   void GenerateEmptyMap(int sizeX, int sizeZ);
   void Clear();
 
-  void AddBlock(int x, int z, BlockType blockType);
+  void AddBlock(int x, int z, const BlockType& blockType);
   void RemoveBlock(int x, int z);
 
   //resizing
-  std::vector<osg::ref_ptr<Block>> SaveBlocksAndGet();
-  void Resize(std::vector<osg::ref_ptr<Block>> savedBlocks,
-              int sizeX,
-              int sizeZ);
+  Blocks SaveBlocksAndGet();
+  void Resize(Blocks savedBlocks, int sizeX, int sizeZ);
 
   //std::mutex& GetMutex() { return std::ref(_mutex); }
   std::recursive_mutex& GetMutex() { return std::ref(_mutex); }
 
 private:
-  //generateBorder
-  //generateGameArea
   void generateBorder();
   void generateGameArea();
 

@@ -46,11 +46,10 @@ public slots:
                     BlockType blockType);
   //block editor
   void ChangeBlockType(QAbstractButton* rButton,
-    BlockType& blockType, BlockType blockTypeOld);
-  void CreateBlockType(QButtonGroup* btnGroup,
-    BlockType blockType);
+                       BlockType& blockType, 
+                       BlockType blockTypeOld);
+  void CreateBlockType(QButtonGroup* btnGroup, BlockType blockType);
   void DeleteBlockType(QAbstractButton* button, BlockType blockType);
-
 
   void AddBlockType(int id, BlockType blockType);
   void AddBlockTypeButton(QRadioButton* rButton, int& row, int& col);
@@ -69,6 +68,9 @@ public slots:
   inline void Redo();
 
   inline BlockType GetSelectedBlockType();
+  inline void SetSelectedBlockType(const BlockType& blockType);
+
+  inline QAbstractButton* GetCheckedButton();
 
 signals:
   void QuitViewer();
@@ -86,7 +88,7 @@ private:
 
   std::thread _renderThread;
 
-  Viewer _viewer;
+  //Viewer _viewer;
   osg::ref_ptr<KeyboardMouseHandler> _keyboardMouseHandler;
 
   QMenu* _fileMenu;
@@ -144,3 +146,13 @@ inline BlockType MapEditor::GetSelectedBlockType()
   return _blockTypes[_btnGroupBlocks->checkedId()];
 }
 
+inline QAbstractButton* MapEditor::GetCheckedButton()
+{
+  return _btnGroupBlocks->checkedButton();
+}
+
+inline void MapEditor::SetSelectedBlockType(const BlockType& blockType)
+{
+  _blockTypes[_btnGroupBlocks->checkedId()] = blockType;
+  
+}

@@ -5,12 +5,13 @@
 AddCommand::AddCommand(osg::ref_ptr<Map> map,
                        int x,
                        int z,
-                       BlockType blockType, 
+                       const BlockType& blockType, 
                        QUndoCommand* parent) :
-    QUndoCommand(parent),
-    _x(x), _z(z),
-    _blockType(blockType),
-    _map(map)
+  QUndoCommand(parent),
+  _x(x),
+  _z(z),
+  _blockType(blockType),
+  _map(map)
 {
 }
 

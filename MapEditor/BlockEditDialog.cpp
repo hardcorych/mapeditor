@@ -4,8 +4,8 @@
 
 #include "BlockEditDialog.h"
 
-BlockEditDialog::BlockEditDialog(QWidget* parent, 
-                                 BlockType blockType):
+BlockEditDialog::BlockEditDialog(BlockType blockType,
+                                 QWidget* parent) :
     QDialog(parent),
     _blockType(blockType)
 {

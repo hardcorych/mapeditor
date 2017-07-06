@@ -23,5 +23,5 @@ private:
   int _mapSizeZ;
   int _mapSizeXOld;
   int _mapSizeZOld;
-  std::vector<osg::ref_ptr<Block>> savedBlocks;
+  Map::Blocks _savedBlocks;
 };

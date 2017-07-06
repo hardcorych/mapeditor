@@ -8,7 +8,7 @@ class ChangeBlockTypeCommand : public QUndoCommand
 {
 public:
   ChangeBlockTypeCommand(QAbstractButton* button,
-                         BlockType& blockType, 
+                         BlockType blockType, 
                          BlockType blockTypeNew,
                          MapEditor* mapEditor, 
                          QUndoCommand* parent = 0);
@@ -18,7 +18,7 @@ public:
   void redo() override;
 
 private:
-  BlockType& _blockTypeRef;
+  //BlockType& _blockTypeRef;
   BlockType _blockType;
   BlockType _blockTypeNew;
   QAbstractButton* _button;
