@@ -99,7 +99,7 @@ void Map::AddBlock(int x, int z, BlockType blockType)
       //blockOld->GetZ() == block->GetZ())
     if (blockOld->GetX() == x &&
       blockOld->GetZ() == z && 
-      blockOld->GetType().GetTypeName() != "BORDER")
+      blockOld->GetType().isNotBorderType())
     {
       //blockOld->SetType(blockType);
       replaceChild(blockOld, block);
@@ -135,12 +135,9 @@ std::vector<osg::ref_ptr<Block>> Map::SaveBlocksAndGet()
   {
     block = dynamic_cast<Block*>(getChild(blockIndex));
 
-    bool isBorderBlock = 
-      (block->GetType().GetTypeName() == "BORDER");
-    bool isEmptyBlock =
-      (block->GetType().GetTypeName() == "EMPTY");
+    BlockType blockType = block->GetType();
 
-    if (!isBorderBlock && !isEmptyBlock)
+    if (blockType.isNotBorderType() && blockType.isNotEmptyType())
     {
       savedBlocks.push_back(block);
     }

@@ -143,3 +143,4 @@ inline BlockType MapEditor::GetSelectedBlockType()
 {
   return _blockTypes[_btnGroupBlocks->checkedId()];
 }
+

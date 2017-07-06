@@ -183,6 +183,7 @@ MapEditor::MapEditor(QWidget *parent):
   _tableTexPathsWidget->setWindowTitle("Texture paths list");
   _tableTexPathsWidget->resize(500, 500);
   _tableTexPathsWidget->show();
+
 }
 
 MapEditor::~MapEditor()
@@ -624,8 +625,9 @@ void MapEditor::LoadXMLFile()
               if (z > _maxMapSize * _blockSize)
               {
                 isError = true;
-                errorText = "Z coord may be in range of "
-                  + QString::number(_maxMapSize) + " blocks";
+                errorText = "Z coord may be in range of " +
+                             QString::number(_maxMapSize) + 
+                             " blocks";
                 break;
               }
               z -= _blockSize;		//-16 for matching
@@ -683,8 +685,10 @@ void MapEditor::SaveXMLFile()
     //write map to xml
     xmlWriter.writeStartElement("map");
 
-    xmlWriter.writeTextElement("sizeX", _map->GetSizeX_str());
-    xmlWriter.writeTextElement("sizeZ", _map->GetSizeZ_str());
+    xmlWriter.writeTextElement("sizeX", 
+                               QString::number(_map->GetSizeX()*_blockSize));
+    xmlWriter.writeTextElement("sizeZ", 
+                               QString::number(_map->GetSizeZ()*_blockSize));
 
     osg::ref_ptr<Block> block = nullptr;
     osg::ref_ptr<Tile> tile = nullptr;

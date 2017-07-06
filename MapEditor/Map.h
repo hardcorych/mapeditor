@@ -33,8 +33,8 @@ public:
   //resizing
   std::vector<osg::ref_ptr<Block>> SaveBlocksAndGet();
   void Resize(std::vector<osg::ref_ptr<Block>> savedBlocks,
-    int sizeX,
-    int sizeZ);
+              int sizeX,
+              int sizeZ);
 
   //std::mutex& GetMutex() { return std::ref(_mutex); }
   std::recursive_mutex& GetMutex() { return std::ref(_mutex); }
@@ -54,6 +54,7 @@ private:
   std::recursive_mutex _mutex;
 };
 
+//size in blocks
 inline int Map::GetSizeX() const	
 { 
   return _sizeX / _step; 
@@ -66,12 +67,12 @@ inline int Map::GetSizeZ() const
 
 inline QString Map::GetSizeX_str() const
 { 
-  return QString::number(_sizeX); 
-}	//size in blocks
+  return QString::number(_sizeX / _step);   
+}	
 
 inline QString Map::GetSizeZ_str() const
 { 
-  return QString::number(_sizeZ);
+  return QString::number(_sizeZ / _step);
 }
 
 

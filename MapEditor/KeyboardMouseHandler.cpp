@@ -50,19 +50,18 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         //adding/changing the block
         if (map.valid() && block.valid())
         {
-          _blockType = _mapEditor->GetSelectedBlockType();
+          BlockType blockType = _mapEditor->GetSelectedBlockType();
 
-          if (block->GetType().GetTypeName() != "BORDER" &&
-            !_blockType.isEmpty())
+          if (block->GetType().isNotBorderType() && !blockType.isNoData())
           {
-            if (block->GetType().GetTypeName() == "EMPTY")
+            if (!block->GetType().isNotEmptyType())
             {
               _mapEditor->AddBlock(map, block->GetX(), block->GetZ(),
-                _blockType);
+                blockType);
             }
-            else if (block->GetType() != _blockType)
+            else if (block->GetType() != blockType)
             {
-              _mapEditor->ReplaceBlock(map, block, _blockType);
+              _mapEditor->ReplaceBlock(map, block, blockType);
             }
           }
           return true;	//TRUE to process an event
@@ -75,8 +74,7 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIAc
         if (map.valid() && block.valid())
         {
           BlockType blockType = block->GetType();
-          if (blockType.GetTypeName() != "BORDER" && 
-            blockType.GetTypeName() != "EMPTY")
+          if (blockType.isNotBorderType() && blockType.isNotEmptyType())
           {
             //emit to delete command
             _mapEditor->RemoveBlock(map, block->GetX(),

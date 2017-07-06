@@ -12,14 +12,14 @@
 #include <Map.h>
 #include <MapEditor.h>
 
-///добавление блока по левой кнопке мыши
-///удаление блока по правой кнопке мыши
 class MapEditor;
 
+///добавление блока по левой кнопке мыши
+///удаление блока по правой кнопке мыши
 class KeyboardMouseHandler : public osgGA::GUIEventHandler
 {
 public:
-  //KeyboardMouseHandler() = delete;
+  KeyboardMouseHandler() = delete;
   KeyboardMouseHandler(MapEditor* mapEditor);
 
 protected:
@@ -27,7 +27,7 @@ protected:
 
 public:
   virtual bool handle(const osgGA::GUIEventAdapter& ea,
-    osgGA::GUIActionAdapter& aa);
+                      osgGA::GUIActionAdapter& aa);
 
 private:
   void findBlockAndMap(const double x,
@@ -38,9 +38,7 @@ private:
 
 private:
   double _mouseX;
-  double _mouseY;
-
-  BlockType _blockType;   
+  double _mouseY;   
 
   MapEditor* _mapEditor;
 };

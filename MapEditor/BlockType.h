@@ -27,16 +27,12 @@ public:
 
   friend bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight);
 
-  //isBorder
-  //isEmpty
+  inline bool isBorderType() const;
+  inline bool isEmptyType() const;
+  inline bool isNotBorderType() const;
+  inline bool isNotEmptyType() const;
 
-  //isEmptyInfo
-  bool isEmpty()    //!!!
-  {
-    return (_typeName.empty() && 
-      _texPath.empty() && 
-      _fillType.empty());
-  }
+  inline bool isNoData() const;
 
 private:
   std::string _typeName;   
@@ -96,3 +92,29 @@ inline void BlockType::SetUnderTank(bool isUnderTank)
   _isUnderTank = isUnderTank;
 }
 
+inline bool BlockType::isNoData() const
+{
+  return (_typeName.empty() &&
+          _texPath.empty() &&
+          _fillType.empty());
+}
+
+inline bool BlockType::isBorderType() const
+{
+  return (_typeName == "BORDER");
+}
+
+inline bool BlockType::isEmptyType() const
+{
+  return (_typeName == "EMPTY");
+}
+
+inline bool BlockType::isNotBorderType() const
+{
+  return !(_typeName == "BORDER");
+}
+
+inline bool BlockType::isNotEmptyType() const
+{
+  return !(_typeName == "EMPTY");
+}
