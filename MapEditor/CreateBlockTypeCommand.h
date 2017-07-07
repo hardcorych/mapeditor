@@ -7,9 +7,8 @@
 class CreateBlockTypeCommand : public QUndoCommand
 {
 public:
-  CreateBlockTypeCommand(QButtonGroup* btnGroup,
-                         const BlockType& blockType, 
-                         MapEditor* mapEditor, 
+  CreateBlockTypeCommand(const BlockType& blockType, 
+                         MapEditor& mapEditor, 
                          QUndoCommand* parent = 0);
   ~CreateBlockTypeCommand();
 
@@ -18,9 +17,10 @@ public:
 
 private:
   BlockType _blockType;
-  MapEditor* _mapEditor;
-  QRadioButton* _button;
-  QButtonGroup* _btnGroup;
-  int _row;
-  int _col;
+  MapEditor& _mapEditor;
+  unsigned int _blockTypeId;
+  //QRadioButton* _button;
+  //QButtonGroup* _btnGroup;
+  //int _row;
+  //int _col;
 };

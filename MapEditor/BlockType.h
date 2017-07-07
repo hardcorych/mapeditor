@@ -29,6 +29,7 @@ public:
   inline void SetUnderTank(bool isUnderTank);
 
   friend bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight);
+  friend bool operator==(BlockType& blockTypeLeft, BlockType& blockTypeRight);
 
   inline bool isBorderType() const;
   inline bool isEmptyType() const;

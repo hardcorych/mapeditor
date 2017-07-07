@@ -116,7 +116,6 @@
     <ClCompile Include="KeyboardMouseHandler.cpp" />
     <ClCompile Include="MapSizeDialog.cpp" />
     <ClCompile Include="Tile.cpp" />
-    <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MapEditor.h">
@@ -200,7 +199,6 @@
     <ClInclude Include="RemoveCommand.h" />
     <ClInclude Include="ReplaceCommand.h" />
     <ClInclude Include="Tile.h" />
-    <ClInclude Include="Viewer.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MapEditor.qrc">

@@ -32,7 +32,8 @@ MapEditor::MapEditor(QWidget *parent):
     _row(0),
     _col(0),
     _maxColumnElements(5),
-    _blockSize(16)
+    _blockSize(16),
+    _countIdBlockTypes(0)
 {
   ui.setupUi(this);
 
@@ -97,6 +98,7 @@ MapEditor::MapEditor(QWidget *parent):
   _texPaths["WATER"] = "Resources/tiles/WATER.png";
 
   //setting default blocktypes
+  /*
   _blockTypes[-2] = BlockType("BUSHES", _texPaths["BUSHES"],
     "FULL", 0, 0);
   _blockTypes[-3] = BlockType("WATER", _texPaths["WATER"],
@@ -125,18 +127,87 @@ MapEditor::MapEditor(QWidget *parent):
     "TOP", 0, 0);
   _blockTypes[-14] = BlockType("BRICK", _texPaths["BRICK"],
     "BOTTOM", 0, 0);
+  */
+  _blockTypes[_countIdBlockTypes++] = BlockType("BUSHES",
+                                                _texPaths["BUSHES"],
+                                                "FULL",
+                                                0, 
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("WATER", 
+                                                _texPaths["WATER"],
+                                                "FULL",
+                                                0,
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("ICE",
+                                                _texPaths["ICE"],
+                                                "FULL",
+                                                0, 
+                                                0);
+
+  _blockTypes[_countIdBlockTypes++] = BlockType("ARMOR", 
+                                                _texPaths["ARMOR"],
+                                                "FULL",
+                                                0, 
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("ARMOR",
+                                                _texPaths["ARMOR"],
+                                                "LEFT", 
+                                                0, 
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("ARMOR",
+                                                _texPaths["ARMOR"],
+                                                "RIGHT",
+                                                0,
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("ARMOR",
+                                                _texPaths["ARMOR"],
+                                                "TOP",
+                                                0, 
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("ARMOR", 
+                                                _texPaths["ARMOR"],
+                                                "BOTTOM",
+                                                0, 
+                                                0);
+
+  _blockTypes[_countIdBlockTypes++] = BlockType("BRICK", 
+                                                _texPaths["BRICK"],
+                                                "FULL",
+                                                0, 
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("BRICK",
+                                                _texPaths["BRICK"],
+                                                "LEFT",
+                                                0,
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("BRICK",
+                                                _texPaths["BRICK"],
+                                                "RIGHT",
+                                                0, 
+                                                0);
+  _blockTypes[_countIdBlockTypes++] = BlockType("BRICK",
+                                                _texPaths["BRICK"],
+                                                "TOP",
+                                                0, 
+                                                0);
+  _blockTypes[_countIdBlockTypes] = BlockType("BRICK",
+                                                _texPaths["BRICK"],
+                                                "BOTTOM",
+                                                0,
+                                                0);
 
   //setting blocktypes buttons
   _col = -1;
 
-  for (std::map<int, BlockType>::iterator it = _blockTypes.begin();
+  _countIdBlockTypes = -1;
+  for (BlockTypes::iterator it = _blockTypes.begin();
     it != _blockTypes.end(); ++it)
   {
     QRadioButton *rButton = new QRadioButton(this);
-    _btnGroupBlocks->addButton(rButton);
-    int btnId = _btnGroupBlocks->id(rButton);   //-2, -3, etc...
+    _btnGroupBlocks->addButton(rButton, ++_countIdBlockTypes);
+    //int btnId = _btnGroupBlocks->id(rButton);   //0,1,2 etc...
 
-    QPixmap pixmap = DrawBlockPixmap(_blockTypes[btnId]);
+    QPixmap pixmap = DrawBlockPixmap(_blockTypes[_countIdBlockTypes]);
     rButton->setIconSize(QSize(64, 64));
     rButton->setIcon(pixmap);
 
@@ -149,7 +220,6 @@ MapEditor::MapEditor(QWidget *parent):
     ui.gridLayout->addWidget(rButton, _row, _col);
     rButton->setVisible(true);
   }
-
   
   _tableTexPathsWidget = 
     new TableTexPathsWidget(_blockTypes, _btnGroupBlocks);
@@ -170,48 +240,118 @@ MapEditor::~MapEditor()
 void MapEditor::CreateBlockType(QButtonGroup* btnGroup,
   BlockType blockType)
 {
+  bool isAddableBlockTypeExist = false;
+
+  for (BlockTypes::iterator it = _blockTypes.begin();
+    it != _blockTypes.end();
+    ++it)
+  {
+    if (it->second == blockType)
+    {
+      isAddableBlockTypeExist = true;
+      break;
+    }
+  }
+
+  if (isAddableBlockTypeExist)
+  {
+    QMessageBox::critical(this,
+                          "Error",
+                          "This block exists",
+                          QMessageBox::Ok);
+    return;
+  }
+
   CreateBlockTypeCommand* createBlockTypeCommand =
-    new CreateBlockTypeCommand(btnGroup, blockType, this);
+    new CreateBlockTypeCommand(blockType, *this);
   _undoStack->push(createBlockTypeCommand);
 }
 
 void MapEditor::ChangeBlockType(QAbstractButton* rButton, 
   BlockType& blockType, BlockType blockTypeNew)
 {
+  //check blocktype
+  bool isChangedBlockTypeExist = false;
+
+  for (BlockTypes::iterator it = _blockTypes.begin();
+    it != _blockTypes.end();
+    ++it)
+  {
+    if (it->second == blockType)
+    {
+      isChangedBlockTypeExist = true;
+      break;
+    }
+  }
+
+  if (isChangedBlockTypeExist)
+  {
+    QMessageBox::critical(this,
+                          "Error",
+                          "This block exists",
+                          QMessageBox::Ok);
+    return;
+  }
+
   ChangeBlockTypeCommand* changeBlockTypeCommand =
-                            new ChangeBlockTypeCommand( rButton,
-                                                        blockType,
+                            new ChangeBlockTypeCommand( blockType,
                                                         blockTypeNew,
-                                                        this);
+                                                        *this);
   _undoStack->push(changeBlockTypeCommand);
 }
 
 void MapEditor::DeleteBlockType(QAbstractButton* button,
   BlockType blockType)
 {
+  int blockTypeId;
+  for (BlockTypes::iterator it = _blockTypes.begin();
+    it != _blockTypes.end();
+    ++it)
+  {
+    if (it->second == blockType)
+    {
+      blockTypeId = it->first;
+      break;
+    }
+  }
+
   DeleteBlockTypeCommand* deleteBlockTypeCommand =
-    new DeleteBlockTypeCommand(_btnGroupBlocks, blockType, this);
+    new DeleteBlockTypeCommand(blockType, blockTypeId, *this);
   _undoStack->push(deleteBlockTypeCommand);
 }
 
-void MapEditor::AddBlockType(int id, BlockType blockType)
+//void MapEditor::AddBlockType(int id, BlockType blockType)
+//returns id of added blocktype
+unsigned int MapEditor::AddBlockType(BlockType blockType)
 {
-  _blockTypes[id] = blockType;
+  //_blockTypes[id] = blockType;
+
+  _blockTypes[++_countIdBlockTypes] = blockType;
   if (_texPaths.find(blockType.GetTypeName()) == _texPaths.end())
   {
     _texPaths[blockType.GetTypeName()] = blockType.GetTexPath();
   }
+
+  AddBlockTypeButton(_blockTypes[_countIdBlockTypes]);
+  return _countIdBlockTypes;
 }
 
-void MapEditor::AddBlockTypeButton(QRadioButton* rButton, int& row, int& col)
+void MapEditor::AddBlockTypeButton(const BlockType& blockType)
 {
-  if (col == _maxColumnElements)
+  QRadioButton* rButton = new QRadioButton(this);
+  rButton->setIconSize(QSize(64, 64));
+
+  QPixmap pixmap = DrawBlockPixmap(blockType);
+  rButton->setIcon(pixmap);
+  _btnGroupBlocks->addButton(rButton, _countIdBlockTypes);
+
+  if (_col == _maxColumnElements)
   {
-    col = 0;
-    row++;
+    _col = 0;
+    _row++;
   }
 
-  ui.gridLayout->addWidget(rButton, row, col);
+  ui.gridLayout->addWidget(rButton, _row, _col);
   rButton->setVisible(true);
   if (_btnGroupBlocks->checkedButton() != 0)
   {
@@ -255,10 +395,13 @@ void MapEditor::SetPrevRowCol()
 void MapEditor::RemoveBlockType(int id)
 {
   _blockTypes.erase(id);
+  RemoveBlockTypeButton(id);
 }
 
-void MapEditor::RemoveBlockTypeButton(QRadioButton* rButton)
+//void MapEditor::RemoveBlockTypeButton(QRadioButton* rButton)
+void MapEditor::RemoveBlockTypeButton(int id)
 {
+  QAbstractButton* rButton = _btnGroupBlocks->button(id);
   rButton->hide();
 
   //!!!

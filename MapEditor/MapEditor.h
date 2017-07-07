@@ -23,6 +23,9 @@ class MapEditor : public QMainWindow
   Q_OBJECT
 
 public:
+  typedef std::map<int, BlockType> BlockTypes;
+
+public:
   MapEditor(QWidget *parent = Q_NULLPTR);
   ~MapEditor();
 
@@ -51,10 +54,14 @@ public slots:
   void CreateBlockType(QButtonGroup* btnGroup, BlockType blockType);
   void DeleteBlockType(QAbstractButton* button, BlockType blockType);
 
-  void AddBlockType(int id, BlockType blockType);
-  void AddBlockTypeButton(QRadioButton* rButton, int& row, int& col);
+  //void AddBlockType(int id, BlockType blockType);
+  unsigned int AddBlockType(BlockType blockType);
+  void AddBlockTypeButton(const BlockType& blockType);
   void RemoveBlockType(int id);
-  void RemoveBlockTypeButton(QRadioButton* rButton);
+  void RemoveBlockTypeButton(int id);
+  //void RemoveBlockTypeButton(QRadioButton* rButton);
+  //void ChangeBlockType();
+  //void ChangeBlockTypeButton();
 
   //button coords on grid
   void GetButtonRowCol(QRadioButton* rButton, int& row, int& col);
@@ -81,7 +88,6 @@ private:
   void createMap(int sizeX, int sizeZ);
   void createUndoView();
   void createUndoRedoActions();
-
 
 private:
   Ui::MapEditorClass ui;
@@ -126,9 +132,11 @@ private:
 
   int _blockSize;
 
+  unsigned int _countIdBlockTypes;
+
   QButtonGroup* _btnGroupBlocks;
   std::map<std::string, std::string> _texPaths;
-  std::map<int, BlockType> _blockTypes;
+  BlockTypes _blockTypes;
 };
 
 inline void MapEditor::Undo() 

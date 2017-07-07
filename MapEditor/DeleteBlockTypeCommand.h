@@ -7,9 +7,9 @@
 class DeleteBlockTypeCommand : public QUndoCommand
 {
 public:
-  DeleteBlockTypeCommand(QButtonGroup* btnGroup, 
-                         const BlockType& blockType,
-                         MapEditor* mapEditor, 
+  DeleteBlockTypeCommand(const BlockType& blockType,
+                         int blockTypeId,
+                         MapEditor& mapEditor, 
                          QUndoCommand* parent = 0);
   ~DeleteBlockTypeCommand();
 
@@ -18,10 +18,11 @@ public:
 
 private:
   BlockType _blockType;
-  MapEditor* _mapEditor;
-  QRadioButton* _button;
-  int _buttonId;
-  QButtonGroup* _btnGroup;
-  int _row;
-  int _col;
+  MapEditor& _mapEditor;
+  int _blockTypeId;
+  //QRadioButton* _button;
+  //int _buttonId;
+  //QButtonGroup* _btnGroup;
+  //int _row;
+  //int _col;
 };

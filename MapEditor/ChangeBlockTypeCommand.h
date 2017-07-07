@@ -7,10 +7,9 @@
 class ChangeBlockTypeCommand : public QUndoCommand
 {
 public:
-  ChangeBlockTypeCommand(QAbstractButton* button,
-                         BlockType blockType, 
-                         BlockType blockTypeNew,
-                         MapEditor* mapEditor, 
+  ChangeBlockTypeCommand(const BlockType& blockType, 
+                         const BlockType& blockTypeNew,
+                         MapEditor& mapEditor, 
                          QUndoCommand* parent = 0);
   ~ChangeBlockTypeCommand();
 
@@ -21,6 +20,6 @@ private:
   //BlockType& _blockTypeRef;
   BlockType _blockType;
   BlockType _blockTypeNew;
-  QAbstractButton* _button;
-  MapEditor* _mapEditor;
+  //QAbstractButton* _button;
+  MapEditor& _mapEditor;
 };
