@@ -123,17 +123,27 @@ BlockEditDialog::BlockEditDialog(BlockType blockType,
   layout->addWidget(_pBtnDeleteBlockType, 4, 2);
   layout->addWidget(_pBtnCancel, 4, 3);
 
-  connect(_pBtnSetTexPath, &QPushButton::clicked,
-    this, &BlockEditDialog::setTexPath);
-  connect(_pBtnCreateBlockType, &QPushButton::clicked,
-    this, &BlockEditDialog::createBlockType);
-  connect(_pBtnChangeBlockType, &QPushButton::clicked,
-    this, &BlockEditDialog::changeBlockType);
-  connect(_pBtnDeleteBlockType, &QPushButton::clicked,
-    this, &BlockEditDialog::deleteBlockType);
+  connect(_pBtnSetTexPath, 
+          &QPushButton::clicked,
+          this, 
+          &BlockEditDialog::setTexPath);
+  connect(_pBtnCreateBlockType, 
+          &QPushButton::clicked,
+          this,
+          &BlockEditDialog::createBlockType);
+  connect(_pBtnChangeBlockType, 
+          &QPushButton::clicked,
+          this,
+          &BlockEditDialog::changeBlockType);
+  connect(_pBtnDeleteBlockType, 
+          &QPushButton::clicked,
+          this, 
+          &BlockEditDialog::deleteBlockType);
 
-  connect(_pBtnCancel, &QPushButton::clicked,
-    this, &QDialog::reject);
+  connect(_pBtnCancel,
+          &QPushButton::clicked,
+          this, 
+          &QDialog::reject);
 }
 
 BlockEditDialog::~BlockEditDialog()
@@ -142,9 +152,10 @@ BlockEditDialog::~BlockEditDialog()
 
 void BlockEditDialog::setTexPath()
 {
-  QString filename = QFileDialog::getOpenFileName(
-    this, tr("Open texture"), ".",
-    tr("PNG and JPG files (*.png *.jpg)"));
+  QString filename = QFileDialog::getOpenFileName(this, 
+                                                  tr("Open texture"), 
+                                                  ".",
+                                                  tr("PNG and JPG files (*.png *.jpg)"));
 
   QFile file(filename);
 

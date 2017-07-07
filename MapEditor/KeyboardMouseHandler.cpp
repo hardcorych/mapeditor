@@ -1,4 +1,5 @@
 #include <osgUtil/PolytopeIntersector>
+#include <osgViewer/Viewer>
 
 #include <algorithm>
 #include <memory>
@@ -16,11 +17,13 @@ KeyboardMouseHandler::~KeyboardMouseHandler()
 {
 }
 
-bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
+bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea, 
+                                  osgGA::GUIActionAdapter& aa)
 {
   osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 
   if (!viewer) return false;
+  osgGA::GUIEventAdapter::EventType eventType;
 
   switch (ea.getEventType())
   {
@@ -124,8 +127,9 @@ void KeyboardMouseHandler::findBlockAndMap(const double x,
     //return std::make_pair(false, nullptr);	//nothing to pick
 
   osg::ref_ptr<osgUtil::LineSegmentIntersector> picker = 
-    new osgUtil::LineSegmentIntersector(
-    osgUtil::Intersector::PROJECTION, x, y);
+    new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, 
+                                        x,
+                                        y);
 
   osgUtil::IntersectionVisitor iv(picker);
 

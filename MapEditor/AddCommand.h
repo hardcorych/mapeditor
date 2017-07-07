@@ -12,7 +12,7 @@ public:
              int x,
              int z,
              const BlockType& blockType,
-             QUndoCommand* parent = 0);
+             QUndoCommand* parent = nullptr);
   ~AddCommand();
 
   void undo() override;

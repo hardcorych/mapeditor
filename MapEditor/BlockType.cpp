@@ -19,15 +19,11 @@ BlockType::~BlockType()
 
 bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight)
 {
-  if (blockTypeLeft._typeName != blockTypeRight._typeName)
-    return true;
-  else if (blockTypeLeft._fillType != blockTypeRight._fillType)
-    return true;
-  else if (blockTypeLeft._texPath != blockTypeRight._texPath)
-    return true;
-  else if (blockTypeLeft._isPassable != blockTypeRight._isPassable)
-    return true;
-  else if (blockTypeLeft._isUnderTank != blockTypeRight._isUnderTank)
+  if (blockTypeLeft._typeName != blockTypeRight._typeName &&
+      blockTypeLeft._fillType != blockTypeRight._fillType &&
+      blockTypeLeft._texPath != blockTypeRight._texPath &&
+      blockTypeLeft._isPassable != blockTypeRight._isPassable &&
+      blockTypeLeft._isUnderTank != blockTypeRight._isUnderTank)
     return true;
   else
     return false;
@@ -35,15 +31,11 @@ bool operator!=(BlockType& blockTypeLeft, BlockType& blockTypeRight)
 
 bool operator==(BlockType& blockTypeLeft, BlockType& blockTypeRight)
 {
-  if (blockTypeLeft._typeName == blockTypeRight._typeName)
-    return true;
-  else if (blockTypeLeft._fillType == blockTypeRight._fillType)
-    return true;
-  else if (blockTypeLeft._texPath == blockTypeRight._texPath)
-    return true;
-  else if (blockTypeLeft._isPassable == blockTypeRight._isPassable)
-    return true;
-  else if (blockTypeLeft._isUnderTank == blockTypeRight._isUnderTank)
+  if (blockTypeLeft._typeName == blockTypeRight._typeName &&
+      blockTypeLeft._fillType == blockTypeRight._fillType &&
+      blockTypeLeft._texPath == blockTypeRight._texPath &&
+      blockTypeLeft._isPassable == blockTypeRight._isPassable &&
+      blockTypeLeft._isUnderTank == blockTypeRight._isUnderTank)
     return true;
   else
     return false;

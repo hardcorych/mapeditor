@@ -37,8 +37,7 @@ public:
   Blocks SaveBlocksAndGet();
   void Resize(Blocks savedBlocks, int sizeX, int sizeZ);
 
-  //std::mutex& GetMutex() { return std::ref(_mutex); }
-  std::recursive_mutex& GetMutex() { return std::ref(_mutex); }
+  inline std::recursive_mutex& GetMutex();
 
 private:
   void generateBorder();
@@ -49,7 +48,6 @@ private:
   int _sizeZ;
   int _step;		//step equals block size
 
-  //std::mutex _mutex;
   std::recursive_mutex _mutex;
 };
 
@@ -74,4 +72,8 @@ inline QString Map::GetSizeZ_str() const
   return QString::number(_sizeZ / _step);
 }
 
+inline std::recursive_mutex& Map::GetMutex() 
+{
+  return std::ref(_mutex); 
+}
 

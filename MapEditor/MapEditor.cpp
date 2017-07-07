@@ -237,8 +237,7 @@ MapEditor::~MapEditor()
   }
 }
 
-void MapEditor::CreateBlockType(QButtonGroup* btnGroup,
-  BlockType blockType)
+void MapEditor::CreateBlockType(BlockType blockType)
 {
   bool isAddableBlockTypeExist = false;
 
@@ -267,8 +266,7 @@ void MapEditor::CreateBlockType(QButtonGroup* btnGroup,
   _undoStack->push(createBlockTypeCommand);
 }
 
-void MapEditor::ChangeBlockType(QAbstractButton* rButton, 
-  BlockType& blockType, BlockType blockTypeNew)
+void MapEditor::ChangeBlockType(BlockType& blockType, BlockType blockTypeNew)
 {
   //check blocktype
   bool isChangedBlockTypeExist = false;
@@ -277,7 +275,7 @@ void MapEditor::ChangeBlockType(QAbstractButton* rButton,
     it != _blockTypes.end();
     ++it)
   {
-    if (it->second == blockType)
+    if (it->second == blockTypeNew)
     {
       isChangedBlockTypeExist = true;
       break;
@@ -294,14 +292,14 @@ void MapEditor::ChangeBlockType(QAbstractButton* rButton,
   }
 
   ChangeBlockTypeCommand* changeBlockTypeCommand =
-                            new ChangeBlockTypeCommand( blockType,
+                            new ChangeBlockTypeCommand( _blockTypes,
+                                                        blockType,
                                                         blockTypeNew,
                                                         *this);
   _undoStack->push(changeBlockTypeCommand);
 }
 
-void MapEditor::DeleteBlockType(QAbstractButton* button,
-  BlockType blockType)
+void MapEditor::DeleteBlockType(BlockType blockType)
 {
   int blockTypeId;
   for (BlockTypes::iterator it = _blockTypes.begin();
@@ -318,6 +316,26 @@ void MapEditor::DeleteBlockType(QAbstractButton* button,
   DeleteBlockTypeCommand* deleteBlockTypeCommand =
     new DeleteBlockTypeCommand(blockType, blockTypeId, *this);
   _undoStack->push(deleteBlockTypeCommand);
+}
+
+void MapEditor::SetBlockTypeButton(BlockType& blockType)
+{
+  int blockTypeId;
+  for (BlockTypes::iterator it = _blockTypes.begin();
+    it != _blockTypes.end();
+    ++it)
+  {
+    if (it->second == blockType)
+    {
+      blockTypeId = it->first;
+      break;
+    }
+  }
+
+  QAbstractButton* rButton = _btnGroupBlocks->button(blockTypeId);
+
+  QPixmap pixmap = DrawBlockPixmap(blockType);
+  rButton->setIcon(pixmap);
 }
 
 //void MapEditor::AddBlockType(int id, BlockType blockType)
@@ -345,7 +363,7 @@ void MapEditor::AddBlockTypeButton(const BlockType& blockType)
   rButton->setIcon(pixmap);
   _btnGroupBlocks->addButton(rButton, _countIdBlockTypes);
 
-  if (_col == _maxColumnElements)
+  if (++_col == _maxColumnElements)
   {
     _col = 0;
     _row++;
@@ -360,6 +378,13 @@ void MapEditor::AddBlockTypeButton(const BlockType& blockType)
   
   rButton->setChecked(true);
 }
+
+/*
+void ChangeBlockType(const BlockType& blockTypeNew)
+{
+
+}
+*/
 
 void MapEditor::GetButtonRowCol(QRadioButton* rButton, int& row, int& col)
 {
@@ -428,15 +453,13 @@ void MapEditor::blockEdit()
   switch (blockEditDialog.exec())
   {
   case static_cast<int>(BlockEditAction::CREATE):
-    CreateBlockType(_btnGroupBlocks, blockEditDialog.GetBlockType());
+    CreateBlockType(blockEditDialog.GetBlockType());
     break;
 
   case static_cast<int>(BlockEditAction::CHANGE):
     if (_btnGroupBlocks->checkedButton() != 0)
     {
-      ChangeBlockType(_btnGroupBlocks->checkedButton(),
-                      _blockTypes[blockTypeId],
-                      blockEditDialog.GetBlockType());
+      ChangeBlockType(_blockTypes[blockTypeId], blockEditDialog.GetBlockType());
     }
     else
     {
@@ -448,8 +471,7 @@ void MapEditor::blockEdit()
   case static_cast<int>(BlockEditAction::DELETE):
     if (_btnGroupBlocks->checkedButton() != 0)
     {
-      DeleteBlockType(_btnGroupBlocks->checkedButton(),
-                      _blockTypes[_btnGroupBlocks->checkedId()]);
+      DeleteBlockType(_blockTypes[_btnGroupBlocks->checkedId()]);
     }
     else
     {
@@ -827,10 +849,10 @@ void MapEditor::SaveXMLFile()
       if (blockType.GetTypeName() != "EMPTY")	//empty blocks aren't written to file
       {
         xmlWriter.writeStartElement("block");
-        xmlWriter.writeAttribute("texType", QString::
-          fromStdString(blockType.GetTypeName()));
-        xmlWriter.writeAttribute("fillType", QString::
-          fromStdString(blockType.GetFillType()));
+        xmlWriter.writeAttribute("texType",
+                                 QString::fromStdString(blockType.GetTypeName()));
+        xmlWriter.writeAttribute("fillType",
+                                 QString::fromStdString(blockType.GetFillType()));
 
         if (blockType.GetPassability())
         {
@@ -903,31 +925,14 @@ void MapEditor::renderScene()
   //Viewer viewer;
   osg::ref_ptr<osgViewer::Viewer> viewer =
     new osgViewer::Viewer;
-
-  /*
-  connect(this, 
-          &MapEditor::QuitViewer, 
-          &viewer,
-          &Viewer::onQuitViewer, 
-          Qt::DirectConnection);
-  */
-  /*
-  connect(this,
-    &MapEditor::QuitViewer,
-    &viewer,
-    &osgViewer::Viewer::setDone,
-    Qt::DirectConnection);
-  */
-
   
   connect(this,
-    &MapEditor::QuitViewer,
-    [=]
+          &MapEditor::QuitViewer,
+          [=]
   {
     viewer->setDone(true);
   });
   
-
   //настройка окна
   int xViewer = 100;
   int yViewer = 100;
@@ -990,15 +995,13 @@ void MapEditor::AddBlock(osg::ref_ptr<Map> map, int x, int z,
   _undoStack->push(addCommand);
 }
 
-void MapEditor::RemoveBlock(osg::ref_ptr<Map> map, int x, int z,
+void MapEditor::RemoveBlock(osg::ref_ptr<Map>& map, int x, int z,
   BlockType blockType)
 {
   RemoveCommand* removeCommand = new RemoveCommand(map, x, z, blockType);
   _undoStack->push(removeCommand);
 }
 
-//void MapEditor::ReplaceBlock(osg::ref_ptr<Block> block, 
-  //BlockType blockType)
 void MapEditor::ReplaceBlock(osg::ref_ptr<Map> map,
                              osg::ref_ptr<Block> block,
                              BlockType blockType)
@@ -1019,7 +1022,7 @@ void MapEditor::changeMapSize()
     int mapSizeZ = mapSizeDialog.GetSizeZ();
 
     if (!(mapSizeX == _map->GetSizeX() && 
-      mapSizeZ == _map->GetSizeZ()))
+          mapSizeZ == _map->GetSizeZ()))
     {
       //push undoStack
       ChangeSizeCommand* changeSizeCommand = 

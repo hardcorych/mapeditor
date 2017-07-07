@@ -21,15 +21,10 @@ AddCommand::~AddCommand()
 
 void AddCommand::undo()
 {
-  //remove
-  //BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
-  //_block->SetType(emptyBlock);
   _map->RemoveBlock(_x, _z);
 }
 
 void AddCommand::redo()
 {
-  //add
-  //_block->SetType(_blockType);
   _map->AddBlock(_x, _z, _blockType);
 }

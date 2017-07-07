@@ -14,7 +14,6 @@
 #include <KeyboardMouseHandler.h>
 #include <Map.h>
 #include <TableTexPathsWidget.h>
-#include <Viewer.h>
 
 class KeyboardMouseHandler;
 
@@ -43,25 +42,21 @@ public slots:
   //undo/redo commands
   //map editor
   void AddBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
-  void RemoveBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
+  void RemoveBlock(osg::ref_ptr<Map>& map, int x, int z, BlockType blockType);
   void ReplaceBlock(osg::ref_ptr<Map> map,
                     osg::ref_ptr<Block> block,
                     BlockType blockType);
   //block editor
-  void ChangeBlockType(QAbstractButton* rButton,
-                       BlockType& blockType, 
-                       BlockType blockTypeOld);
-  void CreateBlockType(QButtonGroup* btnGroup, BlockType blockType);
-  void DeleteBlockType(QAbstractButton* button, BlockType blockType);
+  void ChangeBlockType(BlockType& blockType, BlockType blockTypeOld);
+  void CreateBlockType(BlockType blockType);
+  void DeleteBlockType(BlockType blockType);
 
-  //void AddBlockType(int id, BlockType blockType);
   unsigned int AddBlockType(BlockType blockType);
   void AddBlockTypeButton(const BlockType& blockType);
   void RemoveBlockType(int id);
   void RemoveBlockTypeButton(int id);
-  //void RemoveBlockTypeButton(QRadioButton* rButton);
-  //void ChangeBlockType();
-  //void ChangeBlockTypeButton();
+
+  void SetBlockTypeButton(BlockType& blockType);
 
   //button coords on grid
   void GetButtonRowCol(QRadioButton* rButton, int& row, int& col);
@@ -94,7 +89,6 @@ private:
 
   std::thread _renderThread;
 
-  //Viewer _viewer;
   osg::ref_ptr<KeyboardMouseHandler> _keyboardMouseHandler;
 
   QMenu* _fileMenu;
@@ -162,5 +156,4 @@ inline QAbstractButton* MapEditor::GetCheckedButton()
 inline void MapEditor::SetSelectedBlockType(const BlockType& blockType)
 {
   _blockTypes[_btnGroupBlocks->checkedId()] = blockType;
-  
 }

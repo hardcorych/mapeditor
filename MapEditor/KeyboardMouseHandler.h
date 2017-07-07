@@ -21,7 +21,6 @@ class KeyboardMouseHandler : public osgGA::GUIEventHandler
 {
 public:
   KeyboardMouseHandler() = delete;
-  //KeyboardMouseHandler(MapEditor* mapEditor);
   KeyboardMouseHandler(MapEditor& mapEditor);
 
 protected:
@@ -42,7 +41,6 @@ private:
   double _mouseX;
   double _mouseY;   
 
-  //MapEditor* _mapEditor;
   MapEditor& _mapEditor;
 };
 

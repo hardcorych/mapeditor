@@ -10,7 +10,7 @@ public:
   DeleteBlockTypeCommand(const BlockType& blockType,
                          int blockTypeId,
                          MapEditor& mapEditor, 
-                         QUndoCommand* parent = 0);
+                         QUndoCommand* parent = nullptr);
   ~DeleteBlockTypeCommand();
 
   void undo() override;
@@ -20,9 +20,4 @@ private:
   BlockType _blockType;
   MapEditor& _mapEditor;
   int _blockTypeId;
-  //QRadioButton* _button;
-  //int _buttonId;
-  //QButtonGroup* _btnGroup;
-  //int _row;
-  //int _col;
 };

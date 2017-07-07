@@ -161,16 +161,8 @@ void Map::Resize(Blocks savedBlocks, int sizeX, int sizeZ)
   Clear();
   GenerateEmptyMap(sizeX, sizeZ);
 
-  //for (Block* block : savedBlocks)
   for (osg::ref_ptr<Block> block : savedBlocks)
   {
     AddBlock(block->GetX(), block->GetZ(), block->GetType());
   }
-  /*
-  for (std::vector<osg::ref_ptr<Block>>::iterator it = savedBlocks.begin();
-    it != savedBlocks.end(); ++it)
-  {
-    AddBlock((*it)->GetX(), (*it)->GetZ(), (*it)->GetType());
-  }
-  */
 }

@@ -21,8 +21,10 @@ Tile::Tile(unsigned int x,
   _vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
 
   setVertexArray(_vertices);
-  addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,
-    0, _vertices->size()));
+  addPrimitiveSet(new osg::DrawArrays
+                  (osg::PrimitiveSet::TRIANGLE_STRIP,
+                   0, 
+                   _vertices->size()));
 
   //normals
   _normals->setBinding(osg::Array::BIND_PER_VERTEX);
@@ -58,8 +60,10 @@ Tile::Tile(unsigned int x,
   _vertices->push_back(osg::Vec3(_x + _size, 0., _z + _size));
 
   setVertexArray(_vertices);
-  addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,
-    0, _vertices->size()));
+  addPrimitiveSet(new osg::DrawArrays
+                  (osg::PrimitiveSet::TRIANGLE_STRIP,
+                   0,
+                   _vertices->size()));
 
   //normals
   _normals->setBinding(osg::Array::BIND_PER_VERTEX);

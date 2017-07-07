@@ -10,7 +10,7 @@ public:
   ChangeSizeCommand(osg::ref_ptr<Map> map, 
                     int mapSizeX,
                     int mapSizeZ,
-                    QUndoCommand* parent = 0);
+                    QUndoCommand* parent = nullptr);
   ~ChangeSizeCommand();
 
   void undo() override;

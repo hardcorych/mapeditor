@@ -9,7 +9,7 @@ class CreateBlockTypeCommand : public QUndoCommand
 public:
   CreateBlockTypeCommand(const BlockType& blockType, 
                          MapEditor& mapEditor, 
-                         QUndoCommand* parent = 0);
+                         QUndoCommand* parent = nullptr);
   ~CreateBlockTypeCommand();
 
   void undo() override;
@@ -18,9 +18,5 @@ public:
 private:
   BlockType _blockType;
   MapEditor& _mapEditor;
-  unsigned int _blockTypeId;
-  //QRadioButton* _button;
-  //QButtonGroup* _btnGroup;
-  //int _row;
-  //int _col;
+  int _blockTypeId;
 };
