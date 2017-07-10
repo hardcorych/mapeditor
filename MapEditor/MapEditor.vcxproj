@@ -143,7 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddCommand.h" />
+    <ClInclude Include="AddEvent.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="RedoEvent.h" />
+    <ClInclude Include="RemoveEvent.h" />
+    <ClInclude Include="ReplaceEvent.h" />
+    <ClInclude Include="UndoEvent.h" />
     <CustomBuild Include="BlockEditDialog.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing BlockEditDialog.h...</Message>

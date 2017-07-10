@@ -14,6 +14,7 @@
 #include <qxmlstream.h>
 
 #include <AddCommand.h>
+#include <AddEvent.h>
 #include <BlockEditDialog.h>
 #include <ChangeBlockTypeCommand.h>
 #include <ChangeSizeCommand.h>
@@ -21,8 +22,12 @@
 #include <DeleteBlockTypeCommand.h>
 #include <DrawBlockPixmap.h>
 #include <MapSizeDialog.h>
+#include <RedoEvent.h>
 #include <RemoveCommand.h>
+#include <RemoveEvent.h>
 #include <ReplaceCommand.h>
+#include <ReplaceEvent.h>
+#include <UndoEvent.h>
 
 MapEditor::MapEditor(QWidget *parent):
     QMainWindow(parent),
@@ -98,36 +103,6 @@ MapEditor::MapEditor(QWidget *parent):
   _texPaths["WATER"] = "Resources/tiles/WATER.png";
 
   //setting default blocktypes
-  /*
-  _blockTypes[-2] = BlockType("BUSHES", _texPaths["BUSHES"],
-    "FULL", 0, 0);
-  _blockTypes[-3] = BlockType("WATER", _texPaths["WATER"],
-    "FULL", 0, 0);
-  _blockTypes[-4] = BlockType("ICE", _texPaths["ICE"],
-    "FULL", 0, 0);
-
-  _blockTypes[-5] = BlockType("ARMOR", _texPaths["ARMOR"],
-    "FULL", 0, 0);
-  _blockTypes[-6] = BlockType("ARMOR", _texPaths["ARMOR"],
-    "LEFT", 0, 0);
-  _blockTypes[-7] = BlockType("ARMOR", _texPaths["ARMOR"],
-    "RIGHT", 0, 0);
-  _blockTypes[-8] = BlockType("ARMOR", _texPaths["ARMOR"],
-    "TOP", 0, 0);
-  _blockTypes[-9] = BlockType("ARMOR", _texPaths["ARMOR"],
-    "BOTTOM", 0, 0);
-
-  _blockTypes[-10] = BlockType("BRICK", _texPaths["BRICK"],
-    "FULL", 0, 0);
-  _blockTypes[-11] = BlockType("BRICK", _texPaths["BRICK"],
-    "LEFT", 0, 0);
-  _blockTypes[-12] = BlockType("BRICK", _texPaths["BRICK"],
-    "RIGHT", 0, 0);
-  _blockTypes[-13] = BlockType("BRICK", _texPaths["BRICK"],
-    "TOP", 0, 0);
-  _blockTypes[-14] = BlockType("BRICK", _texPaths["BRICK"],
-    "BOTTOM", 0, 0);
-  */
   _blockTypes[_countIdBlockTypes++] = BlockType("BUSHES",
                                                 _texPaths["BUSHES"],
                                                 "FULL",
@@ -191,10 +166,10 @@ MapEditor::MapEditor(QWidget *parent):
                                                 0, 
                                                 0);
   _blockTypes[_countIdBlockTypes] = BlockType("BRICK",
-                                                _texPaths["BRICK"],
-                                                "BOTTOM",
-                                                0,
-                                                0);
+                                              _texPaths["BRICK"],
+                                              "BOTTOM",
+                                              0,
+                                              0);
 
   //setting blocktypes buttons
   _col = -1;
@@ -204,8 +179,7 @@ MapEditor::MapEditor(QWidget *parent):
     it != _blockTypes.end(); ++it)
   {
     QRadioButton *rButton = new QRadioButton(this);
-    _btnGroupBlocks->addButton(rButton, ++_countIdBlockTypes);
-    //int btnId = _btnGroupBlocks->id(rButton);   //0,1,2 etc...
+    _btnGroupBlocks->addButton(rButton, ++_countIdBlockTypes);  //0,1,2 etc...
 
     QPixmap pixmap = DrawBlockPixmap(_blockTypes[_countIdBlockTypes]);
     rButton->setIconSize(QSize(64, 64));
@@ -221,11 +195,19 @@ MapEditor::MapEditor(QWidget *parent):
     rButton->setVisible(true);
   }
   
+  /*
   _tableTexPathsWidget = 
     new TableTexPathsWidget(_blockTypes, _btnGroupBlocks);
   _tableTexPathsWidget->setWindowTitle("Texture paths list");
   _tableTexPathsWidget->resize(500, 500);
   _tableTexPathsWidget->show();
+  */
+
+  QEvent::registerEventType(CustomEvent::ADD_EVENT);
+  QEvent::registerEventType(CustomEvent::REPLACE_EVENT);
+  QEvent::registerEventType(CustomEvent::REMOVE_EVENT);
+  QEvent::registerEventType(CustomEvent::UNDO_EVENT);
+  QEvent::registerEventType(CustomEvent::REDO_EVENT);
 }
 
 MapEditor::~MapEditor()
@@ -338,7 +320,6 @@ void MapEditor::SetBlockTypeButton(BlockType& blockType)
   rButton->setIcon(pixmap);
 }
 
-//void MapEditor::AddBlockType(int id, BlockType blockType)
 //returns id of added blocktype
 unsigned int MapEditor::AddBlockType(BlockType blockType)
 {
@@ -379,51 +360,12 @@ void MapEditor::AddBlockTypeButton(const BlockType& blockType)
   rButton->setChecked(true);
 }
 
-/*
-void ChangeBlockType(const BlockType& blockTypeNew)
-{
-
-}
-*/
-
-void MapEditor::GetButtonRowCol(QRadioButton* rButton, int& row, int& col)
-{
-  int widgetIndex = ui.gridLayout->indexOf(rButton);
-  int rowSpan, colSpan;
-  ui.gridLayout->getItemPosition(widgetIndex,
-                                 &row, 
-                                 &col,
-                                 &rowSpan, 
-                                 &colSpan);
-}
-
-void MapEditor::GetNextRowCol(int& rowOutput, int& colOutput)
-{
-  if (++_col == _maxColumnElements)
-  {
-    _col = 0;
-    _row++;
-  }
-  rowOutput = _row;
-  colOutput = _col;
-}
-
-void MapEditor::SetPrevRowCol()
-{
-  if (--_col < 0)
-  {
-    _col = _maxColumnElements - 1;
-    _row--;
-  }
-}
-
 void MapEditor::RemoveBlockType(int id)
 {
   _blockTypes.erase(id);
   RemoveBlockTypeButton(id);
 }
 
-//void MapEditor::RemoveBlockTypeButton(QRadioButton* rButton)
 void MapEditor::RemoveBlockTypeButton(int id)
 {
   QAbstractButton* rButton = _btnGroupBlocks->button(id);
@@ -452,31 +394,35 @@ void MapEditor::blockEdit()
   //processing of dialog action
   switch (blockEditDialog.exec())
   {
-  case static_cast<int>(BlockEditAction::CREATE):
+  case BlockEditDialog::BlockEditAction::CREATE:
     CreateBlockType(blockEditDialog.GetBlockType());
     break;
 
-  case static_cast<int>(BlockEditAction::CHANGE):
+  case BlockEditDialog::BlockEditAction::CHANGE:
     if (_btnGroupBlocks->checkedButton() != 0)
     {
       ChangeBlockType(_blockTypes[blockTypeId], blockEditDialog.GetBlockType());
     }
     else
     {
-      QMessageBox::critical(this, "Error",
-        "Block type is not selected", QMessageBox::Ok);
+      QMessageBox::critical(this, 
+                            "Error",
+                            "Block type is not selected",
+                            QMessageBox::Ok);
     }
     break;
 
-  case static_cast<int>(BlockEditAction::DELETE):
+  case BlockEditDialog::BlockEditAction::DELETE:
     if (_btnGroupBlocks->checkedButton() != 0)
     {
       DeleteBlockType(_blockTypes[_btnGroupBlocks->checkedId()]);
     }
     else
     {
-      QMessageBox::critical(this, "Error", 
-        "Block type is not selected", QMessageBox::Ok);
+      QMessageBox::critical(this, 
+                            "Error",
+                            "Block type is not selected",
+                            QMessageBox::Ok);
     }
     break;
   }
@@ -555,9 +501,11 @@ void MapEditor::LoadXMLFile()
             mapSizeX > _maxMapSize * _blockSize)
           {
             isError = true;
-            errorText = "Map size may be in range from "
-              + QString::number(_minMapSize) +
-              "to " + QString::number(_maxMapSize) + " blocks";
+            errorText = "Map size may be in range from " +
+              QString::number(_minMapSize) +
+              "to " + 
+              QString::number(_maxMapSize) + 
+              " blocks";
             break;
           }
           //get size in blocks
@@ -790,7 +738,6 @@ void MapEditor::LoadXMLFile()
             }
 
             //add read block
-            //_map->AddBlock(new Block(x, z, blockType));
             _map->AddBlock(x, z, blockType);
           }
           
@@ -843,7 +790,7 @@ void MapEditor::SaveXMLFile()
 
     for (int blockIndex = 0; blockIndex < _map->getNumChildren(); blockIndex++)
     {
-      block = dynamic_cast<Block*>(_map->getChild(blockIndex));
+      block = static_cast<Block*>(_map->getChild(blockIndex));
       BlockType blockType = block->GetType();
 
       if (blockType.GetTypeName() != "EMPTY")	//empty blocks aren't written to file
@@ -877,7 +824,7 @@ void MapEditor::SaveXMLFile()
 
         for (int tileIndex = 0; tileIndex < block->getNumChildren(); tileIndex++)
         {
-          tile = dynamic_cast<Tile*>(block->getChild(tileIndex));
+          tile = static_cast<Tile*>(block->getChild(tileIndex));
 
           if (tile->GetType_str() != "EMPTY")
           {
@@ -922,7 +869,6 @@ void MapEditor::SaveAsXMLFile()
 
 void MapEditor::renderScene()
 {
-  //Viewer viewer;
   osg::ref_ptr<osgViewer::Viewer> viewer =
     new osgViewer::Viewer;
   
@@ -951,21 +897,11 @@ void MapEditor::renderScene()
   viewer->setSceneData(_map);
   viewer->setCameraManipulator(new osgGA::TrackballManipulator);
 
-  //viewer.getCamera()->setClearColor(osg::Vec4(0., 0., 0., 0.));
-
   viewer->realize();
-  /////////////////////////////
-  //viewer.run();
-  std::mutex mutex;
 
   while (!viewer->done())
   {	
-    //для избежания конфликта при создании новой карты
-    //!!
-    std::lock_guard<std::recursive_mutex> lgMutex(_map->GetMutex());
-    //std::lock_guard<std::mutex> lgMutex(mutex);
-    //std::lock_guard<std::mutex> lgMutex(_map->GetMutex());
-    viewer->frame();
+    (*_map)(*viewer);
   }
 
   emit QuitAppToMain();
@@ -988,24 +924,34 @@ void MapEditor::createUndoRedoActions()
   _redoAct->setShortcuts(QKeySequence::Redo);
 }
 
-void MapEditor::AddBlock(osg::ref_ptr<Map> map, int x, int z,
-  BlockType blockType)
+void MapEditor::AddBlock(AddEvent& addEvent)
 {
+  Map& map = *addEvent.GetMap();
+  int x = addEvent.GetX();
+  int z = addEvent.GetZ();
+  BlockType blockType = addEvent.GetBlockType();
+
   AddCommand* addCommand = new AddCommand(map, x, z, blockType);
   _undoStack->push(addCommand);
 }
 
-void MapEditor::RemoveBlock(osg::ref_ptr<Map>& map, int x, int z,
-  BlockType blockType)
+void MapEditor::RemoveBlock(RemoveEvent& removeEvent)
 {
+  Map& map = *removeEvent.GetMap();
+  int x = removeEvent.GetX();
+  int z = removeEvent.GetZ();
+  BlockType blockType = removeEvent.GetBlockType();
+
   RemoveCommand* removeCommand = new RemoveCommand(map, x, z, blockType);
   _undoStack->push(removeCommand);
 }
 
-void MapEditor::ReplaceBlock(osg::ref_ptr<Map> map,
-                             osg::ref_ptr<Block> block,
-                             BlockType blockType)
+void MapEditor::ReplaceBlock(ReplaceEvent& replaceEvent)
 {
+  Map& map = *replaceEvent.GetMap();
+  Block& block = *replaceEvent.GetBlock();
+  BlockType blockType = replaceEvent.GetBlockType();
+
   ReplaceCommand* replaceCommand = 
     new ReplaceCommand(map, block, blockType);
   _undoStack->push(replaceCommand);
@@ -1026,9 +972,41 @@ void MapEditor::changeMapSize()
     {
       //push undoStack
       ChangeSizeCommand* changeSizeCommand = 
-        new ChangeSizeCommand(_map, mapSizeX, mapSizeZ);
+        new ChangeSizeCommand(*_map, mapSizeX, mapSizeZ);
       _undoStack->push(changeSizeCommand);
     }
   }
+}
 
+bool MapEditor::event(QEvent* pEvent)
+{
+  if (pEvent->type() == CustomEvent::ADD_EVENT)
+  {
+    AddEvent* addEvent = static_cast<AddEvent*>(pEvent);
+    AddBlock(*addEvent);
+    return true;
+  }
+  if (pEvent->type() == CustomEvent::REPLACE_EVENT)
+  {
+    ReplaceEvent* replaceEvent = static_cast<ReplaceEvent*>(pEvent);
+    ReplaceBlock(*replaceEvent);
+    return true;
+  }
+  if (pEvent->type() == CustomEvent::REMOVE_EVENT)
+  {
+    RemoveEvent* removeEvent = static_cast<RemoveEvent*>(pEvent);
+    RemoveBlock(*removeEvent);
+    return true;
+  }
+  if (pEvent->type() == CustomEvent::UNDO_EVENT)
+  {
+    Undo();
+    return true;
+  }
+  if (pEvent->type() == CustomEvent::REDO_EVENT)
+  {
+    Redo();
+    return true;
+  }
+  return QMainWindow::event(pEvent);
 }

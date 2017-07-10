@@ -2,7 +2,7 @@
 
 
 TableTexPathsWidget::TableTexPathsWidget(std::map<int, BlockType> blockTypes,
-                                         QButtonGroup* btnGroupBlock,
+                                         QButtonGroup& btnGroupBlock,
                                          QWidget* parent) :
     QWidget(parent),
     _rowCounter(0)
@@ -15,12 +15,12 @@ TableTexPathsWidget::TableTexPathsWidget(std::map<int, BlockType> blockTypes,
   _tableWidget->resize(500, 500);
 
   //adding the items  
-  QList<QAbstractButton*> buttons = btnGroupBlock->buttons();
+  QList<QAbstractButton*> buttons = btnGroupBlock.buttons();
 
   for (QList<QAbstractButton*>::iterator it = buttons.begin();
     it != buttons.end(); ++it)
   {
-    int blockTypeId = btnGroupBlock->id(*it);
+    int blockTypeId = btnGroupBlock.id(*it);
 
     QString blockTypeIdStr = QString::number(blockTypeId);
 

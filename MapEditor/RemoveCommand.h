@@ -7,7 +7,7 @@
 class RemoveCommand : public QUndoCommand	//remove block from map
 {
 public:
-  RemoveCommand(osg::ref_ptr<Map>& map,
+  RemoveCommand(Map& map,
                 int x, 
                 int z,
                 const BlockType& blockType, 
@@ -18,7 +18,7 @@ public:
   void redo() override;
 
 private:
-  osg::ref_ptr<Map>& _map;
+  Map& _map;
   int _x;
   int _z;
   BlockType _blockType;

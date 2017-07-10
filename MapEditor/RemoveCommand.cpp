@@ -2,7 +2,7 @@
 
 #include <RemoveCommand.h>
 
-RemoveCommand::RemoveCommand(osg::ref_ptr<Map>& map,
+RemoveCommand::RemoveCommand(Map& map,
                              int x,
                              int z, 
                              const BlockType& blockType, 
@@ -21,10 +21,10 @@ RemoveCommand::~RemoveCommand()
 
 void RemoveCommand::undo()
 {
-  _map->AddBlock(_x, _z, _blockType);
+  _map.AddBlock(_x, _z, _blockType);
 }
 
 void RemoveCommand::redo()
 {
-  _map->RemoveBlock(_x, _z);
+  _map.RemoveBlock(_x, _z);
 }

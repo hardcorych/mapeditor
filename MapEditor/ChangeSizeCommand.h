@@ -7,7 +7,7 @@
 class ChangeSizeCommand : public QUndoCommand	//change map size
 {
 public:
-  ChangeSizeCommand(osg::ref_ptr<Map> map, 
+  ChangeSizeCommand(Map& map, 
                     int mapSizeX,
                     int mapSizeZ,
                     QUndoCommand* parent = nullptr);
@@ -17,7 +17,7 @@ public:
   void redo() override;
 
 private:
-  osg::ref_ptr<Map> _map;
+  Map& _map;
 
   int _mapSizeX;
   int _mapSizeZ;

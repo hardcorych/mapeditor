@@ -2,7 +2,7 @@
 
 #include <ChangeSizeCommand.h>
 
-ChangeSizeCommand::ChangeSizeCommand(osg::ref_ptr<Map> map,
+ChangeSizeCommand::ChangeSizeCommand(Map& map,
                                      int mapSizeX,
                                      int mapSizeZ,
                                      QUndoCommand* parent) :
@@ -11,9 +11,9 @@ ChangeSizeCommand::ChangeSizeCommand(osg::ref_ptr<Map> map,
   _mapSizeX(mapSizeX),
   _mapSizeZ(mapSizeZ)
 {
-  _mapSizeXOld = _map->GetSizeX();
-  _mapSizeZOld = _map->GetSizeZ();
-  _savedBlocks = _map->SaveBlocksAndGet();
+  _mapSizeXOld = _map.GetSizeX();
+  _mapSizeZOld = _map.GetSizeZ();
+  _savedBlocks = _map.SaveBlocksAndGet();
 }
 
 ChangeSizeCommand::~ChangeSizeCommand()
@@ -23,11 +23,11 @@ ChangeSizeCommand::~ChangeSizeCommand()
 void ChangeSizeCommand::undo()
 {
   //set old map
-  _map->Resize(_savedBlocks, _mapSizeXOld, _mapSizeZOld);
+  _map.Resize(_savedBlocks, _mapSizeXOld, _mapSizeZOld);
 }
 
 void ChangeSizeCommand::redo()
 {
   //set new map size
-  _map->Resize(_savedBlocks, _mapSizeX, _mapSizeZ);
+  _map.Resize(_savedBlocks, _mapSizeX, _mapSizeZ);
 }

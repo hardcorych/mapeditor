@@ -2,7 +2,7 @@
 
 #include <AddCommand.h>
 
-AddCommand::AddCommand(osg::ref_ptr<Map> map,
+AddCommand::AddCommand(Map& map,
                        int x,
                        int z,
                        const BlockType& blockType, 
@@ -21,10 +21,10 @@ AddCommand::~AddCommand()
 
 void AddCommand::undo()
 {
-  _map->RemoveBlock(_x, _z);
+  _map.RemoveBlock(_x, _z);
 }
 
 void AddCommand::redo()
 {
-  _map->AddBlock(_x, _z, _blockType);
+  _map.AddBlock(_x, _z, _blockType);
 }

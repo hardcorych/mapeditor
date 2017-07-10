@@ -7,8 +7,8 @@
 class ReplaceCommand : public QUndoCommand	//replace existing block on map
 {
 public:
-  ReplaceCommand(osg::ref_ptr<Map> map,
-                 osg::ref_ptr<Block> block,
+  ReplaceCommand(Map& map,
+                 const Block& block,
                  const BlockType& blockType,
                  QUndoCommand* parent = 0);
   ~ReplaceCommand();
@@ -17,7 +17,7 @@ public:
   void redo() override;
 
 private:
-  osg::ref_ptr<Map> _map = nullptr;
+  Map& _map;
   BlockType _blockType;
   BlockType _blockTypeOld;
   int _x;

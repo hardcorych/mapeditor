@@ -4,7 +4,12 @@
 #include <algorithm>
 #include <memory>
 
+#include "AddEvent.h"
 #include "KeyboardMouseHandler.h"
+#include "RedoEvent.h"
+#include "RemoveEvent.h"
+#include "ReplaceEvent.h"
+#include "UndoEvent.h"
 
 KeyboardMouseHandler::KeyboardMouseHandler(MapEditor& mapEditor) :
     _mouseX(0), 
@@ -23,7 +28,6 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea,
   osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 
   if (!viewer) return false;
-  osgGA::GUIEventAdapter::EventType eventType;
 
   switch (ea.getEventType())
   {
@@ -61,12 +65,15 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea,
           {
             if (!block->GetType().isNotEmptyType())
             {
-              _mapEditor.AddBlock(map, block->GetX(), block->GetZ(),
-                blockType);
+              AddEvent* addEvent = 
+                new AddEvent(map, block->GetX(), block->GetZ(), blockType);
+              QCoreApplication::postEvent(&_mapEditor, addEvent);
             }
             else if (block->GetType() != blockType)
             {
-              _mapEditor.ReplaceBlock(map, block, blockType);
+              ReplaceEvent* replaceEvent =
+                new ReplaceEvent(map, block, blockType);
+              QCoreApplication::postEvent(&_mapEditor, replaceEvent);
             }
           }
           return true;	//TRUE to process an event
@@ -81,8 +88,9 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea,
           BlockType blockType = block->GetType();
           if (blockType.isNotBorderType() && blockType.isNotEmptyType())
           {
-            _mapEditor.RemoveBlock(map, block->GetX(),
-              block->GetZ(), blockType);
+            RemoveEvent* removeEvent =
+              new RemoveEvent(map, block->GetX(), block->GetZ(), blockType);
+            QCoreApplication::postEvent(&_mapEditor, removeEvent);
           }
           return true;	//TRUE to process an event
         }
@@ -96,17 +104,17 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea,
     //undo/redo actions
 
     if (ea.getUnmodifiedKey() == osgGA::GUIEventAdapter::KEY_Z &&
-      (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
-      ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
+        (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
+        ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
     {
-      _mapEditor.Undo();
+      QCoreApplication::postEvent(&_mapEditor, new UndoEvent);
       return true;
     }
     else if (ea.getUnmodifiedKey() == osgGA::GUIEventAdapter::KEY_Y &&
-      (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
-      ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
+             (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL ||
+             ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
     {
-      _mapEditor.Redo();
+      QCoreApplication::postEvent(&_mapEditor, new RedoEvent);
       return true;
     }
 

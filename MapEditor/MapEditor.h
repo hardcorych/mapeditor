@@ -15,17 +15,29 @@
 #include <Map.h>
 #include <TableTexPathsWidget.h>
 
+class AddEvent;
 class KeyboardMouseHandler;
+class ReplaceEvent;
+class RemoveEvent;
 
 class MapEditor : public QMainWindow
 {
   Q_OBJECT
 
 public:
+  enum CustomEvent
+  {
+    ADD_EVENT = QEvent::User + 1,
+    REPLACE_EVENT = QEvent::User + 2,
+    REMOVE_EVENT = QEvent::User + 3,
+    UNDO_EVENT = QEvent::User + 4,
+    REDO_EVENT = QEvent::User + 5
+  };
+
   typedef std::map<int, BlockType> BlockTypes;
 
 public:
-  MapEditor(QWidget *parent = Q_NULLPTR);
+  MapEditor(QWidget *parent = nullptr);
   ~MapEditor();
 
 public slots:
@@ -41,11 +53,9 @@ public slots:
 
   //undo/redo commands
   //map editor
-  void AddBlock(osg::ref_ptr<Map> map, int x, int z, BlockType blockType);
-  void RemoveBlock(osg::ref_ptr<Map>& map, int x, int z, BlockType blockType);
-  void ReplaceBlock(osg::ref_ptr<Map> map,
-                    osg::ref_ptr<Block> block,
-                    BlockType blockType);
+  void AddBlock(AddEvent& addEvent);
+  void RemoveBlock(RemoveEvent& removeEvent);
+  void ReplaceBlock(ReplaceEvent& replaceEvent);
   //block editor
   void ChangeBlockType(BlockType& blockType, BlockType blockTypeOld);
   void CreateBlockType(BlockType blockType);
@@ -57,12 +67,6 @@ public slots:
   void RemoveBlockTypeButton(int id);
 
   void SetBlockTypeButton(BlockType& blockType);
-
-  //button coords on grid
-  void GetButtonRowCol(QRadioButton* rButton, int& row, int& col);
-
-  void GetNextRowCol(int& rowOutput, int& colOutput);
-  void SetPrevRowCol();
 
   std::mutex& GetMutex()	{ return _mutex; }
 
@@ -83,6 +87,7 @@ private:
   void createMap(int sizeX, int sizeZ);
   void createUndoView();
   void createUndoRedoActions();
+  bool event(QEvent* pEvent) override;
 
 private:
   Ui::MapEditorClass ui;

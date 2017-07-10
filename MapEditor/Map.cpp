@@ -1,3 +1,5 @@
+#include <osgViewer/Viewer>
+
 #include "Map.h"
 
 Map::Map(unsigned int sizeX, unsigned int sizeZ) :
@@ -34,7 +36,7 @@ void Map::generateBorder()
 
   //заполнение против часовой стрелки, начиная с нижней границы
   //нижняя граница
-  //int startBorder = -1 * _step;
+
   std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
   BlockType borderBlock("BORDER",
                         "Resources/tiles/BORDER.png",
@@ -85,17 +87,13 @@ void Map::generateGameArea()
 
 void Map::Clear()		//удаление карты
 {
-  //std::lock_guard<std::mutex> lgMutex(_mutex);
   std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
 
   removeChildren(0, getNumChildren());
 }
 
-
-//void Map::AddBlock(osg::ref_ptr<Block> block)	//для чтения из файла
 void Map::AddBlock(int x, int z, const BlockType& blockType)
 {
-  //std::lock_guard<std::mutex> lgMutex(_mutex);
   std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
 
   osg::ref_ptr<Block> blockOld = nullptr;
@@ -104,7 +102,7 @@ void Map::AddBlock(int x, int z, const BlockType& blockType)
   //поиск блока, который нужно заменить
   for (int i = 0; i < getNumChildren(); i++)
   {
-    blockOld = dynamic_cast<Block*>(getChild(i));
+    blockOld = static_cast<Block*>(getChild(i));
 
     if (blockOld->GetX() == x &&
       blockOld->GetZ() == z && 
@@ -117,7 +115,6 @@ void Map::AddBlock(int x, int z, const BlockType& blockType)
 
 void Map::RemoveBlock(int x, int z)
 {
-  //std::lock_guard<std::mutex> lgMutex(_mutex);
   std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
 
   osg::ref_ptr<Block> block = nullptr;
@@ -126,7 +123,7 @@ void Map::RemoveBlock(int x, int z)
 
   for (int i = 0; i < getNumChildren(); i++) 
   {
-    block = dynamic_cast<Block*>(getChild(i));
+    block = static_cast<Block*>(getChild(i));
 
     if (block->GetX() == x && block->GetZ() == z) 
     {
@@ -143,7 +140,7 @@ Map::Blocks Map::SaveBlocksAndGet()
 
   for (int blockIndex = 0; blockIndex < getNumChildren(); blockIndex++)
   {
-    block = dynamic_cast<Block*>(getChild(blockIndex));
+    block = static_cast<Block*>(getChild(blockIndex));
 
     BlockType blockType = block->GetType();
 
@@ -165,4 +162,10 @@ void Map::Resize(Blocks savedBlocks, int sizeX, int sizeZ)
   {
     AddBlock(block->GetX(), block->GetZ(), block->GetType());
   }
+}
+
+void Map::operator()(osgViewer::Viewer& viewer)
+{
+  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
+  viewer.frame();
 }

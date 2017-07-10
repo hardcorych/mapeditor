@@ -44,6 +44,9 @@
     <Filter Include="Source Files\Commands">
       <UniqueIdentifier>{b273e876-a6d6-410f-876a-70a357b01a8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{97b2a349-7755-43da-b662-d1e90459aaa4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -190,6 +193,21 @@
     </ClInclude>
     <ClInclude Include="DrawBlockPixmap.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="UndoEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="RedoEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="RemoveEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ReplaceEvent.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

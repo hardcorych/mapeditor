@@ -8,7 +8,7 @@
 class AddCommand : public QUndoCommand	//add block on map
 {
 public:
-  AddCommand(osg::ref_ptr<Map> map, 
+  AddCommand(Map& map, 
              int x,
              int z,
              const BlockType& blockType,
@@ -19,7 +19,7 @@ public:
   void redo() override;
 
 private:
-  osg::ref_ptr<Map> _map;
+  Map& _map;
   int _x;
   int _z;
   BlockType _blockType;

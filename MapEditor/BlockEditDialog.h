@@ -11,16 +11,17 @@
 
 #include <BlockType.h>
 
-enum class BlockEditAction
-{
-  CREATE = 2,
-  CHANGE = 3,
-  DELETE = 4
-};
-
 class BlockEditDialog: public QDialog
 {
   Q_OBJECT
+public:
+  enum BlockEditAction
+  {
+    CREATE = 2,
+    CHANGE = 3,
+    DELETE = 4
+  };
+
 public:
   BlockEditDialog(BlockType blockType, QWidget* parent = nullptr);
   ~BlockEditDialog();

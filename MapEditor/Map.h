@@ -8,6 +8,11 @@
 
 #include <Block.h>
 
+namespace osgViewer
+{
+  class Viewer;
+}
+
 class Map : public osg::Group
 {
 public:
@@ -37,7 +42,9 @@ public:
   Blocks SaveBlocksAndGet();
   void Resize(Blocks savedBlocks, int sizeX, int sizeZ);
 
-  inline std::recursive_mutex& GetMutex();
+public:
+  //void operator()(osgViewer::Viewer& viewer);
+  void operator()(osgViewer::Viewer& viewer);
 
 private:
   void generateBorder();
@@ -70,10 +77,5 @@ inline QString Map::GetSizeX_str() const
 inline QString Map::GetSizeZ_str() const
 { 
   return QString::number(_sizeZ / _step);
-}
-
-inline std::recursive_mutex& Map::GetMutex() 
-{
-  return std::ref(_mutex); 
 }
 
