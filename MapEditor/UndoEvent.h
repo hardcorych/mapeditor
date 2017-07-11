@@ -7,7 +7,7 @@
 class UndoEvent : public QEvent
 {
 public:
-  UndoEvent() : QEvent((Type)MapEditor::CustomEvent::UNDO_EVENT)
+  UndoEvent() : QEvent((Type)MapEditor::CustomEvent::UNDO)
   {
   }
 };

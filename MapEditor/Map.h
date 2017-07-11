@@ -43,7 +43,6 @@ public:
   void Resize(Blocks savedBlocks, int sizeX, int sizeZ);
 
 public:
-  //void operator()(osgViewer::Viewer& viewer);
   void operator()(osgViewer::Viewer& viewer);
 
 private:

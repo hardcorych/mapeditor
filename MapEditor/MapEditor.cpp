@@ -17,9 +17,12 @@
 #include <AddEvent.h>
 #include <BlockEditDialog.h>
 #include <ChangeBlockTypeCommand.h>
+#include <ChangeBlockTypeEvent.h>
 #include <ChangeSizeCommand.h>
 #include <CreateBlockTypeCommand.h>
+#include <CreateBlockTypeEvent.h>
 #include <DeleteBlockTypeCommand.h>
+#include <DeleteBlockTypeEvent.h>
 #include <DrawBlockPixmap.h>
 #include <MapSizeDialog.h>
 #include <RedoEvent.h>
@@ -31,14 +34,14 @@
 
 MapEditor::MapEditor(QWidget *parent):
     QMainWindow(parent),
-    _minMapSize(5),
-    _maxMapSize(30),
-    _map(new Map(10,10)),
-    _row(0),
-    _col(0),
-    _maxColumnElements(5),
-    _blockSize(16),
-    _countIdBlockTypes(0)
+   _minMapSize(5),
+   _maxMapSize(30),
+   _map(new Map(10,10)),
+   _row(0),
+   _col(0),
+   _maxColumnElements(5),
+   _blockSize(16),
+   _countIdBlockTypes(0)
 {
   ui.setupUi(this);
 
@@ -65,14 +68,13 @@ MapEditor::MapEditor(QWidget *parent):
   createUndoRedoActions();
   createUndoView();
 
-  connect(_newAct, &QAction::triggered, this, &MapEditor::NewMap);
-  connect(_loadAct, &QAction::triggered, this, &MapEditor::LoadXMLFile);
-  connect(_saveAct, &QAction::triggered, this, &MapEditor::SaveXMLFile);
-  connect(_saveAsAct, &QAction::triggered, this, &MapEditor::SaveAsXMLFile);
+  connect(_newAct, &QAction::triggered, this, &MapEditor::openNewMapDialog);
+  connect(_loadAct, &QAction::triggered, this, &MapEditor::loadXMLFile);
+  connect(_saveAct, &QAction::triggered, this, &MapEditor::saveXMLFile);
+  connect(_saveAsAct, &QAction::triggered, this, &MapEditor::saveAsXMLFile);
 
-  //!!!
-  connect(_resizeMapAct, &QAction::triggered, this, &MapEditor::changeMapSize);
-  connect(_blockEditAct, &QAction::triggered, this, &MapEditor::blockEdit);
+  connect(_resizeMapAct, &QAction::triggered, this, &MapEditor::openMapSizeDialog);
+  connect(_blockEditAct, &QAction::triggered, this, &MapEditor::openBlockEditorDialog);
 
   _fileMenu->addAction(_newAct);
   _fileMenu->addAction(_loadAct);
@@ -194,20 +196,15 @@ MapEditor::MapEditor(QWidget *parent):
     ui.gridLayout->addWidget(rButton, _row, _col);
     rButton->setVisible(true);
   }
-  
-  /*
-  _tableTexPathsWidget = 
-    new TableTexPathsWidget(_blockTypes, _btnGroupBlocks);
-  _tableTexPathsWidget->setWindowTitle("Texture paths list");
-  _tableTexPathsWidget->resize(500, 500);
-  _tableTexPathsWidget->show();
-  */
 
-  QEvent::registerEventType(CustomEvent::ADD_EVENT);
-  QEvent::registerEventType(CustomEvent::REPLACE_EVENT);
-  QEvent::registerEventType(CustomEvent::REMOVE_EVENT);
-  QEvent::registerEventType(CustomEvent::UNDO_EVENT);
-  QEvent::registerEventType(CustomEvent::REDO_EVENT);
+  QEvent::registerEventType(CustomEvent::ADD);
+  QEvent::registerEventType(CustomEvent::REPLACE);
+  QEvent::registerEventType(CustomEvent::REMOVE);
+  QEvent::registerEventType(CustomEvent::UNDO);
+  QEvent::registerEventType(CustomEvent::REDO);
+  QEvent::registerEventType(CustomEvent::CREATE_BLOCKTYPE);
+  QEvent::registerEventType(CustomEvent::CHANGE_BLOCKTYPE);
+  QEvent::registerEventType(CustomEvent::DELETE_BLOCKTYPE);
 }
 
 MapEditor::~MapEditor()
@@ -219,7 +216,7 @@ MapEditor::~MapEditor()
   }
 }
 
-void MapEditor::CreateBlockType(BlockType blockType)
+void MapEditor::createBlockType(BlockType blockType)
 {
   bool isAddableBlockTypeExist = false;
 
@@ -248,7 +245,7 @@ void MapEditor::CreateBlockType(BlockType blockType)
   _undoStack->push(createBlockTypeCommand);
 }
 
-void MapEditor::ChangeBlockType(BlockType& blockType, BlockType blockTypeNew)
+void MapEditor::changeBlockType(BlockType& blockType, BlockType blockTypeNew)
 {
   //check blocktype
   bool isChangedBlockTypeExist = false;
@@ -281,7 +278,7 @@ void MapEditor::ChangeBlockType(BlockType& blockType, BlockType blockTypeNew)
   _undoStack->push(changeBlockTypeCommand);
 }
 
-void MapEditor::DeleteBlockType(BlockType blockType)
+void MapEditor::deleteBlockType(BlockType blockType)
 {
   int blockTypeId;
   for (BlockTypes::iterator it = _blockTypes.begin();
@@ -300,7 +297,7 @@ void MapEditor::DeleteBlockType(BlockType blockType)
   _undoStack->push(deleteBlockTypeCommand);
 }
 
-void MapEditor::SetBlockTypeButton(BlockType& blockType)
+void MapEditor::setBlockTypeButton(BlockType& blockType)
 {
   int blockTypeId;
   for (BlockTypes::iterator it = _blockTypes.begin();
@@ -323,19 +320,16 @@ void MapEditor::SetBlockTypeButton(BlockType& blockType)
 //returns id of added blocktype
 unsigned int MapEditor::AddBlockType(BlockType blockType)
 {
-  //_blockTypes[id] = blockType;
-
   _blockTypes[++_countIdBlockTypes] = blockType;
   if (_texPaths.find(blockType.GetTypeName()) == _texPaths.end())
   {
     _texPaths[blockType.GetTypeName()] = blockType.GetTexPath();
   }
 
-  AddBlockTypeButton(_blockTypes[_countIdBlockTypes]);
   return _countIdBlockTypes;
 }
 
-void MapEditor::AddBlockTypeButton(const BlockType& blockType)
+void MapEditor::addBlockTypeButton(const BlockType& blockType)
 {
   QRadioButton* rButton = new QRadioButton(this);
   rButton->setIconSize(QSize(64, 64));
@@ -363,22 +357,20 @@ void MapEditor::AddBlockTypeButton(const BlockType& blockType)
 void MapEditor::RemoveBlockType(int id)
 {
   _blockTypes.erase(id);
-  RemoveBlockTypeButton(id);
 }
 
-void MapEditor::RemoveBlockTypeButton(int id)
+void MapEditor::deleteBlockTypeButton(int id)
 {
   QAbstractButton* rButton = _btnGroupBlocks->button(id);
   rButton->hide();
 
-  //!!!
   ui.gridLayout->removeWidget(rButton);
   _btnGroupBlocks->removeButton(rButton);
   
   delete rButton;
 }
 
-void MapEditor::blockEdit()
+void MapEditor::openBlockEditorDialog()
 {
   int blockTypeId = _btnGroupBlocks->checkedId();
   BlockType blockType = _blockTypes[blockTypeId];
@@ -395,13 +387,13 @@ void MapEditor::blockEdit()
   switch (blockEditDialog.exec())
   {
   case BlockEditDialog::BlockEditAction::CREATE:
-    CreateBlockType(blockEditDialog.GetBlockType());
+    createBlockType(blockEditDialog.GetBlockType());
     break;
 
   case BlockEditDialog::BlockEditAction::CHANGE:
     if (_btnGroupBlocks->checkedButton() != 0)
     {
-      ChangeBlockType(_blockTypes[blockTypeId], blockEditDialog.GetBlockType());
+      changeBlockType(_blockTypes[blockTypeId], blockEditDialog.GetBlockType());
     }
     else
     {
@@ -415,7 +407,7 @@ void MapEditor::blockEdit()
   case BlockEditDialog::BlockEditAction::DELETE:
     if (_btnGroupBlocks->checkedButton() != 0)
     {
-      DeleteBlockType(_blockTypes[_btnGroupBlocks->checkedId()]);
+      deleteBlockType(_blockTypes[_btnGroupBlocks->checkedId()]);
     }
     else
     {
@@ -428,7 +420,7 @@ void MapEditor::blockEdit()
   }
 }
 
-void MapEditor::NewMap()
+void MapEditor::openNewMapDialog()
 {
   //create new map by modal dialog
   MapSizeDialog mapSizeDialog(this);
@@ -437,20 +429,20 @@ void MapEditor::NewMap()
   {
     int mapSizeX = mapSizeDialog.GetSizeX();
     int mapSizeZ = mapSizeDialog.GetSizeZ();
-    createMap(mapSizeX, mapSizeZ);
+    createEmptyMap(mapSizeX, mapSizeZ);
     if (!_undoStack->isClean()) _undoStack->clear();
 
     _saveAct->setDisabled(true);
   }
 }
 
-void MapEditor::createMap(int sizeX, int sizeZ)
+void MapEditor::createEmptyMap(int sizeX, int sizeZ)
 {
   _map->Clear();
   _map->GenerateEmptyMap(sizeX, sizeZ);
 }
 
-void MapEditor::LoadXMLFile()
+void MapEditor::loadXMLFile()
 {  
   _filename = QFileDialog::getOpenFileName(
     this, tr("Open XML"), ".",
@@ -537,8 +529,7 @@ void MapEditor::LoadXMLFile()
           }
           //получаем размер в блоках
           mapSizeZ /= _blockSize;
-          //!!!
-          createMap(mapSizeX, mapSizeZ);
+          createEmptyMap(mapSizeX, mapSizeZ);
         }
         else if (element == "block")
         {
@@ -580,7 +571,7 @@ void MapEditor::LoadXMLFile()
                 break;
               }
               bool isTypeFound = false;
-              for (std::map<int, BlockType>::iterator it = _blockTypes.begin();
+              for (BlockTypes::iterator it = _blockTypes.begin();
                 it != _blockTypes.end(); ++it)
               {
                 if (attrValue == it->second.GetTypeName())
@@ -763,7 +754,7 @@ void MapEditor::LoadXMLFile()
   
 }
 
-void MapEditor::SaveXMLFile()
+void MapEditor::saveXMLFile()
 {
   
   if (_filename != "")
@@ -852,7 +843,7 @@ void MapEditor::SaveXMLFile()
   
 }
 
-void MapEditor::SaveAsXMLFile()
+void MapEditor::saveAsXMLFile()
 {
   //диалог выбора для сохранения файла
   _filename = QFileDialog::getSaveFileName(
@@ -861,7 +852,7 @@ void MapEditor::SaveAsXMLFile()
 
   if (_filename != "")
   {
-    SaveXMLFile();
+    saveXMLFile();
     _saveAct->setEnabled(true);
   }
 }
@@ -924,7 +915,7 @@ void MapEditor::createUndoRedoActions()
   _redoAct->setShortcuts(QKeySequence::Redo);
 }
 
-void MapEditor::AddBlock(AddEvent& addEvent)
+void MapEditor::addBlock(AddEvent& addEvent)
 {
   Map& map = *addEvent.GetMap();
   int x = addEvent.GetX();
@@ -935,7 +926,7 @@ void MapEditor::AddBlock(AddEvent& addEvent)
   _undoStack->push(addCommand);
 }
 
-void MapEditor::RemoveBlock(RemoveEvent& removeEvent)
+void MapEditor::removeBlock(RemoveEvent& removeEvent)
 {
   Map& map = *removeEvent.GetMap();
   int x = removeEvent.GetX();
@@ -946,7 +937,7 @@ void MapEditor::RemoveBlock(RemoveEvent& removeEvent)
   _undoStack->push(removeCommand);
 }
 
-void MapEditor::ReplaceBlock(ReplaceEvent& replaceEvent)
+void MapEditor::replaceBlock(ReplaceEvent& replaceEvent)
 {
   Map& map = *replaceEvent.GetMap();
   Block& block = *replaceEvent.GetBlock();
@@ -957,7 +948,7 @@ void MapEditor::ReplaceBlock(ReplaceEvent& replaceEvent)
   _undoStack->push(replaceCommand);
 }
 
-void MapEditor::changeMapSize()
+void MapEditor::openMapSizeDialog()
 {
   //resize map
   MapSizeDialog mapSizeDialog(this);
@@ -980,32 +971,53 @@ void MapEditor::changeMapSize()
 
 bool MapEditor::event(QEvent* pEvent)
 {
-  if (pEvent->type() == CustomEvent::ADD_EVENT)
+  if (pEvent->type() == CustomEvent::ADD)
   {
     AddEvent* addEvent = static_cast<AddEvent*>(pEvent);
-    AddBlock(*addEvent);
+    addBlock(*addEvent);
     return true;
   }
-  if (pEvent->type() == CustomEvent::REPLACE_EVENT)
+  if (pEvent->type() == CustomEvent::REPLACE)
   {
     ReplaceEvent* replaceEvent = static_cast<ReplaceEvent*>(pEvent);
-    ReplaceBlock(*replaceEvent);
+    replaceBlock(*replaceEvent);
     return true;
   }
-  if (pEvent->type() == CustomEvent::REMOVE_EVENT)
+  if (pEvent->type() == CustomEvent::REMOVE)
   {
     RemoveEvent* removeEvent = static_cast<RemoveEvent*>(pEvent);
-    RemoveBlock(*removeEvent);
+    removeBlock(*removeEvent);
     return true;
   }
-  if (pEvent->type() == CustomEvent::UNDO_EVENT)
+  if (pEvent->type() == CustomEvent::UNDO)
   {
-    Undo();
+    if (_undoStack->canUndo()) _undoStack->undo();
     return true;
   }
-  if (pEvent->type() == CustomEvent::REDO_EVENT)
+  if (pEvent->type() == CustomEvent::REDO)
   {
-    Redo();
+    if (_undoStack->canRedo()) _undoStack->redo();
+    return true;
+  }
+  if (pEvent->type() == CustomEvent::CREATE_BLOCKTYPE)
+  {
+    CreateBlockTypeEvent* createBlockTypeEvent =
+                          static_cast<CreateBlockTypeEvent*>(pEvent);
+    addBlockTypeButton(createBlockTypeEvent->GetBlockType());
+    return true;
+  }
+  if (pEvent->type() == CustomEvent::CHANGE_BLOCKTYPE)
+  {
+    ChangeBlockTypeEvent* changeBlockTypeEvent =
+                          static_cast<ChangeBlockTypeEvent*>(pEvent);
+    setBlockTypeButton(changeBlockTypeEvent->GetBlockType());
+    return true;
+  }
+  if (pEvent->type() == CustomEvent::DELETE_BLOCKTYPE)
+  {
+    DeleteBlockTypeEvent* deleteBlockTypeEvent =
+                          static_cast<DeleteBlockTypeEvent*>(pEvent);
+    deleteBlockTypeButton(deleteBlockTypeEvent->GetBlockTypeId());
     return true;
   }
   return QMainWindow::event(pEvent);

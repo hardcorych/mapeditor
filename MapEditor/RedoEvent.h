@@ -7,7 +7,7 @@
 class RedoEvent : public QEvent
 {
 public:
-  RedoEvent() : QEvent((Type)MapEditor::CustomEvent::REDO_EVENT)
+  RedoEvent() : QEvent((Type)MapEditor::CustomEvent::REDO)
   {
   }
 };

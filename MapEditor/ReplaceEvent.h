@@ -11,7 +11,7 @@ public:
   ReplaceEvent(osg::ref_ptr<Map> map,
                osg::ref_ptr<Block> block,
                const BlockType& blockType) : 
-    QEvent((Type)MapEditor::CustomEvent::REPLACE_EVENT),
+    QEvent((Type)MapEditor::CustomEvent::REPLACE),
     _map(map),
     _block(block),
     _blockType(blockType)

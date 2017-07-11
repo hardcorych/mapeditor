@@ -27,11 +27,14 @@ class MapEditor : public QMainWindow
 public:
   enum CustomEvent
   {
-    ADD_EVENT = QEvent::User + 1,
-    REPLACE_EVENT = QEvent::User + 2,
-    REMOVE_EVENT = QEvent::User + 3,
-    UNDO_EVENT = QEvent::User + 4,
-    REDO_EVENT = QEvent::User + 5
+    ADD = QEvent::User + 1,
+    REPLACE = QEvent::User + 2,
+    REMOVE = QEvent::User + 3,
+    UNDO = QEvent::User + 4,
+    REDO = QEvent::User + 5,
+    CREATE_BLOCKTYPE = QEvent::User + 6,
+    CHANGE_BLOCKTYPE = QEvent::User + 7,
+    DELETE_BLOCKTYPE = QEvent::User + 8
   };
 
   typedef std::map<int, BlockType> BlockTypes;
@@ -40,53 +43,50 @@ public:
   MapEditor(QWidget *parent = nullptr);
   ~MapEditor();
 
-public slots:
-  void NewMap();
-  void changeMapSize();
-
-  void blockEdit();
-
-  //operations with files
-  void LoadXMLFile();
-  void SaveXMLFile();
-  void SaveAsXMLFile();
-
-  //undo/redo commands
-  //map editor
-  void AddBlock(AddEvent& addEvent);
-  void RemoveBlock(RemoveEvent& removeEvent);
-  void ReplaceBlock(ReplaceEvent& replaceEvent);
-  //block editor
-  void ChangeBlockType(BlockType& blockType, BlockType blockTypeOld);
-  void CreateBlockType(BlockType blockType);
-  void DeleteBlockType(BlockType blockType);
-
+public:
   unsigned int AddBlockType(BlockType blockType);
-  void AddBlockTypeButton(const BlockType& blockType);
   void RemoveBlockType(int id);
-  void RemoveBlockTypeButton(int id);
-
-  void SetBlockTypeButton(BlockType& blockType);
-
-  std::mutex& GetMutex()	{ return _mutex; }
-
-  inline void Undo();
-  inline void Redo();
 
   inline BlockType GetSelectedBlockType();
-  inline void SetSelectedBlockType(const BlockType& blockType);
-
-  inline QAbstractButton* GetCheckedButton();
 
 signals:
   void QuitViewer();
   void QuitAppToMain();
 
 private:
+  //render thread
   void renderScene();
-  void createMap(int sizeX, int sizeZ);
+
+  //open dialogs
+  void openNewMapDialog();
+  void openMapSizeDialog();
+  void openBlockEditorDialog();
+
+  //operations with files
+  void loadXMLFile();
+  void saveXMLFile();
+  void saveAsXMLFile();
+
+  //undo/redo commands
+  //map editor
+  void addBlock(AddEvent& addEvent);
+  void removeBlock(RemoveEvent& removeEvent);
+  void replaceBlock(ReplaceEvent& replaceEvent);
+  //block editor
+  void changeBlockType(BlockType& blockType, BlockType blockTypeOld);
+  void createBlockType(BlockType blockType);
+  void deleteBlockType(BlockType blockType);
+
+  //operations with buttons
+  void addBlockTypeButton(const BlockType& blockType);
+  void deleteBlockTypeButton(int id);
+  void setBlockTypeButton(BlockType& blockType);
+
+  void createEmptyMap(int sizeX, int sizeZ);
+
   void createUndoView();
   void createUndoRedoActions();
+
   bool event(QEvent* pEvent) override;
 
 private:
@@ -115,11 +115,7 @@ private:
 
   QUndoView* _undoView;
 
-  TableTexPathsWidget* _tableTexPathsWidget;
-
   osg::ref_ptr<Map> _map;
-
-  std::mutex _mutex;
 
   QString _filename;
 
@@ -138,27 +134,7 @@ private:
   BlockTypes _blockTypes;
 };
 
-inline void MapEditor::Undo() 
-{ 
-  if (_undoStack->canUndo()) _undoStack->undo();
-}
-
-inline void MapEditor::Redo()
-{ 
-  if (_undoStack->canRedo()) _undoStack->redo();
-}
-
 inline BlockType MapEditor::GetSelectedBlockType()
 {
   return _blockTypes[_btnGroupBlocks->checkedId()];
-}
-
-inline QAbstractButton* MapEditor::GetCheckedButton()
-{
-  return _btnGroupBlocks->checkedButton();
-}
-
-inline void MapEditor::SetSelectedBlockType(const BlockType& blockType)
-{
-  _blockTypes[_btnGroupBlocks->checkedId()] = blockType;
 }

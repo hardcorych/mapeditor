@@ -12,7 +12,7 @@ public:
               int x,
               int z,
               const BlockType& blockType) : 
-    QEvent((Type)MapEditor::CustomEvent::REMOVE_EVENT),
+    QEvent((Type)MapEditor::CustomEvent::REMOVE),
     _map(map),
     _x(x),
     _z(z),

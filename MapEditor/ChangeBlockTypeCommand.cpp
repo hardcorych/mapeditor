@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ChangeBlockTypeCommand.h>
+#include <ChangeBlockTypeEvent.h>
 #include <DrawBlockPixmap.h>
 
 ChangeBlockTypeCommand::ChangeBlockTypeCommand(MapEditor::BlockTypes& blockTypes,
@@ -29,7 +30,8 @@ void ChangeBlockTypeCommand::undo()
     if (it->second == _blockTypeNew)
     {
       it->second = _blockType;  //change with old
-      _mapEditor.SetBlockTypeButton(it->second);
+      QCoreApplication::postEvent(&_mapEditor,
+                                  new ChangeBlockTypeEvent(it->second));
       break;
     }
   }
@@ -44,7 +46,8 @@ void ChangeBlockTypeCommand::redo()
     if (it->second == _blockType)
     {
       it->second = _blockTypeNew; //change with new
-      _mapEditor.SetBlockTypeButton(it->second);
+      QCoreApplication::postEvent(&_mapEditor, 
+                                  new ChangeBlockTypeEvent(it->second));
       break;
     }
   }

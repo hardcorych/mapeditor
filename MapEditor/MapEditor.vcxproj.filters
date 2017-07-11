@@ -97,15 +97,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_BlockEditDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="TableTexPathsWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_TableTexPathsWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_TableTexPathsWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="AddCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
@@ -148,9 +139,6 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="BlockEditDialog.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="TableTexPathsWidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -207,6 +195,15 @@
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="ReplaceEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateBlockTypeEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeBlockTypeEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteBlockTypeEvent.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>

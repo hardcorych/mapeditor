@@ -3,6 +3,8 @@
 #include <qpainter.h>
 
 #include <CreateBlockTypeCommand.h>
+#include <CreateBlockTypeEvent.h>
+#include <DeleteBlockTypeEvent.h>
 #include <DrawBlockPixmap.h>
 
 CreateBlockTypeCommand::CreateBlockTypeCommand(const BlockType& blockType, 
@@ -22,9 +24,13 @@ CreateBlockTypeCommand::~CreateBlockTypeCommand()
 void CreateBlockTypeCommand::undo()
 {
   _mapEditor.RemoveBlockType(_blockTypeId);
+  QCoreApplication::postEvent(&_mapEditor,
+                              new DeleteBlockTypeEvent(_blockTypeId));
 }
 
 void CreateBlockTypeCommand::redo()
 {
   _blockTypeId = _mapEditor.AddBlockType(_blockType);
+  QCoreApplication::postEvent(&_mapEditor, 
+                              new CreateBlockTypeEvent(_blockType));
 }
