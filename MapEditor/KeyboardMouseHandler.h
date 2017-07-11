@@ -1,13 +1,9 @@
 #pragma once
 
-#include <memory>
-
 #include <osgGA/GUIEventHandler>
 
-#include <Block.h>
-#include <Map.h>
-#include <MapEditor.h>
-
+class Block;
+class Map;
 class MapEditor;
 
 namespace osgViewer

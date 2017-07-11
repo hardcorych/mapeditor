@@ -1,6 +1,6 @@
 #pragma once
 #include "qdialog.h"
-#include <qlineedit.h>
+
 #include <qspinbox.h>
 
 class MapSizeDialog : public QDialog

@@ -1,15 +1,16 @@
 #pragma once
 
-#include <qbuttongroup.h>
-#include <qcheckbox.h>
 #include <qdialog.h>
-#include <qgroupbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
 
 #include <BlockType.h>
+
+class QButtonGroup;
+class QCheckBox;
+class QGroupBox;
+class QLabel;
+class QLineEdit;
+class QPushButton;
+class QRadioButton;
 
 class BlockEditDialog: public QDialog
 {
@@ -29,7 +30,7 @@ public:
 public:
   inline BlockType GetBlockType() const;
   
-private slots:
+private:
   void setTexPath();
   void createBlockType();
   void changeBlockType();

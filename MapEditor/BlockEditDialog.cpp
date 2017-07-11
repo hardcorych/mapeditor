@@ -1,6 +1,14 @@
+#include <qbuttongroup.h>
+#include <qcheckbox.h>
+#include <qdialog.h>
 #include <qfiledialog.h>
 #include <qgridlayout.h>
+#include <qgroupbox.h>
+#include <qlabel.h>
+#include <qlineedit.h>
 #include <qmessagebox.h>
+#include <qpushbutton.h>
+#include <qradiobutton.h>
 
 #include "BlockEditDialog.h"
 

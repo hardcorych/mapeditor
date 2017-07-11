@@ -1,5 +1,6 @@
 #pragma once
 
+#include <BlockType.h>
 #include <ChangeBlockTypeCommand.h>
 #include <ChangeBlockTypeEvent.h>
 #include <DrawBlockPixmap.h>

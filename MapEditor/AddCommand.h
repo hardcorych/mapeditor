@@ -3,7 +3,8 @@
 #include <qundostack.h>
 
 #include <BlockType.h>
-#include <Map.h>
+
+class Map;
 
 class AddCommand : public QUndoCommand	//add block on map
 {

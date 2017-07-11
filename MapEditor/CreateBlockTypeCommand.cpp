@@ -2,10 +2,12 @@
 
 #include <qpainter.h>
 
+#include <BlockType.h>
 #include <CreateBlockTypeCommand.h>
 #include <CreateBlockTypeEvent.h>
 #include <DeleteBlockTypeEvent.h>
 #include <DrawBlockPixmap.h>
+#include <MapEditor.h>
 
 CreateBlockTypeCommand::CreateBlockTypeCommand(const BlockType& blockType, 
                                                MapEditor& mapEditor, 
@@ -23,7 +25,7 @@ CreateBlockTypeCommand::~CreateBlockTypeCommand()
 
 void CreateBlockTypeCommand::undo()
 {
-  _mapEditor.RemoveBlockType(_blockTypeId);
+  _mapEditor.DeleteBlockType(_blockTypeId);
   QCoreApplication::postEvent(&_mapEditor,
                               new DeleteBlockTypeEvent(_blockTypeId));
 }

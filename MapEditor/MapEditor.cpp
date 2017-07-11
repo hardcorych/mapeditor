@@ -10,11 +10,13 @@
 #include <qdebug.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-#include <qpainter.h>
+#include <qradiobutton.h>
+#include <qundoview.h>
 #include <qxmlstream.h>
 
 #include <AddCommand.h>
 #include <AddEvent.h>
+#include <Block.h>
 #include <BlockEditDialog.h>
 #include <ChangeBlockTypeCommand.h>
 #include <ChangeBlockTypeEvent.h>
@@ -24,12 +26,15 @@
 #include <DeleteBlockTypeCommand.h>
 #include <DeleteBlockTypeEvent.h>
 #include <DrawBlockPixmap.h>
+#include <KeyboardMouseHandler.h>
+#include <Map.h>
 #include <MapSizeDialog.h>
 #include <RedoEvent.h>
 #include <RemoveCommand.h>
 #include <RemoveEvent.h>
 #include <ReplaceCommand.h>
 #include <ReplaceEvent.h>
+#include <Tile.h>
 #include <UndoEvent.h>
 
 MapEditor::MapEditor(QWidget *parent):
@@ -216,7 +221,7 @@ MapEditor::~MapEditor()
   }
 }
 
-void MapEditor::createBlockType(BlockType blockType)
+void MapEditor::createBlockTypeCommand(BlockType blockType)
 {
   bool isAddableBlockTypeExist = false;
 
@@ -245,7 +250,7 @@ void MapEditor::createBlockType(BlockType blockType)
   _undoStack->push(createBlockTypeCommand);
 }
 
-void MapEditor::changeBlockType(BlockType& blockType, BlockType blockTypeNew)
+void MapEditor::changeBlockTypeCommand(BlockType& blockType, BlockType blockTypeNew)
 {
   //check blocktype
   bool isChangedBlockTypeExist = false;
@@ -278,7 +283,7 @@ void MapEditor::changeBlockType(BlockType& blockType, BlockType blockTypeNew)
   _undoStack->push(changeBlockTypeCommand);
 }
 
-void MapEditor::deleteBlockType(BlockType blockType)
+void MapEditor::deleteBlockTypeCommand(BlockType blockType)
 {
   int blockTypeId;
   for (BlockTypes::iterator it = _blockTypes.begin();
@@ -354,7 +359,7 @@ void MapEditor::addBlockTypeButton(const BlockType& blockType)
   rButton->setChecked(true);
 }
 
-void MapEditor::RemoveBlockType(int id)
+void MapEditor::DeleteBlockType(int id)
 {
   _blockTypes.erase(id);
 }
@@ -387,13 +392,13 @@ void MapEditor::openBlockEditorDialog()
   switch (blockEditDialog.exec())
   {
   case BlockEditDialog::BlockEditAction::CREATE:
-    createBlockType(blockEditDialog.GetBlockType());
+    createBlockTypeCommand(blockEditDialog.GetBlockType());
     break;
 
   case BlockEditDialog::BlockEditAction::CHANGE:
     if (_btnGroupBlocks->checkedButton() != 0)
     {
-      changeBlockType(_blockTypes[blockTypeId], blockEditDialog.GetBlockType());
+      changeBlockTypeCommand(_blockTypes[blockTypeId], blockEditDialog.GetBlockType());
     }
     else
     {
@@ -407,7 +412,7 @@ void MapEditor::openBlockEditorDialog()
   case BlockEditDialog::BlockEditAction::DELETE:
     if (_btnGroupBlocks->checkedButton() != 0)
     {
-      deleteBlockType(_blockTypes[_btnGroupBlocks->checkedId()]);
+      deleteBlockTypeCommand(_blockTypes[_btnGroupBlocks->checkedId()]);
     }
     else
     {
@@ -881,7 +886,7 @@ void MapEditor::renderScene()
   viewer->realize();
 
   osg::ref_ptr<KeyboardMouseHandler> keyboardMouseHandler = 
-    new KeyboardMouseHandler(*this);
+                                     new KeyboardMouseHandler(*this);
   viewer->addEventHandler(keyboardMouseHandler);
   viewer->addEventHandler(new osgViewer::StatsHandler);
 
@@ -892,9 +897,9 @@ void MapEditor::renderScene()
 
   while (!viewer->done())
   {	
-    (*_map)(*viewer);
+    _map->ViewerFrame(*viewer);
   }
-
+  
   emit QuitAppToMain();
 }
 
@@ -915,9 +920,9 @@ void MapEditor::createUndoRedoActions()
   _redoAct->setShortcuts(QKeySequence::Redo);
 }
 
-void MapEditor::addBlock(AddEvent& addEvent)
+void MapEditor::addBlockCommand(AddEvent& addEvent)
 {
-  Map& map = *addEvent.GetMap();
+  Map& map = addEvent.GetMap();
   int x = addEvent.GetX();
   int z = addEvent.GetZ();
   BlockType blockType = addEvent.GetBlockType();
@@ -926,9 +931,9 @@ void MapEditor::addBlock(AddEvent& addEvent)
   _undoStack->push(addCommand);
 }
 
-void MapEditor::removeBlock(RemoveEvent& removeEvent)
+void MapEditor::removeBlockCommand(RemoveEvent& removeEvent)
 {
-  Map& map = *removeEvent.GetMap();
+  Map& map = removeEvent.GetMap();
   int x = removeEvent.GetX();
   int z = removeEvent.GetZ();
   BlockType blockType = removeEvent.GetBlockType();
@@ -937,10 +942,10 @@ void MapEditor::removeBlock(RemoveEvent& removeEvent)
   _undoStack->push(removeCommand);
 }
 
-void MapEditor::replaceBlock(ReplaceEvent& replaceEvent)
+void MapEditor::replaceBlockCommand(ReplaceEvent& replaceEvent)
 {
-  Map& map = *replaceEvent.GetMap();
-  Block& block = *replaceEvent.GetBlock();
+  Map& map = replaceEvent.GetMap();
+  Block& block = replaceEvent.GetBlock();
   BlockType blockType = replaceEvent.GetBlockType();
 
   ReplaceCommand* replaceCommand = 
@@ -974,19 +979,19 @@ bool MapEditor::event(QEvent* pEvent)
   if (pEvent->type() == CustomEvent::ADD)
   {
     AddEvent* addEvent = static_cast<AddEvent*>(pEvent);
-    addBlock(*addEvent);
+    addBlockCommand(*addEvent);
     return true;
   }
   if (pEvent->type() == CustomEvent::REPLACE)
   {
     ReplaceEvent* replaceEvent = static_cast<ReplaceEvent*>(pEvent);
-    replaceBlock(*replaceEvent);
+    replaceBlockCommand(*replaceEvent);
     return true;
   }
   if (pEvent->type() == CustomEvent::REMOVE)
   {
     RemoveEvent* removeEvent = static_cast<RemoveEvent*>(pEvent);
-    removeBlock(*removeEvent);
+    removeBlockCommand(*removeEvent);
     return true;
   }
   if (pEvent->type() == CustomEvent::UNDO)

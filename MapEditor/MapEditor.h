@@ -3,22 +3,20 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MapEditor.h"
 
-#include <mutex>
 #include <thread>
+#include <osg/ref_ptr>
 
-#include <qradiobutton.h>
-#include <qundostack.h>
-#include <qundoview.h>
+#include <BlockType.h>
 
-#include <Block.h>
-#include <KeyboardMouseHandler.h>
-#include <Map.h>
-#include <TableTexPathsWidget.h>
+class QUndoStack;
+class QUndoView;
 
 class AddEvent;
+class BlockType;
 class KeyboardMouseHandler;
-class ReplaceEvent;
+class Map;
 class RemoveEvent;
+class ReplaceEvent;
 
 class MapEditor : public QMainWindow
 {
@@ -45,13 +43,9 @@ public:
 
 public:
   unsigned int AddBlockType(BlockType blockType);
-  void RemoveBlockType(int id);
+  void DeleteBlockType(int id);
 
   inline BlockType GetSelectedBlockType();
-
-signals:
-  void QuitViewer();
-  void QuitAppToMain();
 
 private:
   //render thread
@@ -69,13 +63,14 @@ private:
 
   //undo/redo commands
   //map editor
-  void addBlock(AddEvent& addEvent);
-  void removeBlock(RemoveEvent& removeEvent);
-  void replaceBlock(ReplaceEvent& replaceEvent);
+  void addBlockCommand(AddEvent& addEvent);
+  void removeBlockCommand(RemoveEvent& removeEvent);
+  void replaceBlockCommand(ReplaceEvent& replaceEvent);
   //block editor
-  void changeBlockType(BlockType& blockType, BlockType blockTypeOld);
-  void createBlockType(BlockType blockType);
-  void deleteBlockType(BlockType blockType);
+  void changeBlockTypeCommand(BlockType& blockType, 
+                              BlockType blockTypeOld);
+  void createBlockTypeCommand(BlockType blockType);
+  void deleteBlockTypeCommand(BlockType blockType);
 
   //operations with buttons
   void addBlockTypeButton(const BlockType& blockType);
@@ -93,8 +88,6 @@ private:
   Ui::MapEditorClass ui;
 
   std::thread _renderThread;
-
-  osg::ref_ptr<KeyboardMouseHandler> _keyboardMouseHandler;
 
   QMenu* _fileMenu;
   QMenu* _editMenu;
@@ -132,6 +125,10 @@ private:
   QButtonGroup* _btnGroupBlocks;
   std::map<std::string, std::string> _texPaths;
   BlockTypes _blockTypes;
+
+signals:
+  void QuitViewer();
+  void QuitAppToMain();
 };
 
 inline BlockType MapEditor::GetSelectedBlockType()

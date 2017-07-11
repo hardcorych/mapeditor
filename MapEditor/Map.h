@@ -8,6 +8,8 @@
 
 #include <Block.h>
 
+class BlockType;
+
 namespace osgViewer
 {
   class Viewer;
@@ -42,8 +44,7 @@ public:
   Blocks SaveBlocksAndGet();
   void Resize(Blocks savedBlocks, int sizeX, int sizeZ);
 
-public:
-  void operator()(osgViewer::Viewer& viewer);
+  void ViewerFrame(osgViewer::Viewer& viewer);
 
 private:
   void generateBorder();
@@ -54,7 +55,7 @@ private:
   int _sizeZ;
   int _step;		//step equals block size
 
-  std::recursive_mutex _mutex;
+  std::mutex _mutex;
 };
 
 //size in blocks

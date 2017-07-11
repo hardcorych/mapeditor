@@ -1,9 +1,11 @@
 #pragma once
 
+#include <BlockType.h>
 #include <CreateBlockTypeEvent.h>
 #include <DeleteBlockTypeCommand.h>
 #include <DeleteBlockTypeEvent.h>
 #include <DrawBlockPixmap.h>
+#include <MapEditor.h>
 
 DeleteBlockTypeCommand::DeleteBlockTypeCommand(const BlockType& blockType,
                                                int blockTypeId,
@@ -29,7 +31,7 @@ void DeleteBlockTypeCommand::undo()
 
 void DeleteBlockTypeCommand::redo()
 {
-  _mapEditor.RemoveBlockType(_blockTypeId);
+  _mapEditor.DeleteBlockType(_blockTypeId);
   QCoreApplication::postEvent(&_mapEditor,
                               new DeleteBlockTypeEvent(_blockTypeId));
 }

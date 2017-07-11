@@ -1,11 +1,10 @@
 #include <osgUtil/PolytopeIntersector>
 #include <osgViewer/Viewer>
 
-#include <algorithm>
-#include <memory>
-
 #include "AddEvent.h"
+#include "Block.h"
 #include "KeyboardMouseHandler.h"
+#include "Map.h"
 #include "RedoEvent.h"
 #include "RemoveEvent.h"
 #include "ReplaceEvent.h"
@@ -66,13 +65,13 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea,
             if (!block->GetType().isNotEmptyType())
             {
               AddEvent* addEvent = 
-                new AddEvent(map, block->GetX(), block->GetZ(), blockType);
+                new AddEvent(*map, block->GetX(), block->GetZ(), blockType);
               QCoreApplication::postEvent(&_mapEditor, addEvent);
             }
             else if (block->GetType() != blockType)
             {
               ReplaceEvent* replaceEvent =
-                new ReplaceEvent(map, block, blockType);
+                new ReplaceEvent(*map, *block, blockType);
               QCoreApplication::postEvent(&_mapEditor, replaceEvent);
             }
           }
@@ -89,7 +88,7 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea,
           if (blockType.isNotBorderType() && blockType.isNotEmptyType())
           {
             RemoveEvent* removeEvent =
-              new RemoveEvent(map, block->GetX(), block->GetZ(), blockType);
+              new RemoveEvent(*map, block->GetX(), block->GetZ(), blockType);
             QCoreApplication::postEvent(&_mapEditor, removeEvent);
           }
           return true;	//TRUE to process an event
@@ -131,8 +130,8 @@ void KeyboardMouseHandler::findBlockAndMap(const double x,
                                            osg::ref_ptr<Map>& mapOutput,
                                            osg::ref_ptr<Block>& blockOutput)
 {
-  //if (!viewer->getSceneData())
-    //return std::make_pair(false, nullptr);	//nothing to pick
+  if (!viewer->getSceneData())
+    return;	                  //nothing to pick
 
   osg::ref_ptr<osgUtil::LineSegmentIntersector> picker = 
     new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, 

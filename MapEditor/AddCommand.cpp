@@ -2,6 +2,8 @@
 
 #include <AddCommand.h>
 
+#include <Map.h>
+
 AddCommand::AddCommand(Map& map,
                        int x,
                        int z,

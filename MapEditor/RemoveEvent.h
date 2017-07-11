@@ -8,7 +8,7 @@ class RemoveEvent : public QEvent
 {
 public:
   RemoveEvent() = delete;
-  RemoveEvent(osg::ref_ptr<Map> map,
+  RemoveEvent(Map& map,
               int x,
               int z,
               const BlockType& blockType) : 
@@ -21,19 +21,19 @@ public:
   }
 
 public:
-  inline osg::ref_ptr<Map> GetMap();
+  inline Map& GetMap();
   inline int GetX();
   inline int GetZ();
   inline const BlockType& GetBlockType();
 
 private:
-  osg::ref_ptr<Map> _map;
+  Map& _map;
   int _x;
   int _z;
   BlockType _blockType;
 };
 
-inline osg::ref_ptr<Map> RemoveEvent::GetMap()
+inline Map& RemoveEvent::GetMap()
 {
   return _map;
 }

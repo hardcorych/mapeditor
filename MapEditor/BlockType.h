@@ -7,6 +7,28 @@
 class BlockType
 {
 public:
+  enum Type
+  {
+    BORDER,
+    EMPTY,
+    ARMOR,
+    BRICK,
+    WATER,
+    BUSHES,
+    ICE,
+    CUSTOM
+  };
+
+  enum FillType
+  {
+    FULL,
+    LEFT,
+    TOP,
+    RIGHT,
+    BOTTOM
+  };
+
+public:
   BlockType() = default;
   BlockType(std::string typeName, 
             std::string texPath,
@@ -39,7 +61,7 @@ public:
   inline bool isNoData() const;
 
 private:
-  std::string _typeName;   
+  std::string _typeName;
   std::string _texPath;
   std::string _fillType;
   bool _isPassable;   //is obstacle or not

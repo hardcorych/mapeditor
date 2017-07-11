@@ -2,7 +2,9 @@
 
 #include <qundostack.h>
 
-#include <Map.h>
+class Block;
+class BlockType;
+class Map;
 
 class ReplaceCommand : public QUndoCommand	//replace existing block on map
 {

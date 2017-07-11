@@ -2,7 +2,8 @@
 
 #include <qundostack.h>
 
-#include <MapEditor.h>
+class BlockType;
+class MapEditor;
 
 class CreateBlockTypeCommand : public QUndoCommand
 {

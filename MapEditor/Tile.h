@@ -1,7 +1,7 @@
 #pragma once
 
-#include <osg/Geode>
-#include <osgDB/ReadFile>
+#include <osg/Geometry>
+
 #include <qstring.h>
 
 class Tile : public osg::Geometry

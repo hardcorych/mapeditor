@@ -1,5 +1,7 @@
 #include <osgViewer/Viewer>
 
+#include <Block.h>
+#include <BlockType.h>
 #include "Map.h"
 
 Map::Map(unsigned int sizeX, unsigned int sizeZ) :
@@ -37,7 +39,7 @@ void Map::generateBorder()
   //заполнение против часовой стрелки, начиная с нижней границы
   //нижняя граница
 
-  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
+  std::lock_guard<std::mutex> lgMutex(_mutex);
   BlockType borderBlock("BORDER",
                         "Resources/tiles/BORDER.png",
                         "FULL",
@@ -73,7 +75,8 @@ void Map::generateBorder()
 
 void Map::generateGameArea()
 {
-  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
+  std::lock_guard<std::mutex> lgMutex(_mutex);
+
   BlockType emptyBlock("EMPTY", "", "FULL", 0, 0);
   for (int z = 0; z < _sizeZ; z += _step)
   {
@@ -87,14 +90,14 @@ void Map::generateGameArea()
 
 void Map::Clear()		//удаление карты
 {
-  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
+  std::lock_guard<std::mutex> lgMutex(_mutex);
 
   removeChildren(0, getNumChildren());
 }
 
 void Map::AddBlock(int x, int z, const BlockType& blockType)
 {
-  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
+  std::lock_guard<std::mutex> lgMutex(_mutex);
 
   osg::ref_ptr<Block> blockOld = nullptr;
 
@@ -115,7 +118,7 @@ void Map::AddBlock(int x, int z, const BlockType& blockType)
 
 void Map::RemoveBlock(int x, int z)
 {
-  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
+  std::lock_guard<std::mutex> lgMutex(_mutex);
 
   osg::ref_ptr<Block> block = nullptr;
 
@@ -158,14 +161,15 @@ void Map::Resize(Blocks savedBlocks, int sizeX, int sizeZ)
   Clear();
   GenerateEmptyMap(sizeX, sizeZ);
 
-  for (osg::ref_ptr<Block> block : savedBlocks)
+  for (Block* block : savedBlocks)
   {
     AddBlock(block->GetX(), block->GetZ(), block->GetType());
   }
 }
 
-void Map::operator()(osgViewer::Viewer& viewer)
+void Map::ViewerFrame(osgViewer::Viewer& viewer)
 {
-  std::lock_guard<std::recursive_mutex> lgMutex(_mutex);
+  std::lock_guard<std::mutex> lgMutex(_mutex);
+
   viewer.frame();
 }

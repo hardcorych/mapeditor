@@ -4,6 +4,8 @@
 
 #include <MapEditor.h>
 
+class BlockType;
+
 class ChangeBlockTypeCommand : public QUndoCommand
 {
 public:

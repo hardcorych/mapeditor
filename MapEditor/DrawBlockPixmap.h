@@ -1,7 +1,7 @@
 #pragma once
 
-#include <qpixmap.h>
+class QPixmap;
 
-#include <BlockType.h>
+class BlockType;
 
 QPixmap DrawBlockPixmap(BlockType blockType);

@@ -1,4 +1,5 @@
 #include "Block.h"
+#include <Tile.h>
 
 //принимает координаты, тип блока
 Block::Block(int x, int z, BlockType blockType) :
