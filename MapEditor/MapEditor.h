@@ -70,10 +70,10 @@ private:
   void removeBlockCommand(RemoveEvent& removeEvent);
   void replaceBlockCommand(ReplaceEvent& replaceEvent);
   //block editor
-  void changeBlockTypeCommand(BlockType& blockType, 
-                              BlockType blockTypeOld);
-  void createBlockTypeCommand(BlockType blockType);
-  void deleteBlockTypeCommand(BlockType blockType);
+  void changeBlockTypeCommand(const BlockType& blockType, 
+                              BlockType& blockTypeNew);
+  void createBlockTypeCommand(BlockType& blockType);
+  void deleteBlockTypeCommand(BlockType& blockType);
 
   //operations with buttons
   void addBlockTypeButton(const BlockType& blockType);
@@ -86,6 +86,9 @@ private:
   void createUndoRedoActions();
 
   bool event(QEvent* pEvent) override;
+
+  int findBlockTypeId(BlockType& blockType);
+  bool isBlockTypeExist(BlockType& blockType);
 
 private:
   Ui::MapEditorClass ui;

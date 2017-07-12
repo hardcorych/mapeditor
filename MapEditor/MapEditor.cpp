@@ -221,22 +221,9 @@ MapEditor::~MapEditor()
   }
 }
 
-void MapEditor::createBlockTypeCommand(BlockType blockType)
+void MapEditor::createBlockTypeCommand(BlockType& blockType)
 {
-  bool isAddableBlockTypeExist = false;
-
-  for (BlockTypes::iterator it = _blockTypes.begin();
-    it != _blockTypes.end();
-    ++it)
-  {
-    if (it->second == blockType)
-    {
-      isAddableBlockTypeExist = true;
-      break;
-    }
-  }
-
-  if (isAddableBlockTypeExist)
+  if (isBlockTypeExist(blockType))
   {
     QMessageBox::critical(this,
                           "Error",
@@ -250,23 +237,10 @@ void MapEditor::createBlockTypeCommand(BlockType blockType)
   _undoStack->push(createBlockTypeCommand);
 }
 
-void MapEditor::changeBlockTypeCommand(BlockType& blockType, BlockType blockTypeNew)
+void MapEditor::changeBlockTypeCommand(const BlockType& blockType, 
+                                       BlockType& blockTypeNew)
 {
-  //check blocktype
-  bool isChangedBlockTypeExist = false;
-
-  for (BlockTypes::iterator it = _blockTypes.begin();
-    it != _blockTypes.end();
-    ++it)
-  {
-    if (it->second == blockTypeNew)
-    {
-      isChangedBlockTypeExist = true;
-      break;
-    }
-  }
-
-  if (isChangedBlockTypeExist)
+  if (isBlockTypeExist(blockTypeNew))
   {
     QMessageBox::critical(this,
                           "Error",
@@ -283,19 +257,9 @@ void MapEditor::changeBlockTypeCommand(BlockType& blockType, BlockType blockType
   _undoStack->push(changeBlockTypeCommand);
 }
 
-void MapEditor::deleteBlockTypeCommand(BlockType blockType)
+void MapEditor::deleteBlockTypeCommand(BlockType& blockType)
 {
-  int blockTypeId;
-  for (BlockTypes::iterator it = _blockTypes.begin();
-    it != _blockTypes.end();
-    ++it)
-  {
-    if (it->second == blockType)
-    {
-      blockTypeId = it->first;
-      break;
-    }
-  }
+  int blockTypeId = findBlockTypeId(blockType);
 
   DeleteBlockTypeCommand* deleteBlockTypeCommand =
     new DeleteBlockTypeCommand(_blockTypes, blockType, blockTypeId, *this);
@@ -304,17 +268,7 @@ void MapEditor::deleteBlockTypeCommand(BlockType blockType)
 
 void MapEditor::setBlockTypeButton(BlockType& blockType)
 {
-  int blockTypeId;
-  for (BlockTypes::iterator it = _blockTypes.begin();
-       it != _blockTypes.end();
-       ++it)
-  {
-    if (it->second == blockType)
-    {
-      blockTypeId = it->first;
-      break;
-    }
-  }
+  int blockTypeId = findBlockTypeId(blockType);
 
   QAbstractButton* rButton = _btnGroupBlocks->button(blockTypeId);
 
@@ -1045,4 +999,38 @@ bool MapEditor::event(QEvent* pEvent)
     return true;
   }
   return QMainWindow::event(pEvent);
+}
+
+int MapEditor::findBlockTypeId(BlockType& blockType)
+{
+  int blockTypeId = -1;
+  for (BlockTypes::iterator it = _blockTypes.begin();
+       it != _blockTypes.end();
+       ++it)
+  {
+    if (it->second == blockType)
+    {
+      blockTypeId = it->first;
+      break;
+    }
+  }
+  return blockTypeId;
+}
+
+bool MapEditor::isBlockTypeExist(BlockType& blockType)
+{
+  bool isChangedBlockTypeExist = false;
+
+  for (BlockTypes::iterator it = _blockTypes.begin();
+    it != _blockTypes.end();
+    ++it)
+  {
+    if (it->second == blockType)
+    {
+      isChangedBlockTypeExist = true;
+      break;
+    }
+  }
+
+  return isChangedBlockTypeExist;
 }
