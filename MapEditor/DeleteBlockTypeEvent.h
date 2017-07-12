@@ -2,17 +2,21 @@
 
 #include <qevent.h>
 
-#include <MapEditor.h>
+#include "MapEditor.h"
 
 class DeleteBlockTypeEvent : public QEvent
 {
 public:
   DeleteBlockTypeEvent() = delete;
+  DeleteBlockTypeEvent(const DeleteBlockTypeEvent&) = delete;
   DeleteBlockTypeEvent(int blockTypeId) :
     QEvent((Type)MapEditor::CustomEvent::DELETE_BLOCKTYPE),
     _blockTypeId(blockTypeId)
   {
   }
+  ~DeleteBlockTypeEvent() = default;
+
+  DeleteBlockTypeEvent& operator=(const DeleteBlockTypeEvent&) = delete;
 
 public:
   inline int GetBlockTypeId();

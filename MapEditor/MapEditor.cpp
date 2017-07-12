@@ -1,5 +1,4 @@
 #pragma once
-
 #include "MapEditor.h"
 
 #include <memory>
@@ -14,39 +13,40 @@
 #include <qundoview.h>
 #include <qxmlstream.h>
 
-#include <AddCommand.h>
-#include <AddEvent.h>
-#include <Block.h>
-#include <BlockEditDialog.h>
-#include <ChangeBlockTypeCommand.h>
-#include <ChangeBlockTypeEvent.h>
-#include <ChangeSizeCommand.h>
-#include <CreateBlockTypeCommand.h>
-#include <CreateBlockTypeEvent.h>
-#include <DeleteBlockTypeCommand.h>
-#include <DeleteBlockTypeEvent.h>
-#include <DrawBlockPixmap.h>
-#include <KeyboardMouseHandler.h>
-#include <Map.h>
-#include <MapSizeDialog.h>
-#include <RedoEvent.h>
-#include <RemoveCommand.h>
-#include <RemoveEvent.h>
-#include <ReplaceCommand.h>
-#include <ReplaceEvent.h>
-#include <Tile.h>
-#include <UndoEvent.h>
+#include "AddCommand.h"
+#include "AddEvent.h"
+#include "Block.h"
+#include "BlockEditDialog.h"
+#include "ChangeBlockTypeCommand.h"
+#include "ChangeBlockTypeEvent.h"
+#include "ChangeSizeCommand.h"
+#include "CreateBlockTypeCommand.h"
+#include "CreateBlockTypeEvent.h"
+#include "DeleteBlockTypeCommand.h"
+#include "DeleteBlockTypeEvent.h"
+#include "DrawBlockPixmap.h"
+#include "KeyboardMouseHandler.h"
+#include "Map.h"
+#include "MapSizeDialog.h"
+#include "RedoEvent.h"
+#include "RemoveCommand.h"
+#include "RemoveEvent.h"
+#include "ReplaceCommand.h"
+#include "ReplaceEvent.h"
+#include "Tile.h"
+#include "UndoEvent.h"
 
 MapEditor::MapEditor(QWidget *parent):
-    QMainWindow(parent),
-   _minMapSize(5),
-   _maxMapSize(30),
-   _map(new Map(10,10)),
-   _row(0),
-   _col(0),
-   _maxColumnElements(5),
-   _blockSize(16),
-   _countIdBlockTypes(0)
+  QMainWindow(parent),
+  _minMapSize(5),
+  _maxMapSize(30),
+  _map(new Map(10,10)),
+  _row(0),
+  _col(0),
+  _maxColumnElements(5),
+  _maxRowElements(15),
+  _blockSize(16),
+  _countIdBlockTypes(0)
 {
   ui.setupUi(this);
 
@@ -246,7 +246,7 @@ void MapEditor::createBlockTypeCommand(BlockType blockType)
   }
 
   CreateBlockTypeCommand* createBlockTypeCommand =
-    new CreateBlockTypeCommand(blockType, *this);
+    new CreateBlockTypeCommand(_blockTypes, blockType, *this);
   _undoStack->push(createBlockTypeCommand);
 }
 
@@ -298,7 +298,7 @@ void MapEditor::deleteBlockTypeCommand(BlockType blockType)
   }
 
   DeleteBlockTypeCommand* deleteBlockTypeCommand =
-    new DeleteBlockTypeCommand(blockType, blockTypeId, *this);
+    new DeleteBlockTypeCommand(_blockTypes, blockType, blockTypeId, *this);
   _undoStack->push(deleteBlockTypeCommand);
 }
 
@@ -306,8 +306,8 @@ void MapEditor::setBlockTypeButton(BlockType& blockType)
 {
   int blockTypeId;
   for (BlockTypes::iterator it = _blockTypes.begin();
-    it != _blockTypes.end();
-    ++it)
+       it != _blockTypes.end();
+       ++it)
   {
     if (it->second == blockType)
     {
@@ -341,15 +341,35 @@ void MapEditor::addBlockTypeButton(const BlockType& blockType)
 
   QPixmap pixmap = DrawBlockPixmap(blockType);
   rButton->setIcon(pixmap);
-  _btnGroupBlocks->addButton(rButton, _countIdBlockTypes);
+  //_btnGroupBlocks->addButton(rButton, _countIdBlockTypes);
 
+  for (int row = 0; row < _maxRowElements; row++)
+  {
+    bool isFreeCellFound = false;
+    for (int col = 0; col < _maxColumnElements; col++)
+    {
+      if (ui.gridLayout->itemAtPosition(row, col) == 0)
+      {
+        isFreeCellFound = true;
+        _btnGroupBlocks->addButton(rButton, _countIdBlockTypes);
+        ui.gridLayout->addWidget(rButton, row, col);
+        break;
+      }
+    }
+    if (isFreeCellFound)
+    {
+      break;
+    }
+  }
+  /*
   if (++_col == _maxColumnElements)
   {
     _col = 0;
     _row++;
   }
+  */
 
-  ui.gridLayout->addWidget(rButton, _row, _col);
+  //ui.gridLayout->addWidget(rButton, _row, _col);
   rButton->setVisible(true);
   if (_btnGroupBlocks->checkedButton() != 0)
   {
@@ -455,314 +475,319 @@ void MapEditor::loadXMLFile()
 
   QFile file(_filename);
 
-  if (!file.open(QIODevice::ReadOnly | QFile::Text))
+  if (!_filename.isEmpty())
   {
-    //QMessageBox::warning(this, "file error", "file can't be opened", QMessageBox::Ok);
-  }
-  else
-  {
-    if (!_undoStack->isClean()) _undoStack->clear();
-
-    _saveAct->setDisabled(true);
-    //file reading
-    QXmlStreamReader xmlReader(&file);
-
-    //for error output
-    bool isError = false;
-    QString errorText;
-
-    int mapSizeX = 0;
-    int mapSizeZ = 0;
-
-    while (!xmlReader.atEnd())
+    if (!file.open(QIODevice::ReadOnly | QFile::Text))
     {
-      if (xmlReader.readNextStartElement())
-      {
-        QString element = xmlReader.name().toString();
-        if (element == "sizeX")
-        {
-          mapSizeX = xmlReader.readElementText().toInt();
-          if (mapSizeX < 0)
-          {
-            isError = true;
-            errorText = "Negative map size X";
-            break;
-          }
-          if (mapSizeX % _blockSize != 0)
-          {
-            isError = true;
-            errorText = "Incorrect map size X: it's not multiple of 16";
-            break;
-          }
-          if (mapSizeX < _minMapSize * _blockSize ||
-            mapSizeX > _maxMapSize * _blockSize)
-          {
-            isError = true;
-            errorText = "Map size may be in range from " +
-              QString::number(_minMapSize) +
-              "to " + 
-              QString::number(_maxMapSize) + 
-              " blocks";
-            break;
-          }
-          //get size in blocks
-          mapSizeX /= _blockSize;
-        }
-        else if (element == "sizeZ")
-        {
-          mapSizeZ = xmlReader.readElementText().toInt();
-          if (mapSizeZ < 0)
-          {
-            isError = true;
-            errorText = "Negative map size Z";
-            break;
-          }
-          if (mapSizeZ % _blockSize != 0)
-          {
-            isError = true;
-            errorText = "Incorrect map size Z: it's not multiple of 16";
-            break;
-          }
-          if (mapSizeZ < _minMapSize * _blockSize ||
-            mapSizeZ > _maxMapSize * _blockSize)
-          {
-            isError = true;
-            errorText = "Map size may be in range from " 
-              + QString::number(_minMapSize) +
-              "to " + QString::number(_maxMapSize) + " blocks";
-            break;
-          }
-          //получаем размер в блоках
-          mapSizeZ /= _blockSize;
-          createEmptyMap(mapSizeX, mapSizeZ);
-        }
-        else if (element == "block")
-        {
-          if (mapSizeX == 0 || mapSizeZ == 0)
-          {
-            isError = true;
-            errorText = "There is no map size";
-            break;
-          }
-          //чтение блока
-          //чтение типа блока
-          int x, z;
-
-          BlockType blockType;
-
-          int numAttributes = 0;
-
-          if (xmlReader.attributes().size() < 2 ||
-            xmlReader.attributes().size() > 4)
-          {
-            isError = true;
-            errorText = "Incorrect number of block attributes";
-            break;
-          }
-
-          bool isBorder = false;
-
-          for each (const QXmlStreamAttribute &attr in xmlReader.attributes())
-          {
-            QString attrStr = attr.name().toString();
-            if (attrStr == "texType")
-            {
-              numAttributes++;
-              std::string attrValue = attr.value().toString().toStdString();
-              //!!!
-              if (attrValue == "BORDER")
-              {
-                isBorder = true;
-                break;
-              }
-              bool isTypeFound = false;
-              for (BlockTypes::iterator it = _blockTypes.begin();
-                it != _blockTypes.end(); ++it)
-              {
-                if (attrValue == it->second.GetTypeName())
-                {
-                  isTypeFound = true;
-                  break;
-                }
-              }
-
-              if (isTypeFound)
-              {
-                blockType.SetTypeName(attrValue);
-                //определение пути файла текстуры
-                blockType.SetTexPath(_texPaths[attrValue]);
-              }
-              else
-              {
-                isError = true;
-                errorText = "Incorrect texType";
-                break;
-              }
-            }
-            else if (attrStr == "fillType" && !isBorder)
-            {
-              numAttributes++;
-              QString attrValue = attr.value().toString();
-
-              if (attrValue != "BOTTOM" && attrValue != "FULL" &&
-                attrValue != "LEFT" && attrValue != "RIGHT" &&
-                attrValue != "TOP")
-              {
-                isError = true;
-                errorText = "Incorrect fillType";
-                break;
-              }
-              else
-              {
-                blockType.SetFillType(attrValue.toStdString());
-              }
-            }
-            else if (attrStr == "isPassable" && !isBorder)
-            {
-              numAttributes++;
-              QString attrValue = attr.value().toString();
-
-              if (attrValue == "true")
-              {
-                blockType.SetPassability(true);
-              }
-              else if (attrValue == "false")
-              {
-                blockType.SetPassability(false);
-              }
-              else
-              {
-                isError = true;
-                errorText = "Passability may be true or false";
-                break;
-              }
-            }
-            else if (attrStr == "isUnderTank" && !isBorder)
-            {
-              numAttributes++; 
-              QString attrValue = attr.value().toString();
-
-              if (attrValue == "true")
-              {
-                blockType.SetUnderTank(true);
-              }
-              else if (attrValue == "false")
-              {
-                blockType.SetUnderTank(false);
-              }
-              else
-              {
-                isError = true;
-                errorText = "UnderTank parameter may be true or false";
-                break;
-              }
-            }
-          }
-
-          if (!isBorder)
-          {
-            //чтение координат
-            int numCoords = 0;
-
-            //x coord
-            xmlReader.readNextStartElement();
-            element = xmlReader.name().toString();
-            if (element == "x")
-            {
-              numCoords++;
-              x = xmlReader.readElementText().toInt();
-
-              if (x < 0)
-              {
-                isError = true;
-                errorText = "Negative X coordinate of block";
-                break;
-              }
-              if (x % _blockSize != 0)
-              {
-                isError = true;
-                errorText = "X block coordinate is not multiple of 16";
-                break;
-              }
-              if (x > _maxMapSize * _blockSize)
-              {
-                isError = true;
-                errorText = "X coord may be in range of "
-                  + QString::number(_maxMapSize) + " blocks";
-                break;
-              }
-              x -= _blockSize;		//-16 for matching
-            }
-
-            //z coord
-            xmlReader.readNextStartElement();
-            element = xmlReader.name().toString();
-            if (element == "z")
-            {
-              numCoords++;
-              z = xmlReader.readElementText().toInt();
-
-              if (z < 0)
-              {
-                isError = true;
-                errorText = "Negative Z coordinate of block";
-                break;
-              }
-              if (z % _blockSize != 0)
-              {
-                isError = true;
-                errorText = "Z block coordinate is not multiple of 16";
-                break;
-              }
-              if (z > _maxMapSize * _blockSize)
-              {
-                isError = true;
-                errorText = "Z coord may be in range of " +
-                             QString::number(_maxMapSize) + 
-                             " blocks";
-                break;
-              }
-              z -= _blockSize;		//-16 for matching
-            }
-
-
-            if (numCoords != 2)
-            {
-              isError = true;
-              errorText = "Incorrect number of block coordinates";
-              break;
-            }
-
-            //add read block
-            _map->AddBlock(x, z, blockType);
-          }
-          
-        }
-      }
-    }
-    file.close();
-
-    //error message
-    if (isError)
-    {
-      QMessageBox::critical(this, "File error", errorText, QMessageBox::Ok);
-      _filename.clear();
-      _map->Clear();
-      ui.labelMessage->setText("There were some errors while reading file.");
+      QMessageBox::warning(this, "file error", "file can't be opened", QMessageBox::Ok);
     }
     else
     {
-      _saveAct->setEnabled(true);
-      ui.labelMessage->setText("File was loaded successful.");
+      if (!_undoStack->isClean()) _undoStack->clear();
+
+      _saveAct->setDisabled(true);
+      //file reading
+      QXmlStreamReader xmlReader(&file);
+
+      //for error output
+      bool isError = false;
+      QString errorText;
+
+      int mapSizeX = 0;
+      int mapSizeZ = 0;
+
+      while (!xmlReader.atEnd())
+      {
+        if (xmlReader.readNextStartElement())
+        {
+          QString element = xmlReader.name().toString();
+          if (element == "sizeX")
+          {
+            mapSizeX = xmlReader.readElementText().toInt();
+            if (mapSizeX < 0)
+            {
+              isError = true;
+              errorText = "Negative map size X";
+              break;
+            }
+            if (mapSizeX % _blockSize != 0)
+            {
+              isError = true;
+              errorText = "Incorrect map size X: it's not multiple of 16";
+              break;
+            }
+            if (mapSizeX < _minMapSize * _blockSize ||
+              mapSizeX > _maxMapSize * _blockSize)
+            {
+              isError = true;
+              errorText = "Map size may be in range from " +
+                QString::number(_minMapSize) +
+                "to " +
+                QString::number(_maxMapSize) +
+                " blocks";
+              break;
+            }
+            //get size in blocks
+            mapSizeX /= _blockSize;
+          }
+          else if (element == "sizeZ")
+          {
+            mapSizeZ = xmlReader.readElementText().toInt();
+            if (mapSizeZ < 0)
+            {
+              isError = true;
+              errorText = "Negative map size Z";
+              break;
+            }
+            if (mapSizeZ % _blockSize != 0)
+            {
+              isError = true;
+              errorText = "Incorrect map size Z: it's not multiple of 16";
+              break;
+            }
+            if (mapSizeZ < _minMapSize * _blockSize ||
+              mapSizeZ > _maxMapSize * _blockSize)
+            {
+              isError = true;
+              errorText = "Map size may be in range from " +
+                          QString::number(_minMapSize) +
+                          "to " +
+                          QString::number(_maxMapSize) +
+                          " blocks";
+              break;
+            }
+            //получаем размер в блоках
+            mapSizeZ /= _blockSize;
+            createEmptyMap(mapSizeX, mapSizeZ);
+          }
+          else if (element == "block")
+          {
+            if (mapSizeX == 0 || mapSizeZ == 0)
+            {
+              isError = true;
+              errorText = "There is no map size";
+              break;
+            }
+            //чтение блока
+            //чтение типа блока
+            int x, z;
+
+            BlockType blockType;
+
+            int numAttributes = 0;
+
+            if (xmlReader.attributes().size() < 2 ||
+              xmlReader.attributes().size() > 4)
+            {
+              isError = true;
+              errorText = "Incorrect number of block attributes";
+              break;
+            }
+
+            bool isBorder = false;
+
+            for each (const QXmlStreamAttribute &attr in xmlReader.attributes())
+            {
+              QString attrStr = attr.name().toString();
+              if (attrStr == "texType")
+              {
+                numAttributes++;
+                std::string attrValue = attr.value().toString().toStdString();
+
+                if (attrValue == "BORDER")
+                {
+                  isBorder = true;
+                  break;
+                }
+                bool isTypeFound = false;
+                for (BlockTypes::iterator it = _blockTypes.begin();
+                  it != _blockTypes.end(); ++it)
+                {
+                  if (attrValue == it->second.GetTypeName())
+                  {
+                    isTypeFound = true;
+                    break;
+                  }
+                }
+
+                if (isTypeFound)
+                {
+                  blockType.SetTypeName(attrValue);
+                  //определение пути файла текстуры
+                  blockType.SetTexPath(_texPaths[attrValue]);
+                }
+                else
+                {
+                  isError = true;
+                  errorText = "Incorrect texType";
+                  break;
+                }
+              }
+              else if (attrStr == "fillType")
+              {
+                numAttributes++;
+                QString attrValue = attr.value().toString();
+
+                if (attrValue != "BOTTOM" && attrValue != "FULL" &&
+                  attrValue != "LEFT" && attrValue != "RIGHT" &&
+                  attrValue != "TOP")
+                {
+                  isError = true;
+                  errorText = "Incorrect fillType";
+                  break;
+                }
+                else
+                {
+                  blockType.SetFillType(attrValue.toStdString());
+                }
+              }
+              else if (attrStr == "isPassable")
+              {
+                numAttributes++;
+                QString attrValue = attr.value().toString();
+
+                if (attrValue == "true")
+                {
+                  blockType.SetPassability(true);
+                }
+                else if (attrValue == "false")
+                {
+                  blockType.SetPassability(false);
+                }
+                else
+                {
+                  isError = true;
+                  errorText = "Passability may be true or false";
+                  break;
+                }
+              }
+              else if (attrStr == "isUnderTank")
+              {
+                numAttributes++;
+                QString attrValue = attr.value().toString();
+
+                if (attrValue == "true")
+                {
+                  blockType.SetUnderTank(true);
+                }
+                else if (attrValue == "false")
+                {
+                  blockType.SetUnderTank(false);
+                }
+                else
+                {
+                  isError = true;
+                  errorText = "UnderTank parameter may be true or false";
+                  break;
+                }
+              }
+            }
+
+            if (!isBorder)
+            {
+              //чтение координат
+              int numCoords = 0;
+
+              //x coord
+              xmlReader.readNextStartElement();
+              element = xmlReader.name().toString();
+              if (element == "x")
+              {
+                numCoords++;
+                x = xmlReader.readElementText().toInt();
+
+                if (x < 0)
+                {
+                  isError = true;
+                  errorText = "Negative X coordinate of block";
+                  break;
+                }
+                if (x % _blockSize != 0)
+                {
+                  isError = true;
+                  errorText = "X block coordinate is not multiple of 16";
+                  break;
+                }
+                if (x > _maxMapSize * _blockSize)
+                {
+                  isError = true;
+                  errorText = "X coord may be in range of " +
+                              QString::number(_maxMapSize) +
+                              " blocks";
+                  break;
+                }
+                x -= _blockSize;		//-16 for matching
+              }
+
+              //z coord
+              xmlReader.readNextStartElement();
+              element = xmlReader.name().toString();
+              if (element == "z")
+              {
+                numCoords++;
+                z = xmlReader.readElementText().toInt();
+
+                if (z < 0)
+                {
+                  isError = true;
+                  errorText = "Negative Z coordinate of block";
+                  break;
+                }
+                if (z % _blockSize != 0)
+                {
+                  isError = true;
+                  errorText = "Z block coordinate is not multiple of 16";
+                  break;
+                }
+                if (z > _maxMapSize * _blockSize)
+                {
+                  isError = true;
+                  errorText = "Z coord may be in range of " +
+                              QString::number(_maxMapSize) +
+                              " blocks";
+                  break;
+                }
+                z -= _blockSize;		//-16 for matching
+              }
+
+
+              if (numCoords != 2)
+              {
+                isError = true;
+                errorText = "Incorrect number of block coordinates";
+                break;
+              }
+
+              //add read block
+              _map->AddBlock(x, z, blockType);
+            }
+
+          }
+        }
+      }
+      file.close();
+
+      //error message
+      if (isError)
+      {
+        QMessageBox::critical(this, "File error", errorText, QMessageBox::Ok);
+        _filename.clear();
+        _map->Clear();
+        ui.labelMessage->setText("There were some errors while reading file.");
+      }
+      else
+      {
+        _saveAct->setEnabled(true);
+        ui.labelMessage->setText("File was loaded successful.");
+      }
     }
   }
-  
 }
 
 void MapEditor::saveXMLFile()
 {
   
-  if (_filename != "")
+  if (!_filename.isEmpty())
   {
     //сохранение файла по заданному пути
     QFile file(_filename);
@@ -789,7 +814,7 @@ void MapEditor::saveXMLFile()
       block = static_cast<Block*>(_map->getChild(blockIndex));
       BlockType blockType = block->GetType();
 
-      if (blockType.GetTypeName() != "EMPTY")	//empty blocks aren't written to file
+      if (blockType.isNotEmptyType())
       {
         xmlWriter.writeStartElement("block");
         xmlWriter.writeAttribute("texType",
@@ -815,20 +840,20 @@ void MapEditor::saveXMLFile()
           xmlWriter.writeAttribute("isUnderTank", "false");
         }
 
-        xmlWriter.writeTextElement("x", block->GetX_str());
-        xmlWriter.writeTextElement("z", block->GetZ_str());
+        xmlWriter.writeTextElement("x", block->GetXToQStr());
+        xmlWriter.writeTextElement("z", block->GetZToQStr());
 
         for (int tileIndex = 0; tileIndex < block->getNumChildren(); tileIndex++)
         {
           tile = static_cast<Tile*>(block->getChild(tileIndex));
 
-          if (tile->GetType_str() != "EMPTY")
+          if (tile->isNotEmptyType())
           {
             xmlWriter.writeStartElement("tile");
 
-            xmlWriter.writeAttribute("type", tile->GetType_str());
-            xmlWriter.writeTextElement("x", tile->GetX_str());
-            xmlWriter.writeTextElement("z", tile->GetZ_str());
+            xmlWriter.writeAttribute("type", tile->GetTypeToQStr());
+            xmlWriter.writeTextElement("x", tile->GetXToQStr());
+            xmlWriter.writeTextElement("z", tile->GetZToQStr());
 
             xmlWriter.writeEndElement();
           }
@@ -855,7 +880,7 @@ void MapEditor::saveAsXMLFile()
     this, tr("Save XML"), ".",
     tr("XML files (*.xml)"));
 
-  if (_filename != "")
+  if (!_filename.isEmpty())
   {
     saveXMLFile();
     _saveAct->setEnabled(true);

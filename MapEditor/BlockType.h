@@ -7,36 +7,18 @@
 class BlockType
 {
 public:
-  enum Type
-  {
-    BORDER,
-    EMPTY,
-    ARMOR,
-    BRICK,
-    WATER,
-    BUSHES,
-    ICE,
-    CUSTOM
-  };
-
-  enum FillType
-  {
-    FULL,
-    LEFT,
-    TOP,
-    RIGHT,
-    BOTTOM
-  };
 
 public:
   BlockType() = default;
+  BlockType(const BlockType&) = default;
   BlockType(std::string typeName, 
             std::string texPath,
             std::string fillType, 
             bool isPassable, 
             bool isUnderTank);
-  ~BlockType();
+  ~BlockType() = default;
 
+  BlockType& operator=(const BlockType&) = default;
 public:
   inline std::string GetTypeName() const;
   inline std::string GetTexPath() const;
@@ -57,6 +39,12 @@ public:
   inline bool isEmptyType() const;
   inline bool isNotBorderType() const;
   inline bool isNotEmptyType() const;
+
+  inline bool isFillFull() const;
+  inline bool isFillLeft() const;
+  inline bool isFillTop() const;
+  inline bool isFillBottom() const;
+  inline bool isFillRight() const;
 
   inline bool isNoData() const;
 
@@ -141,4 +129,29 @@ inline bool BlockType::isNotBorderType() const
 inline bool BlockType::isNotEmptyType() const
 {
   return !(_typeName == "EMPTY");
+}
+
+inline bool BlockType::isFillFull() const
+{
+  return (_fillType == "FULL");
+}
+
+inline bool BlockType::isFillLeft() const
+{
+  return (_fillType == "LEFT");
+}
+
+inline bool BlockType::isFillTop() const
+{
+  return (_fillType == "TOP");
+}
+
+inline bool BlockType::isFillBottom() const
+{
+  return (_fillType == "BOTTOM");
+}
+
+inline bool BlockType::isFillRight() const
+{
+  return (_fillType == "RIGHT");
 }

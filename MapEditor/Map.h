@@ -6,7 +6,7 @@
 
 #include <qstring.h>
 
-#include <Block.h>
+#include "Block.h"
 
 class BlockType;
 
@@ -22,10 +22,12 @@ public:
 
 public:
   Map() = delete;
+  Map(const Map&) = delete;
   Map(unsigned int sizeX, unsigned int sizeZ);
 
+  Map& operator=(const Map&) = delete;
 protected:
-  ~Map();
+  ~Map() = default;
 
 public:
   inline int GetSizeX() const;

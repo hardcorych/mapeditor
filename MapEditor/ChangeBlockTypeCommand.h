@@ -2,19 +2,23 @@
 
 #include <qundostack.h>
 
-#include <MapEditor.h>
+#include "MapEditor.h"
 
 class BlockType;
 
 class ChangeBlockTypeCommand : public QUndoCommand
 {
 public:
+  ChangeBlockTypeCommand() = delete;
+  ChangeBlockTypeCommand(const ChangeBlockTypeCommand&) = delete;
   ChangeBlockTypeCommand(MapEditor::BlockTypes& blockTypes,
                          const BlockType& blockType, 
                          const BlockType& blockTypeNew,
                          MapEditor& mapEditor, 
                          QUndoCommand* parent = nullptr);
-  ~ChangeBlockTypeCommand();
+  ~ChangeBlockTypeCommand() = default;
+
+  ChangeBlockTypeCommand& operator=(const ChangeBlockTypeCommand&) = delete;
 
   void undo() override;
   void redo() override;

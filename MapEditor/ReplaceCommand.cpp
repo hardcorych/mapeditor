@@ -1,9 +1,8 @@
 #pragma once
+#include "ReplaceCommand.h"
 
-#include <Block.h>
-#include <BlockType.h>
-#include <Map.h>
-#include <ReplaceCommand.h>
+#include "Block.h"
+#include "Map.h"
 
 ReplaceCommand::ReplaceCommand(Map& map,
                                const Block& block,
@@ -16,10 +15,6 @@ ReplaceCommand::ReplaceCommand(Map& map,
   _blockTypeOld = block.GetType();
   _x = block.GetX();
   _z = block.GetZ();
-}
-
-ReplaceCommand::~ReplaceCommand()
-{
 }
 
 void ReplaceCommand::undo()

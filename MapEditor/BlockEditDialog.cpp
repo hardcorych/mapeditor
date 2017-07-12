@@ -1,3 +1,6 @@
+#pragma once
+#include "BlockEditDialog.h"
+
 #include <qbuttongroup.h>
 #include <qcheckbox.h>
 #include <qdialog.h>
@@ -9,8 +12,6 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
-
-#include "BlockEditDialog.h"
 
 BlockEditDialog::BlockEditDialog(BlockType blockType,
                                  QWidget* parent) :
@@ -51,25 +52,23 @@ BlockEditDialog::BlockEditDialog(BlockType blockType,
   _rBtnFillBottom->setText("BOTTOM");
   _rBtnFillTop->setText("TOP");
 
-  std::string fillType = _blockType.GetFillType();
-
-  if (fillType == "FULL")
+  if (_blockType.isFillFull())
   {
     _rBtnFillFull->setChecked(true);
   }
-  else if (fillType == "LEFT")
+  else if (_blockType.isFillLeft())
   {
     _rBtnFillLeft->setChecked(true);
   }
-  else if (fillType == "RIGHT")
+  else if (_blockType.isFillRight())
   {
     _rBtnFillRight->setChecked(true);
   }
-  else if (fillType == "BOTTOM")
+  else if (_blockType.isFillBottom())
   {
     _rBtnFillBottom->setChecked(true);
   }
-  else if (fillType == "TOP")
+  else if (_blockType.isFillTop())
   {
     _rBtnFillTop->setChecked(true);
   }
@@ -154,10 +153,6 @@ BlockEditDialog::BlockEditDialog(BlockType blockType,
           &QDialog::reject);
 }
 
-BlockEditDialog::~BlockEditDialog()
-{
-}
-
 void BlockEditDialog::setTexPath()
 {
   QString filename = QFileDialog::getOpenFileName(this, 
@@ -167,24 +162,28 @@ void BlockEditDialog::setTexPath()
 
   QFile file(filename);
 
-  if (!file.open(QIODevice::ReadOnly | QFile::Text))
+  if (!filename.isEmpty())
   {
-    //QMessageBox::warning(this, "file error", "file can't be opened", QMessageBox::Ok);
+    if (!file.open(QIODevice::ReadOnly | QFile::Text))
+    {
+      QMessageBox::warning(this, "file error", "file can't be opened", QMessageBox::Ok);
+    }
+    else
+    {
+      _lineEditTexPath->setText(filename);
+    }
   }
-  else
-  {
-    _lineEditTexPath->setText(filename);
-  }
+
 }
 
 void BlockEditDialog::createBlockType()
 {
   QString errorText;
-  if (_lineEditBlockName->text() == "")
+  if (_lineEditBlockName->text().isEmpty())
   {
     errorText = "Empty name";
   }
-  else if (_lineEditTexPath->text() == "")
+  else if (_lineEditTexPath->text().isEmpty())
   {
     errorText = "Empty texture path";
   }
@@ -204,18 +203,18 @@ void BlockEditDialog::createBlockType()
     _blockType.SetFillType(_btnGroupFill->checkedButton()->text().toStdString());
     _blockType.SetPassability(_chkBoxPassability->isChecked());
     _blockType.SetUnderTank(_chkBoxUnderTank->isChecked());
-    emit QDialog::done((int)BlockEditAction::CREATE);
+    emit QDialog::done(BlockEditAction::CREATE);
   }
 }
 
 void BlockEditDialog::changeBlockType()
 {
   QString errorText;
-  if (_lineEditBlockName->text() == "")
+  if (_lineEditBlockName->text().isEmpty())
   {
     errorText = "Empty name";
   }
-  else if (_lineEditTexPath->text() == "")
+  else if (_lineEditTexPath->text().isEmpty())
   {
     errorText = "Empty texture path";
   }
@@ -235,11 +234,11 @@ void BlockEditDialog::changeBlockType()
     _blockType.SetFillType(_btnGroupFill->checkedButton()->text().toStdString());
     _blockType.SetPassability(_chkBoxPassability->isChecked());
     _blockType.SetUnderTank(_chkBoxUnderTank->isChecked());
-    emit QDialog::done((int)BlockEditAction::CHANGE);
+    emit QDialog::done(BlockEditAction::CHANGE);
   }
 }
 
 void BlockEditDialog::deleteBlockType()
 {
-  emit QDialog::done((int)BlockEditAction::DELETE);
+  emit QDialog::done(BlockEditAction::DELETE);
 }

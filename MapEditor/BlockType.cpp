@@ -1,3 +1,4 @@
+#pragma once
 #include "BlockType.h"
 
 BlockType::BlockType(std::string typeName,
@@ -5,15 +6,11 @@ BlockType::BlockType(std::string typeName,
                      std::string fillType, 
                      bool isPassable, 
                      bool isUnderTank):
-    _typeName(typeName),
-    _texPath(texPath),
-    _fillType(fillType),
-    _isPassable(isPassable),
-    _isUnderTank(isUnderTank)
-{
-}
-
-BlockType::~BlockType()
+  _typeName(typeName),
+  _texPath(texPath),
+  _fillType(fillType),
+  _isPassable(isPassable),
+  _isUnderTank(isUnderTank)
 {
 }
 

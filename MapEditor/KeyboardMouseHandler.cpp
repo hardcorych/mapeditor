@@ -1,9 +1,11 @@
+#pragma once
+#include "KeyboardMouseHandler.h"
+
 #include <osgUtil/PolytopeIntersector>
 #include <osgViewer/Viewer>
 
 #include "AddEvent.h"
 #include "Block.h"
-#include "KeyboardMouseHandler.h"
 #include "Map.h"
 #include "RedoEvent.h"
 #include "RemoveEvent.h"
@@ -11,13 +13,9 @@
 #include "UndoEvent.h"
 
 KeyboardMouseHandler::KeyboardMouseHandler(MapEditor& mapEditor) :
-    _mouseX(0), 
-    _mouseY(0),
-    _mapEditor(mapEditor)
-{
-}
-
-KeyboardMouseHandler::~KeyboardMouseHandler()
+  _mouseX(0),
+  _mouseY(0),
+  _mapEditor(mapEditor)
 {
 }
 

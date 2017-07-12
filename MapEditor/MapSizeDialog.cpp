@@ -1,3 +1,4 @@
+#pragma once
 #include "MapSizeDialog.h"
 
 #include <qboxlayout.h>
@@ -5,7 +6,7 @@
 #include <qpushbutton.h>
 
 MapSizeDialog::MapSizeDialog(QWidget* parent) : 
-    QDialog(parent)
+  QDialog(parent)
 {
   QGridLayout* layout = new QGridLayout(this);
 
@@ -38,8 +39,4 @@ MapSizeDialog::MapSizeDialog(QWidget* parent) :
   layout->addWidget(cancelBtn, 2, 1);
 
   setLayout(layout);
-}
-
-MapSizeDialog::~MapSizeDialog()
-{
 }

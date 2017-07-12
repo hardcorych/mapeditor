@@ -1,12 +1,12 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_MapEditor.h"
 
 #include <thread>
 #include <osg/ref_ptr>
 
-#include <BlockType.h>
+#include "BlockType.h"
+#include "ui_MapEditor.h"
 
 class QUndoStack;
 class QUndoView;
@@ -39,7 +39,10 @@ public:
 
 public:
   MapEditor(QWidget *parent = nullptr);
+  MapEditor(const MapEditor&) = delete;
   ~MapEditor();
+
+  MapEditor& operator=(const MapEditor&) = delete;
 
 public:
   unsigned int AddBlockType(BlockType blockType);
@@ -117,6 +120,7 @@ private:
   int _row;
   int _col;
   int _maxColumnElements;
+  int _maxRowElements;
 
   int _blockSize;
 

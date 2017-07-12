@@ -2,16 +2,20 @@
 
 #include <qundostack.h>
 
-#include <Map.h>
+#include "Map.h"
 
 class ChangeSizeCommand : public QUndoCommand	//change map size
 {
 public:
+  ChangeSizeCommand() = delete;
+  ChangeSizeCommand(const ChangeSizeCommand&) = delete;
   ChangeSizeCommand(Map& map, 
                     int mapSizeX,
                     int mapSizeZ,
                     QUndoCommand* parent = nullptr);
-  ~ChangeSizeCommand();
+  ~ChangeSizeCommand() = default;
+
+  ChangeSizeCommand& operator=(const ChangeSizeCommand&) = delete;
 
   void undo() override;
   void redo() override;

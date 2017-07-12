@@ -1,5 +1,5 @@
 #pragma once
-#include "qdialog.h"
+#include <qdialog.h>
 
 #include <qspinbox.h>
 
@@ -8,8 +8,10 @@ class MapSizeDialog : public QDialog
   Q_OBJECT
 public:
   MapSizeDialog(QWidget* parent = nullptr);
-  ~MapSizeDialog();
+  MapSizeDialog(const MapSizeDialog&) = delete;
+  ~MapSizeDialog() = default;
 
+  MapSizeDialog& operator=(const MapSizeDialog&) = delete;
 public:
   inline int GetSizeX() const;
   inline int GetSizeZ() const;

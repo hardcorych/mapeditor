@@ -17,10 +17,11 @@ class KeyboardMouseHandler : public osgGA::GUIEventHandler
 {
 public:
   KeyboardMouseHandler() = delete;
+  KeyboardMouseHandler(const KeyboardMouseHandler&) = delete;
   KeyboardMouseHandler(MapEditor& mapEditor);
 
 protected:
-  ~KeyboardMouseHandler(); 
+  ~KeyboardMouseHandler() = default; 
 
 public:
   virtual bool handle(const osgGA::GUIEventAdapter& ea,

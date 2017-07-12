@@ -1,13 +1,15 @@
-#include <osgViewer/Viewer>
-
-#include <Block.h>
-#include <BlockType.h>
+#pragma once
 #include "Map.h"
 
+#include <osgViewer/Viewer>
+
+#include "Block.h"
+#include "BlockType.h"
+
 Map::Map(unsigned int sizeX, unsigned int sizeZ) :
-    _sizeX(sizeX),
-    _sizeZ(sizeZ),
-    _step(16)
+  _sizeX(sizeX),
+  _sizeZ(sizeZ),
+  _step(16)
 {
   //указанный размер карты
   //размер задается в количестве блоков игровой области
@@ -15,10 +17,6 @@ Map::Map(unsigned int sizeX, unsigned int sizeZ) :
   //формирование границ
   generateBorder();
   generateGameArea();
-}
-
-Map::~Map()
-{
 }
 
 void Map::GenerateEmptyMap(int sizeX, int sizeZ)		//создание новой карты

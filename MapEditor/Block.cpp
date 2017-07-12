@@ -1,16 +1,18 @@
+#pragma once
 #include "Block.h"
-#include <Tile.h>
+
+#include "Tile.h"
 
 //принимает координаты, тип блока
-Block::Block(int x, int z, BlockType blockType) :
-    _x(x),
-    _z(z),
-    _blockType(blockType),
-    _size(16),
-    _leftBottom(nullptr),
-    _leftTop(nullptr),
-    _rightTop(nullptr),
-    _rightBottom(nullptr)
+Block::Block(int x, int z, const BlockType& blockType) :
+  _x(x),
+  _z(z),
+  _blockType(blockType),
+  _size(16),
+  _leftBottom(nullptr),
+  _leftTop(nullptr),
+  _rightTop(nullptr),
+  _rightBottom(nullptr)
 {
   int tileSize = Tile::Size();
 
@@ -22,11 +24,7 @@ Block::Block(int x, int z, BlockType blockType) :
   if (_rightBottom != nullptr) addChild(_rightBottom);
 }
 
-Block::~Block()
-{
-}
-
-void Block::createFromTiles(BlockType blockType)
+void Block::createFromTiles(const BlockType& blockType)
 {
   int tileSize = Tile::Size();
 
@@ -34,7 +32,7 @@ void Block::createFromTiles(BlockType blockType)
   std::string texPath = blockType.GetTexPath();
   std::string fillType = blockType.GetFillType();
 
-  if (typeName == "EMPTY")
+  if (blockType.isEmptyType())
   {
     _leftBottom = new Tile(_x, _z, typeName, Tile::EmptyTile::LEFT_BOTTOM);
     _leftTop = new Tile(_x, _z + tileSize, typeName, Tile::EmptyTile::LEFT_TOP);
@@ -46,14 +44,14 @@ void Block::createFromTiles(BlockType blockType)
   }
   else
   {
-    if (fillType == "FULL")
+    if (_blockType.isFillFull())
     {
       _leftBottom = new Tile(_x, _z, typeName, texPath);
       _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);
       _rightTop = new Tile(_x + tileSize, _z + tileSize, typeName, texPath);
       _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
     }
-    else if (fillType == "BOTTOM")
+    else if (_blockType.isFillBottom())
     {
       _leftBottom = new Tile(_x, _z, typeName, texPath);
       _leftTop = new Tile(_x, _z + tileSize, "EMPTY", Tile::EmptyTile::LEFT_TOP);
@@ -63,7 +61,7 @@ void Block::createFromTiles(BlockType blockType)
                            Tile::EmptyTile::RIGHT_TOP);
       _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
     }
-    else if (fillType == "LEFT")
+    else if (_blockType.isFillLeft())
     {
       _leftBottom = new Tile(_x, _z, typeName, texPath);
       _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);
@@ -76,14 +74,14 @@ void Block::createFromTiles(BlockType blockType)
                               "EMPTY", 
                               Tile::EmptyTile::RIGHT_BOTTOM);
     }
-    else if (fillType == "RIGHT")
+    else if (_blockType.isFillRight())
     {
       _leftBottom = new Tile(_x, _z, "EMPTY", Tile::EmptyTile::LEFT_BOTTOM);
       _leftTop = new Tile(_x, _z + tileSize, "EMPTY", Tile::EmptyTile::LEFT_TOP);
       _rightTop = new Tile(_x + tileSize, _z + tileSize, typeName, texPath);
       _rightBottom = new Tile(_x + tileSize, _z, typeName, texPath);
     }
-    else if (fillType == "TOP")
+    else if (_blockType.isFillTop())
     {
       _leftBottom = new Tile(_x, _z, "EMPTY", Tile::EmptyTile::LEFT_BOTTOM);
       _leftTop = new Tile(_x, _z + tileSize, typeName, texPath);

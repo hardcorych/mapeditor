@@ -1,8 +1,7 @@
 #pragma once
+#include "RemoveCommand.h"
 
-#include <BlockType.h>
-#include <Map.h>
-#include <RemoveCommand.h>
+#include "Map.h"
 
 RemoveCommand::RemoveCommand(Map& map,
                              int x,
@@ -14,10 +13,6 @@ RemoveCommand::RemoveCommand(Map& map,
   _x(x),
   _z(z),
   _blockType(blockType)
-{
-}
-
-RemoveCommand::~RemoveCommand()
 {
 }
 

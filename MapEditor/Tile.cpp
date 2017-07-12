@@ -1,3 +1,4 @@
+#pragma once
 #include "Tile.h"
 
 #include <osg/Texture2D>
@@ -7,12 +8,12 @@ Tile::Tile(unsigned int x,
            unsigned int z,
            std::string typeName,
            std::string texPath) :
-    _x(x),
-    _z(z),
-    _typeName(typeName),
-    _texPath(texPath),
-    _vertices(new osg::Vec3Array),
-    _normals(new osg::Vec3Array)
+  _x(x),
+  _z(z),
+  _typeName(typeName),
+  _texPath(texPath),
+  _vertices(new osg::Vec3Array),
+  _normals(new osg::Vec3Array)
 {
   //polygon drawing
   _vertices->push_back(osg::Vec3(_x, 0., _z));
@@ -30,12 +31,12 @@ Tile::Tile(unsigned int x,
   _normals->setBinding(osg::Array::BIND_PER_VERTEX);
 
   calculateNormals(osg::Vec3(_x, 0., _z),
-    osg::Vec3(_x + _size, 0., _z),
-    osg::Vec3(_x, 0., _z + _size));
+                   osg::Vec3(_x + _size, 0., _z),
+                   osg::Vec3(_x, 0., _z + _size));
 
   calculateNormals(osg::Vec3(_x, 0., _z + _size),
-    osg::Vec3(_x + _size, 0., _z),
-    osg::Vec3(_x + _size, 0., _z + _size));
+                   osg::Vec3(_x + _size, 0., _z),
+                   osg::Vec3(_x + _size, 0., _z + _size));
 
   setNormalArray(_normals);
 
@@ -47,11 +48,11 @@ Tile::Tile(unsigned int x,
            unsigned int z,
            std::string typeName, 
            EmptyTile empty) :
-    _x(x),
-    _z(z),
-    _typeName(typeName),
-    _vertices(new osg::Vec3Array),
-    _normals(new osg::Vec3Array)
+  _x(x),
+  _z(z),
+  _typeName(typeName),
+  _vertices(new osg::Vec3Array),
+  _normals(new osg::Vec3Array)
 {
   //polygon drawing
   _vertices->push_back(osg::Vec3(_x, 0., _z));
@@ -69,20 +70,16 @@ Tile::Tile(unsigned int x,
   _normals->setBinding(osg::Array::BIND_PER_VERTEX);
 
   calculateNormals(osg::Vec3(_x, 0., _z),
-    osg::Vec3(_x + _size, 0., _z),
-    osg::Vec3(_x, 0., _z + _size));
+                   osg::Vec3(_x + _size, 0., _z),
+                   osg::Vec3(_x, 0., _z + _size));
 
   calculateNormals(osg::Vec3(_x, 0., _z + _size),
-    osg::Vec3(_x + _size, 0., _z),
-    osg::Vec3(_x + _size, 0., _z + _size));
+                   osg::Vec3(_x + _size, 0., _z),
+                   osg::Vec3(_x + _size, 0., _z + _size));
 
   setNormalArray(_normals);
 
   setEmptyTexture(empty);
-}
-
-Tile::~Tile()
-{
 }
 
 void Tile::calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3)
@@ -109,14 +106,7 @@ void Tile::setTexture(std::string texPath)
 
   osg::ref_ptr<osg::Image> image;
 
-  //image->s();   //_s,_t атрибуты размера изображения
   image = osgDB::readImageFile(texPath);
-  /*
-  if (!image)
-  {
-    
-  }
-  */
 
   texture->setImage(image);
 
@@ -159,13 +149,6 @@ void Tile::setEmptyTexture(EmptyTile empty)
 
   image = osgDB::readImageFile(texFilename);
 
-  /*
-  if (!image)
-  {
-
-  }
-  */
-
   texture->setImage(image);
 
   osg::ref_ptr<osg::StateSet> stateTile = new osg::StateSet;
@@ -175,7 +158,7 @@ void Tile::setEmptyTexture(EmptyTile empty)
   setStateSet(stateTile);
 }
 
-QString Tile::GetType_str()
+QString Tile::GetTypeToQStr()
 {
   return QString::fromStdString(_typeName);
 }

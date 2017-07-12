@@ -4,17 +4,20 @@
 
 #include <qstring.h>
 
-#include <BlockType.h>
-#include <Tile.h>
+#include "BlockType.h"
+#include "Tile.h"
 
 class Block : public osg::Group		//block consists 4 tiles, block size 16x16
 {
 public:
-  Block() = default;
-  Block(int x, int z, BlockType blockType);
+  Block() = delete;
+  Block(const Block&) = default;
+  Block(int x, int z, const BlockType& blockType);
+
+  Block& operator=(const Block&) = delete;
 
 protected:
-  ~Block();
+  ~Block() = default;
 
 public:
   inline BlockType GetType() const;
@@ -23,11 +26,11 @@ public:
   inline int GetZ() const;
 
   //для записи в файл
-  inline QString GetX_str() const;
-  inline QString GetZ_str() const;
+  inline QString GetXToQStr() const;
+  inline QString GetZToQStr() const;
 
 private:
-  void createFromTiles(BlockType blockType);
+  void createFromTiles(const BlockType& blockType);
 
 private:
   int _x;
@@ -56,12 +59,12 @@ inline int Block::GetZ() const
   return _z; 
 }
 
-inline QString Block::GetX_str() const
+inline QString Block::GetXToQStr() const
 {
   return QString::number(_x + _size); //+16 for matching with file
 }	
 
-inline QString Block::GetZ_str() const
+inline QString Block::GetZToQStr() const
 {
   return QString::number(_z + _size);
 }

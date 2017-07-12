@@ -2,18 +2,23 @@
 
 #include <qundostack.h>
 
+#include "BlockType.h"
+
 class Block;
-class BlockType;
 class Map;
 
 class ReplaceCommand : public QUndoCommand	//replace existing block on map
 {
 public:
+  ReplaceCommand() = delete;
+  ReplaceCommand(const ReplaceCommand&) = delete;
   ReplaceCommand(Map& map,
                  const Block& block,
                  const BlockType& blockType,
                  QUndoCommand* parent = 0);
-  ~ReplaceCommand();
+  ~ReplaceCommand() = default;
+
+  ReplaceCommand& operator=(const ReplaceCommand&) = delete;
 
   void undo() override;
   void redo() override;

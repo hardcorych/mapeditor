@@ -2,12 +2,13 @@
 
 #include <qevent.h>
 
-#include <MapEditor.h>
+#include "MapEditor.h"
 
 class AddEvent : public QEvent
 {
 public:
   AddEvent() = delete;
+  AddEvent(const AddEvent&) = delete;
   AddEvent(Map& map, 
            int x, 
            int z,
@@ -19,6 +20,9 @@ public:
     _blockType(blockType)
   {
   }
+  ~AddEvent() = default;
+
+  AddEvent& operator=(const AddEvent&) = delete;
 
 public:
   inline Map& GetMap();

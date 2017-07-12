@@ -7,7 +7,7 @@
 class Tile : public osg::Geometry
 {
 public:
-  enum class EmptyTile
+  enum EmptyTile
   {
     LEFT_BOTTOM,
     LEFT_TOP,
@@ -16,29 +16,29 @@ public:
   };
 
 public:
-  Tile() = default;
+  Tile() = delete;
+  Tile(const Tile&) = delete;
+  Tile(unsigned int x, unsigned int z, std::string typeName, std::string texPath);
+  //для пустых тайлов
+  Tile(unsigned int x, unsigned int z, std::string typeName, EmptyTile empty);	
 
-  //string textype
-  Tile(unsigned int x, 
-       unsigned int z,
-       std::string typeName, 
-       std::string texPath);
-  Tile(unsigned int x, 
-       unsigned int z,
-       std::string typeName,
-       EmptyTile empty);	//для пустых тайлов
-
+  Tile& operator=(const Tile&) = delete;
 protected:
-  ~Tile();
+  ~Tile() = default;
 
 public:
   //для записи в файл
-  inline QString GetX_str()	const;
-  inline QString GetZ_str()	const;
+  inline QString GetXToQStr() const;
+  inline QString GetZToQStr() const;
 
-  QString GetType_str();
+  QString GetTypeToQStr();
 
   inline static const int Size();
+
+  inline bool isEmptyType() const;
+  inline bool isBorderType() const;
+  inline bool isNotEmptyType() const;
+  inline bool isNotBorderType() const;
 
 private:
   void calculateNormals(osg::Vec3 edge1, osg::Vec3 edge2, osg::Vec3 edge3);
@@ -57,12 +57,12 @@ private:
   osg::ref_ptr<osg::Vec3Array> _normals;
 };
 
-inline QString Tile::GetX_str() const
+inline QString Tile::GetXToQStr() const
 { 
-  return QString::number(_x + 16);
-}	//+16 для согласования
+  return QString::number(_x + 16);  //+16 для согласования
+}	
 
-inline QString Tile::GetZ_str() const
+inline QString Tile::GetZToQStr() const
 { 
   return QString::number(_z + 16);
 }
@@ -70,4 +70,24 @@ inline QString Tile::GetZ_str() const
 inline const int Tile::Size() 
 { 
   return _size;
+}
+
+inline bool Tile::isEmptyType() const
+{
+  return (_typeName == "EMPTY");
+}
+
+inline bool Tile::isBorderType() const
+{
+  return (_typeName == "BORDER");
+}
+
+inline bool Tile::isNotEmptyType() const
+{
+  return !(_typeName == "EMPTY");
+}
+
+inline bool Tile::isNotBorderType() const
+{
+  return !(_typeName == "BORDER");
 }

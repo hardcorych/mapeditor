@@ -2,12 +2,13 @@
 
 #include <qevent.h>
 
-#include <MapEditor.h>
+#include "MapEditor.h"
 
 class ReplaceEvent : public QEvent
 {
 public:
   ReplaceEvent() = delete;
+  ReplaceEvent(const ReplaceEvent&) = delete;
   ReplaceEvent(Map& map,
                Block& block,
                const BlockType& blockType) : 
@@ -17,6 +18,9 @@ public:
     _blockType(blockType)
   {
   }
+  ~ReplaceEvent() = default;
+
+  ReplaceEvent& operator=(const ReplaceEvent& other) = delete;
 
 public:
   inline Map& GetMap();

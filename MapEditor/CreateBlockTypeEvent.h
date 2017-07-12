@@ -2,17 +2,21 @@
 
 #include <qevent.h>
 
-#include <MapEditor.h>
+#include "MapEditor.h"
 
 class CreateBlockTypeEvent : public QEvent
 {
 public:
   CreateBlockTypeEvent() = delete;
+  CreateBlockTypeEvent(const CreateBlockTypeEvent&) = delete;
   CreateBlockTypeEvent(const BlockType& blockType) :
     QEvent((Type)MapEditor::CustomEvent::CREATE_BLOCKTYPE),
     _blockType(blockType)
   {
   }
+  ~CreateBlockTypeEvent() = default;
+
+  CreateBlockTypeEvent& operator=(const CreateBlockTypeEvent&) = delete;
 
 public:
   inline const BlockType& GetBlockType();

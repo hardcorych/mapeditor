@@ -1,10 +1,10 @@
 #pragma once
+#include "DrawBlockPixmap.h"
 
 #include <qpainter.h>
 #include <qpixmap.h>
 
-#include <BlockType.h>
-#include <DrawBlockPixmap.h>
+#include "BlockType.h"
 
 QPixmap DrawBlockPixmap(BlockType blockType)
 {
@@ -16,30 +16,29 @@ QPixmap DrawBlockPixmap(BlockType blockType)
   int height = 16;
   int width = 16;
 
-  std::string fillType = blockType.GetFillType();
-  if (fillType == "FULL")
+  if (blockType.isFillFull())
   {
     painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
     painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
     painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
     painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
   }
-  else if (fillType == "LEFT")
+  else if (blockType.isFillLeft())
   {
     painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
     painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
   }
-  else if (fillType == "RIGHT")
+  else if (blockType.isFillRight())
   {
     painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());
     painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
   }
-  else if (fillType == "BOTTOM")
+  else if (blockType.isFillBottom())
   {
     painter.drawPixmap(QRect(0, height, width, height), pixmap, pixmap.rect());
     painter.drawPixmap(QRect(width, height, width, height), pixmap, pixmap.rect());
   }
-  else if (fillType == "TOP")
+  else if (blockType.isFillTop())
   {
     painter.drawPixmap(QRect(0, 0, width, height), pixmap, pixmap.rect());
     painter.drawPixmap(QRect(width, 0, width, height), pixmap, pixmap.rect());

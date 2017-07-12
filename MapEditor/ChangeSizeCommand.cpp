@@ -1,6 +1,5 @@
 #pragma once
-
-#include <ChangeSizeCommand.h>
+#include "ChangeSizeCommand.h"
 
 ChangeSizeCommand::ChangeSizeCommand(Map& map,
                                      int mapSizeX,
@@ -14,10 +13,6 @@ ChangeSizeCommand::ChangeSizeCommand(Map& map,
   _mapSizeXOld = _map.GetSizeX();
   _mapSizeZOld = _map.GetSizeZ();
   _savedBlocks = _map.SaveBlocksAndGet();
-}
-
-ChangeSizeCommand::~ChangeSizeCommand()
-{
 }
 
 void ChangeSizeCommand::undo()
