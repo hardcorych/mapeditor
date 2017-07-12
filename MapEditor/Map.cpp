@@ -164,10 +164,3 @@ void Map::Resize(Blocks savedBlocks, int sizeX, int sizeZ)
     AddBlock(block->GetX(), block->GetZ(), block->GetType());
   }
 }
-
-void Map::ViewerFrame(osgViewer::Viewer& viewer)
-{
-  std::lock_guard<std::mutex> lgMutex(_mutex);
-
-  viewer.frame();
-}

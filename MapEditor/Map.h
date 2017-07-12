@@ -46,7 +46,12 @@ public:
   Blocks SaveBlocksAndGet();
   void Resize(Blocks savedBlocks, int sizeX, int sizeZ);
 
-  void ViewerFrame(osgViewer::Viewer& viewer);
+  template <class Delegate>
+  void LockedExecute(Delegate& theDelegate)
+  {
+    std::lock_guard<std::mutex> lgMutex(_mutex);
+    theDelegate();
+  }
 
 private:
   void generateBorder();

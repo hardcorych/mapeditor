@@ -341,7 +341,6 @@ void MapEditor::addBlockTypeButton(const BlockType& blockType)
 
   QPixmap pixmap = DrawBlockPixmap(blockType);
   rButton->setIcon(pixmap);
-  //_btnGroupBlocks->addButton(rButton, _countIdBlockTypes);
 
   for (int row = 0; row < _maxRowElements; row++)
   {
@@ -361,15 +360,7 @@ void MapEditor::addBlockTypeButton(const BlockType& blockType)
       break;
     }
   }
-  /*
-  if (++_col == _maxColumnElements)
-  {
-    _col = 0;
-    _row++;
-  }
-  */
 
-  //ui.gridLayout->addWidget(rButton, _row, _col);
   rButton->setVisible(true);
   if (_btnGroupBlocks->checkedButton() != 0)
   {
@@ -922,7 +913,10 @@ void MapEditor::renderScene()
 
   while (!viewer->done())
   {	
-    _map->ViewerFrame(*viewer);
+    _map->LockedExecute([viewer]()
+                        {
+                          viewer->frame();
+                        });
   }
   
   emit QuitAppToMain();
