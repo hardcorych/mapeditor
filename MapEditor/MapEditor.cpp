@@ -1,5 +1,5 @@
 #pragma once
-#include "MapEditor.h"
+#include <MapEditor.h>
 
 #include <memory>
 
@@ -13,28 +13,28 @@
 #include <qundoview.h>
 #include <qxmlstream.h>
 
-#include "AddCommand.h"
-#include "AddEvent.h"
-#include "Block.h"
-#include "BlockEditDialog.h"
-#include "ChangeBlockTypeCommand.h"
-#include "ChangeBlockTypeEvent.h"
-#include "ChangeSizeCommand.h"
-#include "CreateBlockTypeCommand.h"
-#include "CreateBlockTypeEvent.h"
-#include "DeleteBlockTypeCommand.h"
-#include "DeleteBlockTypeEvent.h"
-#include "DrawBlockPixmap.h"
-#include "KeyboardMouseHandler.h"
-#include "Map.h"
-#include "MapSizeDialog.h"
-#include "RedoEvent.h"
-#include "RemoveCommand.h"
-#include "RemoveEvent.h"
-#include "ReplaceCommand.h"
-#include "ReplaceEvent.h"
-#include "Tile.h"
-#include "UndoEvent.h"
+#include <AddCommand.h>
+#include <AddEvent.h>
+#include <Block.h>
+#include <BlockEditDialog.h>
+#include <ChangeBlockTypeCommand.h>
+#include <ChangeBlockTypeEvent.h>
+#include <ChangeSizeCommand.h>
+#include <CreateBlockTypeCommand.h>
+#include <CreateBlockTypeEvent.h>
+#include <DeleteBlockTypeCommand.h>
+#include <DeleteBlockTypeEvent.h>
+#include <DrawBlockPixmap.h>
+#include <KeyboardMouseHandler.h>
+#include <Map.h>
+#include <MapSizeDialog.h>
+#include <RedoEvent.h>
+#include <RemoveCommand.h>
+#include <RemoveEvent.h>
+#include <ReplaceCommand.h>
+#include <ReplaceEvent.h>
+#include <Tile.h>
+#include <UndoEvent.h>
 
 MapEditor::MapEditor(QWidget *parent):
   QMainWindow(parent),
@@ -181,12 +181,12 @@ MapEditor::MapEditor(QWidget *parent):
   //setting blocktypes buttons
   _col = -1;
 
-  _countIdBlockTypes = -1;
-  for (BlockTypes::iterator it = _blockTypes.begin();
-    it != _blockTypes.end(); ++it)
+  for (_countIdBlockTypes = 0; 
+       _countIdBlockTypes < _blockTypes.size();
+       _countIdBlockTypes++)
   {
     QRadioButton *rButton = new QRadioButton(this);
-    _btnGroupBlocks->addButton(rButton, ++_countIdBlockTypes);  //0,1,2 etc...
+    _btnGroupBlocks->addButton(rButton, _countIdBlockTypes);  //0,1,2 etc...
 
     QPixmap pixmap = DrawBlockPixmap(_blockTypes[_countIdBlockTypes]);
     rButton->setIconSize(QSize(64, 64));
@@ -277,7 +277,7 @@ void MapEditor::setBlockTypeButton(BlockType& blockType)
 }
 
 //returns id of added blocktype
-unsigned int MapEditor::AddBlockType(BlockType blockType)
+unsigned int MapEditor::AddBlockType(const BlockType& blockType)
 {
   _blockTypes[++_countIdBlockTypes] = blockType;
   if (_texPaths.find(blockType.GetTypeName()) == _texPaths.end())
@@ -546,7 +546,8 @@ void MapEditor::loadXMLFile()
                 }
                 bool isTypeFound = false;
                 for (BlockTypes::iterator it = _blockTypes.begin();
-                  it != _blockTypes.end(); ++it)
+                     it != _blockTypes.end(); 
+                     ++it)
                 {
                   if (attrValue == it->second.GetTypeName())
                   {
@@ -867,10 +868,7 @@ void MapEditor::renderScene()
 
   while (!viewer->done())
   {	
-    _map->LockedExecute([viewer]()
-                        {
-                          viewer->frame();
-                        });
+    _map->ViewerFrame(*viewer);
   }
   
   emit QuitAppToMain();
@@ -1022,8 +1020,8 @@ bool MapEditor::isBlockTypeExist(BlockType& blockType)
   bool isChangedBlockTypeExist = false;
 
   for (BlockTypes::iterator it = _blockTypes.begin();
-    it != _blockTypes.end();
-    ++it)
+       it != _blockTypes.end();
+       ++it)
   {
     if (it->second == blockType)
     {

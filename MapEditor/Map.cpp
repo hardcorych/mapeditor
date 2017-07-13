@@ -1,25 +1,21 @@
 #pragma once
-#include "Map.h"
+#include <Map.h>
 
 #include <osgViewer/Viewer>
 
-#include "Block.h"
-#include "BlockType.h"
+#include <Block.h>
+#include <BlockType.h>
 
 Map::Map(unsigned int sizeX, unsigned int sizeZ) :
   _sizeX(sizeX),
   _sizeZ(sizeZ),
   _step(16)
 {
-  //указанный размер карты
-  //размер задается в количестве блоков игровой области
-
-  //формирование границ
   generateBorder();
   generateGameArea();
 }
 
-void Map::GenerateEmptyMap(int sizeX, int sizeZ)		//создание новой карты
+void Map::GenerateEmptyMap(int sizeX, int sizeZ)
 {
   if (_sizeX != sizeX) _sizeX = sizeX;
   if (_sizeZ != sizeZ) _sizeZ = sizeZ;
@@ -32,11 +28,9 @@ void Map::generateBorder()
   //потайловое формирование границы
   _sizeX = (_sizeX + 3)*_step;	//выделение места под рамку +3 по X
   _sizeZ = (_sizeZ + 2)*_step;	//выделение места под рамку +2 по Z
-  //формирование границ
 
   //заполнение против часовой стрелки, начиная с нижней границы
   //нижняя граница
-
   std::lock_guard<std::mutex> lgMutex(_mutex);
   BlockType borderBlock("BORDER",
                         "Resources/tiles/BORDER.png",
@@ -163,4 +157,9 @@ void Map::Resize(Blocks savedBlocks, int sizeX, int sizeZ)
   {
     AddBlock(block->GetX(), block->GetZ(), block->GetType());
   }
+}
+
+void Map::ViewerFrame(osgViewer::Viewer& viewer)
+{
+  viewer.frame();
 }

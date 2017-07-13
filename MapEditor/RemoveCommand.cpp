@@ -1,7 +1,7 @@
 #pragma once
-#include "RemoveCommand.h"
+#include <RemoveCommand.h>
 
-#include "Map.h"
+#include <Map.h>
 
 RemoveCommand::RemoveCommand(Map& map,
                              int x,

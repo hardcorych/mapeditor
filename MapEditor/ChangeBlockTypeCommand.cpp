@@ -1,9 +1,9 @@
 #pragma once
-#include "ChangeBlockTypeCommand.h"
+#include <ChangeBlockTypeCommand.h>
 
-#include "BlockType.h"
-#include "ChangeBlockTypeEvent.h"
-#include "DrawBlockPixmap.h"
+#include <BlockType.h>
+#include <ChangeBlockTypeEvent.h>
+#include <DrawBlockPixmap.h>
 
 ChangeBlockTypeCommand::ChangeBlockTypeCommand(MapEditor::BlockTypes& blockTypes,
                                                const BlockType& blockType,

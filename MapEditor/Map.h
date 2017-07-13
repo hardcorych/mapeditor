@@ -6,7 +6,7 @@
 
 #include <qstring.h>
 
-#include "Block.h"
+#include <Block.h>
 
 class BlockType;
 
@@ -15,6 +15,7 @@ namespace osgViewer
   class Viewer;
 }
 
+///size in blocks
 class Map : public osg::Group
 {
 public:
@@ -42,16 +43,10 @@ public:
   void AddBlock(int x, int z, const BlockType& blockType);
   void RemoveBlock(int x, int z);
 
-  //resizing
   Blocks SaveBlocksAndGet();
   void Resize(Blocks savedBlocks, int sizeX, int sizeZ);
 
-  template <class Delegate>
-  void LockedExecute(Delegate& theDelegate)
-  {
-    std::lock_guard<std::mutex> lgMutex(_mutex);
-    theDelegate();
-  }
+  void ViewerFrame(osgViewer::Viewer& viewer);
 
 private:
   void generateBorder();
@@ -65,7 +60,6 @@ private:
   std::mutex _mutex;
 };
 
-//size in blocks
 inline int Map::GetSizeX() const	
 { 
   return _sizeX / _step; 

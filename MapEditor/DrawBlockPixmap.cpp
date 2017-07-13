@@ -1,12 +1,12 @@
 #pragma once
-#include "DrawBlockPixmap.h"
+#include <DrawBlockPixmap.h>
 
 #include <qpainter.h>
 #include <qpixmap.h>
 
-#include "BlockType.h"
+#include <BlockType.h>
 
-QPixmap DrawBlockPixmap(BlockType blockType)
+QPixmap DrawBlockPixmap(const BlockType& blockType)
 {
   QPixmap pixmap(QSize(32, 32));
   QPixmap pixmapResult(QSize(32, 32));

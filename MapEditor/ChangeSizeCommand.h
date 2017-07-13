@@ -2,9 +2,10 @@
 
 #include <qundostack.h>
 
-#include "Map.h"
+#include <Map.h>
 
-class ChangeSizeCommand : public QUndoCommand	//change map size
+///change map size
+class ChangeSizeCommand : public QUndoCommand	
 {
 public:
   ChangeSizeCommand() = delete;

@@ -5,8 +5,8 @@
 #include <thread>
 #include <osg/ref_ptr>
 
-#include "BlockType.h"
-#include "ui_MapEditor.h"
+#include <BlockType.h>
+#include <ui_MapEditor.h>
 
 class QUndoStack;
 class QUndoView;
@@ -45,10 +45,16 @@ public:
   MapEditor& operator=(const MapEditor&) = delete;
 
 public:
-  unsigned int AddBlockType(BlockType blockType);
+  //returns id of added blocktype
+  unsigned int AddBlockType(const BlockType& blockType);
+
   void DeleteBlockType(int id);
 
   inline BlockType GetSelectedBlockType();
+
+signals:
+  void QuitViewer();
+  void QuitAppToMain();
 
 private:
   //render thread
@@ -87,6 +93,7 @@ private:
 
   bool event(QEvent* pEvent) override;
 
+  //returns -1 if not found
   int findBlockTypeId(BlockType& blockType);
   bool isBlockTypeExist(BlockType& blockType);
 
@@ -132,10 +139,6 @@ private:
   QButtonGroup* _btnGroupBlocks;
   std::map<std::string, std::string> _texPaths;
   BlockTypes _blockTypes;
-
-signals:
-  void QuitViewer();
-  void QuitAppToMain();
 };
 
 inline BlockType MapEditor::GetSelectedBlockType()

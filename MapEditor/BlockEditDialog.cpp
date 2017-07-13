@@ -1,5 +1,5 @@
 #pragma once
-#include "BlockEditDialog.h"
+#include <BlockEditDialog.h>
 
 #include <qbuttongroup.h>
 #include <qcheckbox.h>
@@ -13,7 +13,7 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 
-BlockEditDialog::BlockEditDialog(BlockType blockType,
+BlockEditDialog::BlockEditDialog(const BlockType& blockType,
                                  QWidget* parent) :
     QDialog(parent),
     _blockType(blockType)

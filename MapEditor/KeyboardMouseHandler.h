@@ -28,8 +28,8 @@ public:
                       osgGA::GUIActionAdapter& aa);
 
 private:
-  void findBlockAndMap(const double x,
-                       const double y,
+  void findBlockAndMap(double x,
+                       double y,
                        osgViewer::Viewer* viewer,
                        osg::ref_ptr<Map>& mapOutput,
                        osg::ref_ptr<Block>& blockOutput);

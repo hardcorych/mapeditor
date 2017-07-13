@@ -2,9 +2,10 @@
 
 #include <qundostack.h>
 
-#include "BlockType.h"
-#include "MapEditor.h"
+#include <BlockType.h>
+#include <MapEditor.h>
 
+//delete block type in block editor
 class DeleteBlockTypeCommand : public QUndoCommand
 {
 public:

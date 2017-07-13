@@ -2,8 +2,9 @@
 
 #include <qevent.h>
 
-#include "MapEditor.h"
+#include <MapEditor.h>
 
+///event of removing the block on map
 class RemoveEvent : public QEvent
 {
 public:

@@ -1,10 +1,9 @@
 #pragma once
-#include "DeleteBlockTypeCommand.h"
+#include <DeleteBlockTypeCommand.h>
 
-
-#include "CreateBlockTypeEvent.h"
-#include "DeleteBlockTypeEvent.h"
-#include "DrawBlockPixmap.h"
+#include <CreateBlockTypeEvent.h>
+#include <DeleteBlockTypeEvent.h>
+#include <DrawBlockPixmap.h>
 
 DeleteBlockTypeCommand::DeleteBlockTypeCommand(MapEditor::BlockTypes& blockTypes,
                                                const BlockType& blockType,

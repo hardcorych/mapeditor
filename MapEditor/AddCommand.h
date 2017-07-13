@@ -2,11 +2,12 @@
 
 #include <qundostack.h>
 
-#include "BlockType.h"
+#include <BlockType.h>
 
 class Map;
 
-class AddCommand : public QUndoCommand	//add block on map
+///add block on map
+class AddCommand : public QUndoCommand	
 {
 public:
   AddCommand() = delete;

@@ -1,16 +1,16 @@
 #pragma once
-#include "KeyboardMouseHandler.h"
+#include <KeyboardMouseHandler.h>
 
 #include <osgUtil/PolytopeIntersector>
 #include <osgViewer/Viewer>
 
-#include "AddEvent.h"
-#include "Block.h"
-#include "Map.h"
-#include "RedoEvent.h"
-#include "RemoveEvent.h"
-#include "ReplaceEvent.h"
-#include "UndoEvent.h"
+#include <AddEvent.h>
+#include <Block.h>
+#include <Map.h>
+#include <RedoEvent.h>
+#include <RemoveEvent.h>
+#include <ReplaceEvent.h>
+#include <UndoEvent.h>
 
 KeyboardMouseHandler::KeyboardMouseHandler(MapEditor& mapEditor) :
   _mouseX(0),
@@ -122,14 +122,13 @@ bool KeyboardMouseHandler::handle(const osgGA::GUIEventAdapter& ea,
   }
 }
 
-void KeyboardMouseHandler::findBlockAndMap(const double x, 
-                                           const double y,
+void KeyboardMouseHandler::findBlockAndMap(double x, 
+                                           double y,
                                            osgViewer::Viewer* viewer, 
                                            osg::ref_ptr<Map>& mapOutput,
                                            osg::ref_ptr<Block>& blockOutput)
 {
-  if (!viewer->getSceneData())
-    return;	                  //nothing to pick
+  if (viewer->getSceneData() == nullptr) return;	                  
 
   osg::ref_ptr<osgUtil::LineSegmentIntersector> picker = 
     new osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION, 

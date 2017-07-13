@@ -2,7 +2,7 @@
 
 #include <qevent.h>
 
-#include "MapEditor.h"
+#include <MapEditor.h>
 
 class RedoEvent : public QEvent
 {

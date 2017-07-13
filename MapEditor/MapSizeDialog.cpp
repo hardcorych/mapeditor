@@ -1,5 +1,5 @@
 #pragma once
-#include "MapSizeDialog.h"
+#include <MapSizeDialog.h>
 
 #include <qboxlayout.h>
 #include <qlabel.h>

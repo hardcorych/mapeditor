@@ -1,9 +1,8 @@
 #pragma once
-#include "Block.h"
+#include <Block.h>
 
-#include "Tile.h"
+#include <Tile.h>
 
-//принимает координаты, тип блока
 Block::Block(int x, int z, const BlockType& blockType) :
   _x(x),
   _z(z),

@@ -4,4 +4,4 @@ class QPixmap;
 
 class BlockType;
 
-QPixmap DrawBlockPixmap(BlockType blockType);
+QPixmap DrawBlockPixmap(const BlockType& blockType);

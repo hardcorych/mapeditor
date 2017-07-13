@@ -1,5 +1,5 @@
 #pragma once
-#include "BlockType.h"
+#include <BlockType.h>
 
 BlockType::BlockType(std::string typeName,
                      std::string texPath,

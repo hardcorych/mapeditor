@@ -1,7 +1,7 @@
 #pragma once
-#include "AddCommand.h"
+#include <AddCommand.h>
 
-#include "Map.h"
+#include <Map.h>
 
 AddCommand::AddCommand(Map& map,
                        int x,

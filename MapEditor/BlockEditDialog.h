@@ -2,7 +2,7 @@
 
 #include <qdialog.h>
 
-#include "BlockType.h"
+#include <BlockType.h>
 
 class QButtonGroup;
 class QCheckBox;
@@ -12,6 +12,7 @@ class QLineEdit;
 class QPushButton;
 class QRadioButton;
 
+///block editor
 class BlockEditDialog: public QDialog
 {
   Q_OBJECT
@@ -26,7 +27,7 @@ public:
 public:
   BlockEditDialog() = delete;
   BlockEditDialog(const BlockEditDialog&) = delete;
-  BlockEditDialog(BlockType blockType, QWidget* parent = nullptr);
+  BlockEditDialog(const BlockType& blockType, QWidget* parent = nullptr);
   ~BlockEditDialog() = default;
 
   BlockEditDialog& operator=(const BlockEditDialog&) = delete;

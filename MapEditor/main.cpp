@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QApplication>
 
-#include "MapEditor.h"
+#include <MapEditor.h>
 
 int main(int argc, char *argv[])
 {

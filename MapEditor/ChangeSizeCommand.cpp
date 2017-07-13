@@ -1,5 +1,5 @@
 #pragma once
-#include "ChangeSizeCommand.h"
+#include <ChangeSizeCommand.h>
 
 ChangeSizeCommand::ChangeSizeCommand(Map& map,
                                      int mapSizeX,

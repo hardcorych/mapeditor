@@ -4,6 +4,7 @@
 
 #include <qstring.h>
 
+///the smallest unit of block
 class Tile : public osg::Geometry
 {
 public:

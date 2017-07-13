@@ -1,8 +1,8 @@
 #pragma once
-#include "ReplaceCommand.h"
+#include <ReplaceCommand.h>
 
-#include "Block.h"
-#include "Map.h"
+#include <Block.h>
+#include <Map.h>
 
 ReplaceCommand::ReplaceCommand(Map& map,
                                const Block& block,

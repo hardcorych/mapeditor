@@ -2,12 +2,13 @@
 
 #include <qundostack.h>
 
-#include "BlockType.h"
+#include <BlockType.h>
 
 class Block;
 class Map;
 
-class ReplaceCommand : public QUndoCommand	//replace existing block on map
+///replace existing block on map
+class ReplaceCommand : public QUndoCommand	
 {
 public:
   ReplaceCommand() = delete;

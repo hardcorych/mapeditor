@@ -2,8 +2,9 @@
 
 #include <qevent.h>
 
-#include "MapEditor.h"
+#include <MapEditor.h>
 
+///event of replacing a block on map
 class ReplaceEvent : public QEvent
 {
 public:

@@ -7,8 +7,6 @@
 class BlockType
 {
 public:
-
-public:
   BlockType() = default;
   BlockType(const BlockType&) = default;
   BlockType(std::string typeName, 

@@ -1,11 +1,11 @@
 #pragma once
-#include "CreateBlockTypeCommand.h"
+#include <CreateBlockTypeCommand.h>
 
 #include <qpainter.h>
 
-#include "CreateBlockTypeEvent.h"
-#include "DeleteBlockTypeEvent.h"
-#include "DrawBlockPixmap.h"
+#include <CreateBlockTypeEvent.h>
+#include <DeleteBlockTypeEvent.h>
+#include <DrawBlockPixmap.h>
 
 CreateBlockTypeCommand::CreateBlockTypeCommand(MapEditor::BlockTypes& blockTypes,
                                                const BlockType& blockType, 

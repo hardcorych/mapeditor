@@ -2,10 +2,11 @@
 
 #include <qundostack.h>
 
-#include "BlockType.h"
+#include <BlockType.h>
 
 class Map;
 
+///remove block on map
 class RemoveCommand : public QUndoCommand	//remove block from map
 {
 public:

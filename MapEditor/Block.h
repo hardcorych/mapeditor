@@ -4,10 +4,12 @@
 
 #include <qstring.h>
 
-#include "BlockType.h"
-#include "Tile.h"
+#include <BlockType.h>
+#include <Tile.h>
 
-class Block : public osg::Group		//block consists 4 tiles, block size 16x16
+///block consists 4 tiles
+///block size 16x16
+class Block : public osg::Group		
 {
 public:
   Block() = delete;

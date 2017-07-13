@@ -2,8 +2,9 @@
 
 #include <qevent.h>
 
-#include "MapEditor.h"
+#include <MapEditor.h>
 
+///event of adding block on map
 class AddEvent : public QEvent
 {
 public:
